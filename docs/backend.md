@@ -25,6 +25,30 @@ node --version
 npm --version
 ```
 
+## Configuración de Variables de Entorno
+
+El backend utiliza variables de entorno para la configuración (base de datos, etc.). Los archivos `.env` están en `.gitignore` y no se suben al repositorio.
+
+Para configurar el entorno local:
+
+1. Copia el archivo de ejemplo:
+   ```bash
+   cd backend
+   cp .env.example .env
+   ```
+2. Edita `.env` con tus valores si es necesario (los valores por defecto funcionan con Docker Compose local).
+
+Variables disponibles (ver `.env.example`):
+
+| Variable | Descripción |
+|----------|-------------|
+| `DB_HOST` | Host de PostgreSQL |
+| `DB_PORT` | Puerto de PostgreSQL |
+| `DB_USERNAME` | Usuario de la base de datos |
+| `DB_PASSWORD` | Contraseña |
+| `DB_DATABASE` | Nombre de la base de datos |
+| `DB_SYNCHRONIZE` | `true` en desarrollo para crear tablas automáticamente |
+
 ## Instalación de Dependencias
 
 Navega al directorio `backend` e instala las dependencias del proyecto:
