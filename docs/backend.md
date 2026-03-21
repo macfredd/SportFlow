@@ -58,9 +58,35 @@ cd backend
 npm install
 ```
 
-## Iniciar el Servidor en Modo Desarrollo
+## Ejecutar el Proyecto
 
-Para ejecutar el servidor en modo desarrollo con recarga automática ante cambios:
+### 1. Iniciar PostgreSQL con Docker
+
+Desde la raíz del proyecto (`SportFlow`), levanta el contenedor de PostgreSQL:
+
+```bash
+docker compose up -d
+```
+
+El flag `-d` ejecuta el contenedor en segundo plano (detached). La base de datos quedará disponible en `localhost:5432`.
+
+Para verificar que el contenedor está en ejecución:
+
+```bash
+docker ps
+```
+
+Deberías ver un contenedor llamado `sportflow-postgres` con estado `Up`.
+
+Para detener PostgreSQL:
+
+```bash
+docker compose down
+```
+
+### 2. Iniciar el Backend
+
+Con PostgreSQL en marcha, inicia el servidor NestJS en modo desarrollo:
 
 ```bash
 cd backend
@@ -68,6 +94,34 @@ npm run start:dev
 ```
 
 El servidor se iniciará por defecto en `http://localhost:3000`.
+
+### 3. Verificar la Conexión a la Base de Datos
+
+Si la conexión funciona correctamente:
+
+- La aplicación arranca sin errores de conexión
+- En la consola aparece: `Nest application successfully started`
+- Con `DB_SYNCHRONIZE=true` en tu `.env`, TypeORM crea o actualiza las tablas automáticamente al iniciar
+
+Para comprobar que las tablas existen, [conéctate a PostgreSQL desde la línea de comandos](#conectarse-a-postgresql-desde-la-línea-de-comandos) y ejecuta `\dt`.
+
+### 4. Conectarse a PostgreSQL desde la Línea de Comandos
+
+Para acceder a la base de datos con el cliente `psql` dentro del contenedor:
+
+```bash
+docker exec -it sportflow-postgres psql -U sportflow -d sportflow
+```
+
+Comandos útiles dentro de `psql`:
+
+| Comando | Descripción |
+|---------|-------------|
+| `\dt` | Listar tablas |
+| `\d activities` | Describir la estructura de la tabla `activities` |
+| `\q` | Salir de psql |
+
+**Nota**: El nombre del contenedor es `sportflow-postgres` (definido en `docker-compose.yml`). El usuario y la base de datos son `sportflow`, según la configuración del proyecto.
 
 ## Estructura Básica del Proyecto
 
