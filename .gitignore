@@ -28,5 +28,8 @@ coverage/
 .env.local
 .env.*.local
 
-#Data
+# Data
 FilesToUpload/
+
+# REST Client - local file with personal paths (do not commit)
+**/api.local.http
