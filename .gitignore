@@ -6,6 +6,7 @@ dist/
 build/
 
 # IDE
+.cursor/
 .idea/
 .vscode/
 *.swp
