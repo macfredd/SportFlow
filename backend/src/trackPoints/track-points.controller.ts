@@ -6,7 +6,7 @@ import { TrackPoint } from './entities/track-point.entity';
 export class TrackPointsController {
     constructor(private readonly trackPointsService: TrackPointsService) {}
     
-    @Get()
+    @Get(':id')
     async findById(@Param('id') id: string): Promise<TrackPoint> {
         const trackPoint = await this.trackPointsService.findOneById(id);
         
