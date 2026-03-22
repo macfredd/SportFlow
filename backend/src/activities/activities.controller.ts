@@ -8,10 +8,10 @@ export class ActivityController {
 
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
-  async uploadActivity(@UploadedFile() file: Express.Multer.File): Promise<{ filename: string; size: number; detectedFormat: string }> {
+  async uploadActivity(@UploadedFile() file: Express.Multer.File): Promise<{ data: any }> {
 
     const result = await this.activityService.parseActivity(file);
 
-    return { filename: file.originalname, size: file.size, detectedFormat: result.detectedFormat };
+    return {  data: (result as any).data };
   }
 }
