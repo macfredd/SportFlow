@@ -6,14 +6,12 @@ import { FileInterceptor } from '@nestjs/platform-express';
 export class ActivityController {
   constructor(private readonly activityService: ActivityService) {}
 
-  @Get()
-  getActivities(): string {
-    return this.activityService.getStatus();
-  }
-
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
-  uploadActivity(@UploadedFile() file: Express.Multer.File): { filename: string, size: number } {
-    return { filename: file.originalname, size: file.size }
+  async uploadActivity(@UploadedFile() file: Express.Multer.File): Promise<{ filename: string; size: number; detectedFormat: string }> {
+
+    const result = await this.activityService.parseActivity(file);
+
+    return { filename: file.originalname, size: file.size, detectedFormat: result.detectedFormat };
   }
 }
