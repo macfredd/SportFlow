@@ -2,20 +2,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-
-export enum SportType {
-  WALKING = 'walking',
-  RUNNING = 'running',
-  CYCLING = 'cycling',
-}
-
-export enum FileSourceType {
-  FIT = 'FIT',
-  TCX = 'TCX',
-  GPX = 'GPX',
-}
+import { FileSourceType, SportType } from '../../common/enums';
+import { TrackPoint } from '../../trackPoints/entities/track-point.entity';
 
 @Entity('activities')
 export class Activity {
@@ -40,8 +31,20 @@ export class Activity {
   @Column({ type: 'decimal', precision: 12, scale: 2, default: 0 })
   distance_meters: number;
 
+  @Column({ type: 'decimal', precision: 12, scale: 2, default: 0 })
+  elevation_gain_meters: number;
+
+  @Column({ type: 'decimal', precision: 12, scale: 2, default: 0 })
+  elevation_loss_meters: number;
+
+  @Column({ type: 'decimal', precision: 12, scale: 2, default: 0 })
+  max_speed: number;
+
   @Column({ type: 'decimal', precision: 8, scale: 2, nullable: true })
   avg_speed: number | null;
+
+  @Column({ type: 'integer', nullable: true })
+  max_heart_rate: number | null;
 
   @Column({ type: 'integer', nullable: true })
   avg_heart_rate: number | null;
@@ -54,4 +57,7 @@ export class Activity {
 
   @CreateDateColumn({ type: 'timestamptz' })
   created_at: Date;
+
+  @OneToMany(() => TrackPoint, (trackPoint: TrackPoint) => trackPoint.activity)
+  trackPoints: TrackPoint[];
 }
