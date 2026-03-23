@@ -22,10 +22,10 @@ export class TrackPoint {
   @Column({ type: 'integer', nullable: true })
   cadence: number | null;
 
-  @Column({ type: 'decimal', precision: 12, scale: 2, default: 0 })
+  @Column({ type: 'decimal', precision: 18, scale: 14, default: 0 })
   position_latitude: number;
 
-  @Column({ type: 'decimal', precision: 12, scale: 2, default: 0 })
+  @Column({ type: 'decimal', precision: 18, scale: 14, default: 0 })
   position_longitude: number;
 
   @Column({ type: 'decimal', precision: 12, scale: 2, default: 0 })

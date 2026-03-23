@@ -4,13 +4,19 @@ import { Repository } from 'typeorm';
 import { Activity } from './entities/activity.entity';
 import { TrackPoint } from '../trackPoints/entities/track-point.entity';
 import { ParserRegistryService } from '../modules/parser/parser-registry.service';
-import { ParsedActivity } from 'src/modules/parser/dto/parsed-activity.dto';
+import { ParsedActivity } from '../modules/parser/dto/parsed-activity.dto';
+import {
+  mapParsedActivityToActivity,
+  mapParsedTrackPointToTrackPoint,
+} from './mappers/parsed-activity.mapper';
 
 @Injectable()
 export class ActivityService {
   constructor(
     @InjectRepository(Activity)
     private readonly activityRepository: Repository<Activity>,
+    @InjectRepository(TrackPoint)
+    private readonly trackPointRepository: Repository<TrackPoint>,
     private readonly parserRegistryService: ParserRegistryService,
   ) {}
 
@@ -49,5 +55,23 @@ export class ActivityService {
       throw new Error(`Unsupported file format: ${extension}`);
     }
     return await parser.parse(file.buffer);
+  }
+
+  async uploadAndSave(file: Express.Multer.File): Promise<Activity> {
+    const parsed = await this.parseActivity(file);
+    const activityData = mapParsedActivityToActivity(parsed);
+    const activity = await this.activityRepository.save(
+      this.activityRepository.create(activityData),
+    );
+
+    if (parsed.trackPoints.length > 0) {
+      const trackPointsData = parsed.trackPoints.map((tp) =>
+        mapParsedTrackPointToTrackPoint(tp, activity.id),
+      );
+      const trackPoints = this.trackPointRepository.create(trackPointsData);
+      await this.trackPointRepository.save(trackPoints);
+    }
+
+    return activity;
   }
 }

@@ -1,12 +1,13 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Activity } from './entities/activity.entity';
+import { TrackPoint } from '../trackPoints/entities/track-point.entity';
 import { ActivityService } from './activities.service';
 import { ActivityController } from './activities.controller';
-import { ParserModule } from 'src/modules/parser/parser.module';
+import { ParserModule } from '../modules/parser/parser.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Activity]), ParserModule],
+  imports: [TypeOrmModule.forFeature([Activity, TrackPoint]), ParserModule],
   exports: [TypeOrmModule],
   controllers: [ActivityController],
   providers: [ActivityService],
