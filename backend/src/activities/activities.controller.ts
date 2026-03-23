@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { ActivityService } from './activities.service';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { ParsedActivity } from '../modules/parser/dto/parsed-activity.dto';
 
 @Controller('activities')
 export class ActivityController {
@@ -30,10 +31,10 @@ export class ActivityController {
 
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
-  async uploadActivity(@UploadedFile() file: Express.Multer.File): Promise<{ data: any }> {
+  async uploadActivity(@UploadedFile() file: Express.Multer.File): Promise<ParsedActivity> {
 
     const result = await this.activityService.parseActivity(file);
 
-    return {  data: (result as any).data };
+    return result;
   }
 }

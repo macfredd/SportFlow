@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Activity } from './entities/activity.entity';
 import { TrackPoint } from '../trackPoints/entities/track-point.entity';
 import { ParserRegistryService } from '../modules/parser/parser-registry.service';
+import { ParsedActivity } from 'src/modules/parser/dto/parsed-activity.dto';
 
 @Injectable()
 export class ActivityService {
@@ -41,12 +42,12 @@ export class ActivityService {
     return activity.trackPoints;
   }
 
-  async parseActivity(file: Express.Multer.File): Promise<{ detectedFormat: string }> {
+  async parseActivity(file: Express.Multer.File): Promise<ParsedActivity> {
     const extension = file.originalname.split('.').pop()?.toLowerCase();
     const parser = this.parserRegistryService.getParserFromExtension(extension);
     if (!parser) {
       throw new Error(`Unsupported file format: ${extension}`);
     }
-    return parser.parse(file.buffer);
+    return await parser.parse(file.buffer);
   }
 }

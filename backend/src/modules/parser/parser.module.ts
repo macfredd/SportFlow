@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ParserRegistryService } from './parser-registry.service';
-import { FitParserService } from './fit-parser.service';
+import { FitParserService } from './fit/fit-parser.service';
 
 @Module({
   imports: [],

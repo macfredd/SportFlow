@@ -49,6 +49,9 @@ export class Activity {
   @Column({ type: 'integer', nullable: true })
   avg_heart_rate: number | null;
 
+  @Column({ type: 'integer', nullable: true })
+  total_calories: number | null;
+
   @Column({
     type: 'varchar',
     length: 10,

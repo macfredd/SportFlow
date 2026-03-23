@@ -1,4 +1,6 @@
+import { ParsedActivity } from '../dto/parsed-activity.dto';
+
 export interface IActivityParser {
-  parse(buffer: Buffer): Promise<{ detectedFormat: string }>;
+  parse(buffer: Buffer): Promise<ParsedActivity>;
   getSupportedExtensions(): string[];
 }

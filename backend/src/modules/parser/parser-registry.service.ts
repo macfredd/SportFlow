@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { FitParserService } from './fit-parser.service';
+import { FitParserService } from './fit/fit-parser.service';
 import { IActivityParser } from './interfaces/activity-parser.interface';
 
 @Injectable()

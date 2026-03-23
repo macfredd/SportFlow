@@ -45,3 +45,26 @@ src/
 ### Entity placement
 
 Entities live inside their feature folder (`activities/entities/`). Related entities (e.g. `TrackPoint`, `Lap` tied to `Activity`) stay in the same feature.
+
+### Parser module structure
+
+Each file format has its own subdirectory under `modules/parser/`:
+
+```
+modules/parser/
+├── dto/                    # Shared output DTOs (ParsedActivity, ParsedTrackPoint)
+├── helpers/                # Global helpers for all parsers (e.g. toDate)
+├── interfaces/             # Shared interfaces only
+│   └── activity-parser.interface.ts
+├── fit/                    # FIT format
+│   ├── fit-parser.service.ts
+│   ├── fit-record.interface.ts     # FIT-specific
+│   └── fit-record-mapper.helper.ts
+├── gpx/                    # GPX format (future)
+├── tcx/                    # TCX format (future)
+├── parser-registry.service.ts
+└── parser.module.ts
+```
+
+- **helpers/**: Helpers used by all parsers (date conversion, etc.)
+- **fit/**, **gpx/**, **tcx/**: Format-specific parsers and mappers
