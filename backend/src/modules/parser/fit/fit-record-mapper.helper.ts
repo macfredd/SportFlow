@@ -3,14 +3,16 @@ import { FitRecord } from './fit-record.interface';
 import { toDate } from '../helpers/date.helper';
 
 export function mapRecordToTrackPoint(record: FitRecord): ParsedTrackPoint {
+  const hasGps =
+    record.position_lat != null && record.position_long != null;
   return {
     timestamp: toDate(record.timestamp),
-    latitude: record.position_lat ?? 0,
-    longitude: record.position_long ?? 0,
-    altitude: record.altitude ?? 0,
-    speed: record.speed ?? 0,
+    latitude: hasGps ? record.position_lat! : null,
+    longitude: hasGps ? record.position_long! : null,
+    altitude: record.altitude ?? null,
+    speed: record.speed ?? null,
     heartRate: record.heart_rate ?? null,
     cadence: record.cadence ?? null,
-    elapsedTimeSeconds: record.elapsed_time ?? record.timer_time ?? null,
+    elapsedTimeSeconds: record.elapsed_time ?? null,
   };
 }

@@ -4,10 +4,11 @@ export interface ParsedActivity {
   sport: string;
   startTime: Date;
   endTime: Date;
-  durationSeconds: number;
-  distanceMeters: number;
-  elevationGainMeters: number;
-  elevationLossMeters: number;
+  /** null when missing — do not use 0 as placeholder. */
+  durationSeconds: number | null;
+  distanceMeters: number | null;
+  elevationGainMeters: number | null;
+  elevationLossMeters: number | null;
   avgSpeed: number | null;
   maxSpeed: number | null;
   avgHeartRate: number | null;

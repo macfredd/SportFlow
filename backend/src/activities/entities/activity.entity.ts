@@ -25,20 +25,20 @@ export class Activity {
   @Column({ type: 'timestamptz' })
   end_time: Date;
 
-  @Column({ type: 'integer' })
-  duration_seconds: number;
+  @Column({ type: 'integer', nullable: true })
+  duration_seconds: number | null;
 
-  @Column({ type: 'decimal', precision: 12, scale: 2, default: 0 })
-  distance_meters: number;
+  @Column({ type: 'decimal', precision: 12, scale: 2, nullable: true })
+  distance_meters: number | null;
 
-  @Column({ type: 'decimal', precision: 12, scale: 2, default: 0 })
-  elevation_gain_meters: number;
+  @Column({ type: 'decimal', precision: 12, scale: 2, nullable: true })
+  elevation_gain_meters: number | null;
 
-  @Column({ type: 'decimal', precision: 12, scale: 2, default: 0 })
-  elevation_loss_meters: number;
+  @Column({ type: 'decimal', precision: 12, scale: 2, nullable: true })
+  elevation_loss_meters: number | null;
 
-  @Column({ type: 'decimal', precision: 12, scale: 2, default: 0 })
-  max_speed: number;
+  @Column({ type: 'decimal', precision: 12, scale: 2, nullable: true })
+  max_speed: number | null;
 
   @Column({ type: 'decimal', precision: 8, scale: 2, nullable: true })
   avg_speed: number | null;

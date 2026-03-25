@@ -27,15 +27,15 @@ export class FitParserService implements IActivityParser {
       sport: session?.sport ?? '',
       startTime: toDate(session?.start_time),
       endTime: toDate(session?.timestamp),
-      durationSeconds: session?.total_elapsed_time ?? 0,
-      distanceMeters: session?.total_distance ?? 0,
-      elevationGainMeters: session?.total_ascent ?? 0,
-      elevationLossMeters: session?.total_descent ?? 0,
-      avgSpeed: session?.avg_speed ?? 0,
-      maxSpeed: session?.max_speed ?? 0,
-      avgHeartRate: session?.avg_heart_rate ?? 0,
-      maxHeartRate: session?.max_heart_rate ?? 0,
-      totalCalories: session?.total_calories ?? 0,
+      durationSeconds: session?.total_elapsed_time ?? null,
+      distanceMeters: session?.total_distance ?? null,
+      elevationGainMeters: session?.total_ascent ?? null,
+      elevationLossMeters: session?.total_descent ?? null,
+      avgSpeed: session?.avg_speed ?? null,
+      maxSpeed: session?.max_speed ?? null,
+      avgHeartRate: session?.avg_heart_rate ?? null,
+      maxHeartRate: session?.max_heart_rate ?? null,
+      totalCalories: session?.total_calories ?? null,
       fileSourceType: 'FIT',
       trackPoints: [],
     };
@@ -43,9 +43,9 @@ export class FitParserService implements IActivityParser {
     const records = (session?.laps?.flatMap((lap) => lap.records ?? []) ??
       []) as FitRecord[];
 
-    parsedActivity.trackPoints = records
-      .filter((record) => (record.timer_time ?? -1) >= 0)
-      .map((record) => mapRecordToTrackPoint(record));
+    parsedActivity.trackPoints = records.map((record) =>
+      mapRecordToTrackPoint(record),
+    );
 
     return parsedActivity;
   }

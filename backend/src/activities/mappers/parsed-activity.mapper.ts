@@ -19,7 +19,7 @@ export function mapParsedActivityToActivity(parsed: ParsedActivity): Partial<Act
     distance_meters: parsed.distanceMeters,
     elevation_gain_meters: parsed.elevationGainMeters,
     elevation_loss_meters: parsed.elevationLossMeters,
-    max_speed: parsed.maxSpeed ?? 0,
+    max_speed: parsed.maxSpeed,
     avg_speed: parsed.avgSpeed,
     max_heart_rate: parsed.maxHeartRate,
     avg_heart_rate: parsed.avgHeartRate,
