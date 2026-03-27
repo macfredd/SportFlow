@@ -4,7 +4,6 @@ export interface ParsedActivity {
   sport: string;
   startTime: Date;
   endTime: Date;
-  /** null when missing — do not use 0 as placeholder. */
   durationSeconds: number | null;
   distanceMeters: number | null;
   elevationGainMeters: number | null;
@@ -14,6 +13,6 @@ export interface ParsedActivity {
   avgHeartRate: number | null;
   maxHeartRate: number | null;
   totalCalories: number | null;
-  fileSourceType: 'FIT';
+  fileSourceType: 'FIT' | 'GPX';
   trackPoints: ParsedTrackPoint[];
 }

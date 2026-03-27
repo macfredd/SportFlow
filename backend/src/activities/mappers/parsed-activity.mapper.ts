@@ -10,6 +10,11 @@ const SPORT_MAP: Record<string, SportType> = {
   cycling: SportType.CYCLING,
 };
 
+const FILE_SOURCE_TYPE_MAP: Record<string, FileSourceType> = {
+  FIT: FileSourceType.FIT,
+  GPX: FileSourceType.GPX,
+};
+
 export function mapParsedActivityToActivity(parsed: ParsedActivity): Partial<Activity> {
   return {
     sport_type: SPORT_MAP[parsed.sport.toLowerCase()] ?? SportType.WALKING,
@@ -24,7 +29,7 @@ export function mapParsedActivityToActivity(parsed: ParsedActivity): Partial<Act
     max_heart_rate: parsed.maxHeartRate,
     avg_heart_rate: parsed.avgHeartRate,
     total_calories: parsed.totalCalories,
-    file_source_type: FileSourceType[parsed.fileSourceType] ?? FileSourceType.FIT,
+    file_source_type: FILE_SOURCE_TYPE_MAP[parsed.fileSourceType],
   };
 }
 
