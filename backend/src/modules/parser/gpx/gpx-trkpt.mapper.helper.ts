@@ -38,6 +38,9 @@ function readHeartRateAndCadence(extensions: unknown): {
   };
 }
 
+/**
+ * Maps one GPX `<trkpt>` node to ParsedTrackPoint. No FIT fields — GPX uses lat/lon attrs and `<ele>`.
+ */
 export function mapGpxTrkptToParsedTrackPoint(
   trkpt: GpxTrkptNode,
 ): ParsedTrackPoint | null {

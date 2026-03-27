@@ -3,8 +3,11 @@ import { XMLParser } from 'fast-xml-parser';
 import { ParsedActivity } from '../dto/parsed-activity.dto';
 import { ParsedTrackPoint } from '../dto/parsed-track-point.dto';
 import { IActivityParser } from '../interfaces/activity-parser.interface';
+import { elapsedWholeSecondsBetween } from '../helpers/date.helper';
+import { aggregateElevationFromTrackPoints } from '../helpers/elevation-stats.helper';
+import { aggregateHeartRateFromTrackPoints } from '../helpers/heart-rate-stats.helper';
 import { asArray, xmlTextContent } from '../helpers/xml.helper';
-import { mapGpxTrkptToParsedTrackPoint } from './gpx-trkpt.mapper';
+import { mapGpxTrkptToParsedTrackPoint } from './gpx-trkpt.mapper.helper';
 
 @Injectable()
 export class GpxParserService implements IActivityParser {
@@ -70,19 +73,24 @@ export class GpxParserService implements IActivityParser {
 
     const startTime = parsedTrackPoints[0].timestamp;
     const endTime = parsedTrackPoints[parsedTrackPoints.length - 1].timestamp;
+    const durationSeconds = elapsedWholeSecondsBetween(startTime, endTime);
+    const { avgHeartRate, maxHeartRate } =
+      aggregateHeartRateFromTrackPoints(parsedTrackPoints);
+    const { elevationGainMeters, elevationLossMeters } =
+      aggregateElevationFromTrackPoints(parsedTrackPoints);
 
     const parsedActivity: ParsedActivity = {
       sport,
       startTime,
       endTime,
-      durationSeconds: null,
+      durationSeconds,
       distanceMeters: null,
-      elevationGainMeters: null,
-      elevationLossMeters: null,
+      elevationGainMeters,
+      elevationLossMeters,
       avgSpeed: null,
       maxSpeed: null,
-      avgHeartRate: null,
-      maxHeartRate: null,
+      avgHeartRate,
+      maxHeartRate,
       totalCalories: null,
       fileSourceType: 'GPX',
       trackPoints: parsedTrackPoints,
