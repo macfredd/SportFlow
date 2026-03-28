@@ -5,7 +5,12 @@ import { ParsedTrackPoint } from '../dto/parsed-track-point.dto';
 import { IActivityParser } from '../interfaces/activity-parser.interface';
 import { elapsedWholeSecondsBetween } from '../helpers/date.helper';
 import { aggregateElevationFromTrackPoints } from '../helpers/elevation-stats.helper';
+import { aggregatePathDistanceMeters } from '../helpers/geo-distance.helper';
 import { aggregateHeartRateFromTrackPoints } from '../helpers/heart-rate-stats.helper';
+import {
+  averageSpeedMetersPerSecond,
+  maxSpeedFromTrackPoints,
+} from '../helpers/speed-stats.helper';
 import { asArray, xmlTextContent } from '../helpers/xml.helper';
 import { mapGpxTrkptToParsedTrackPoint } from './gpx-trkpt.mapper.helper';
 
@@ -78,17 +83,23 @@ export class GpxParserService implements IActivityParser {
       aggregateHeartRateFromTrackPoints(parsedTrackPoints);
     const { elevationGainMeters, elevationLossMeters } =
       aggregateElevationFromTrackPoints(parsedTrackPoints);
+    const distanceMeters = aggregatePathDistanceMeters(parsedTrackPoints);
+    const avgSpeed = averageSpeedMetersPerSecond(
+      distanceMeters,
+      durationSeconds,
+    );
+    const maxSpeed = maxSpeedFromTrackPoints(parsedTrackPoints);
 
     const parsedActivity: ParsedActivity = {
       sport,
       startTime,
       endTime,
       durationSeconds,
-      distanceMeters: null,
+      distanceMeters,
       elevationGainMeters,
       elevationLossMeters,
-      avgSpeed: null,
-      maxSpeed: null,
+      avgSpeed,
+      maxSpeed,
       avgHeartRate,
       maxHeartRate,
       totalCalories: null,
