@@ -1,0 +1,54 @@
+:host {
+  display: block;
+  height: 100%;
+  min-height: 100vh;
+}
+
+.app-layout__container {
+  --mat-sidenav-content-background-color: var(--bg);
+}
+
+.app-layout__sidenav {
+  background-color: var(--surface);
+  color: var(--text-primary);
+  border-color: var(--border-subtle) !important;
+}
+
+.app-layout__toolbar {
+  --mat-toolbar-container-background-color: var(--bg);
+  background-color: var(--bg);
+  color: var(--text-primary);
+  border-bottom-color: var(--border-subtle) !important;
+}
+
+::ng-deep .app-layout__toolbar.mat-mdc-toolbar {
+  background-color: var(--bg);
+  color: var(--text-primary);
+}
+
+.app-layout__toolbar .mat-mdc-button {
+  color: color-mix(in srgb, var(--text-primary) 88%, transparent);
+}
+
+.app-layout__toolbar .mat-mdc-icon-button {
+  color: var(--text-primary);
+}
+
+.app-layout__nav-active {
+  background-color: color-mix(in srgb, var(--primary-light) 18%, transparent);
+  color: var(--primary-dark);
+}
+
+::ng-deep .mat-mdc-menu-panel.app-layout__nav-menu {
+  background-color: var(--bg);
+  border: 1px solid var(--border-subtle);
+}
+
+::ng-deep .app-layout__nav-menu .mat-mdc-menu-item {
+  color: var(--text-primary);
+}
+
+::ng-deep .app-layout__nav-menu .app-layout__nav-link--active {
+  background-color: color-mix(in srgb, var(--primary-light) 14%, transparent);
+  color: var(--primary-dark);
+}

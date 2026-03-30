@@ -26,7 +26,9 @@
             "assets": [
               {
                 "glob": "**/*",
-                "input": "public"
+                "input": "public",
+                "output": "/",
+                "ignore": ["**/*.kra"]
               }
             ],
             "styles": ["src/tailwind.css", "src/styles.scss"]

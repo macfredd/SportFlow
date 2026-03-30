@@ -1,0 +1,114 @@
+<div class="app-layout flex min-h-screen flex-col bg-[var(--bg)] text-[var(--text-primary)]">
+  <mat-sidenav-container class="app-layout__container min-h-0 flex-1">
+    <mat-sidenav
+      id="widget-panel"
+      [mode]="sidenavMode()"
+      [opened]="sidebarOpen()"
+      (openedChange)="onSidenavOpenedChange($event)"
+      position="start"
+      class="app-layout__sidenav border-r border-[var(--border-subtle)]"
+    >
+      <div
+        class="flex h-full w-72 max-w-[85vw] flex-col gap-4 p-4 md:p-5"
+        role="complementary"
+        aria-label="Panel de widgets"
+      >
+        <p
+          class="text-xs font-semibold uppercase tracking-wide text-[var(--text-secondary)]"
+        >
+          Panel lateral
+        </p>
+        <p class="text-sm leading-relaxed text-[var(--text-secondary)]">
+          Área para widgets, filtros o resúmenes. La navegación principal está en la barra superior.
+        </p>
+      </div>
+    </mat-sidenav>
+
+    <mat-sidenav-content class="flex min-h-screen flex-col">
+      <mat-toolbar
+        class="app-layout__toolbar sticky top-0 z-[2] flex min-h-14 shrink-0 border-b px-2 md:px-4"
+      >
+        <div class="flex w-full items-center gap-2 md:gap-3">
+          <button
+            mat-icon-button
+            type="button"
+            (click)="toggleSidebar()"
+            [attr.aria-expanded]="sidebarOpen()"
+            aria-controls="widget-panel"
+            class="shrink-0"
+          >
+            <mat-icon>{{ sidebarOpen() ? 'menu_open' : 'menu' }}</mat-icon>
+          </button>
+
+          <a
+            routerLink="/"
+            class="flex min-w-0 max-w-[min(100%,20rem)] items-center no-underline text-[var(--text-primary)] sm:max-w-none md:max-w-[24rem]"
+          >
+            <img
+              src="/sportflow-logo.png"
+              alt="SportFlow"
+              class="h-7 w-auto max-h-9 max-w-full shrink-0 object-contain object-left sm:h-10 md:h-11"
+            />
+          </a>
+
+          <span class="flex-1"></span>
+
+          @if (isCompact()) {
+            <button
+              mat-icon-button
+              type="button"
+              [matMenuTriggerFor]="navMenu"
+              aria-label="Abrir menú de navegación"
+              class="shrink-0"
+            >
+              <mat-icon>menu</mat-icon>
+            </button>
+            <mat-menu #navMenu="matMenu" xPosition="before" panelClass="app-layout__nav-menu">
+              @for (link of navLinks; track link.path) {
+                <a
+                  mat-menu-item
+                  [routerLink]="link.path"
+                  routerLinkActive="app-layout__nav-link--active"
+                  [routerLinkActiveOptions]="link.exact ? { exact: true } : { exact: false }"
+                >
+                  {{ link.label }}
+                </a>
+              }
+            </mat-menu>
+          } @else {
+            <nav
+              class="flex flex-wrap items-center justify-end gap-1 md:gap-2"
+              aria-label="Navegación principal"
+            >
+              @for (link of navLinks; track link.path) {
+                <a
+                  mat-button
+                  [routerLink]="link.path"
+                  routerLinkActive="app-layout__nav-active"
+                  [routerLinkActiveOptions]="link.exact ? { exact: true } : { exact: false }"
+                >
+                  {{ link.label }}
+                </a>
+              }
+            </nav>
+          }
+        </div>
+      </mat-toolbar>
+
+      <main
+        class="app-layout__main min-h-0 flex-1 overflow-auto bg-[var(--bg)] px-2 py-4 text-[var(--text-primary)] md:px-4 md:py-6"
+        role="main"
+      >
+        <router-outlet />
+      </main>
+
+      <footer
+        class="shrink-0 border-t border-[var(--border-subtle)] bg-[var(--bg)] px-4 py-3 text-center text-xs text-[var(--text-secondary)] md:py-4 md:text-sm"
+      >
+        <span class="font-medium text-[var(--text-primary)]">SportFlow</span>
+        <span class="mx-2 text-[color-mix(in_srgb,var(--text-secondary)_70%,transparent)]">·</span>
+        <span>Built with Angular</span>
+      </footer>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
