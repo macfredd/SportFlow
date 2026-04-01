@@ -2,11 +2,14 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { FileSourceType, SportType } from '../../common/enums';
 import { TrackPoint } from '../../trackPoints/entities/track-point.entity';
+import { UserEntity } from '../../users/entities/user.entity';
 
 @Entity('activities')
 export class Activity {
@@ -63,4 +66,10 @@ export class Activity {
 
   @OneToMany(() => TrackPoint, (trackPoint: TrackPoint) => trackPoint.activity)
   trackPoints: TrackPoint[];
+
+  @ManyToOne(() => UserEntity, (user: UserEntity) => user.activities, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'user_id' })
+  user: UserEntity;
 }
