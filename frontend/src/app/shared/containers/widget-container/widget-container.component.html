@@ -1,0 +1,32 @@
+<section
+  class="widget-container flex flex-col overflow-hidden rounded-lg border border-[var(--border-subtle)] bg-[var(--bg)] shadow-sm"
+  [attr.role]="regionLabel() ? 'region' : null"
+  [attr.aria-label]="regionLabel()"
+>
+  @if (showHeader()) {
+    <header
+      class="flex flex-wrap items-start gap-3 border-b border-[var(--border-subtle)]"
+      [ngClass]="headerPaddingClass()"
+    >
+      <div class="min-w-0 flex-1">
+        @if (title()) {
+          <h2 class="text-base font-semibold tracking-tight text-[var(--text-primary)] md:text-lg">
+            {{ title() }}
+          </h2>
+        }
+        @if (subtitle()) {
+          <p class="mt-0.5 text-sm text-[var(--text-secondary)]">
+            {{ subtitle() }}
+          </p>
+        }
+      </div>
+      <div class="flex shrink-0 items-center gap-2">
+        <ng-content select="[widget-header-actions]" />
+      </div>
+    </header>
+  }
+
+  <div class="widget-container__body min-h-0 flex-1" [ngClass]="bodyPaddingClass()">
+    <ng-content />
+  </div>
+</section>
