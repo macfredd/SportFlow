@@ -6,6 +6,12 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import {
+  DistanceUnit,
+  GlucoseUnit,
+  HeightUnit,
+  WeightUnit,
+} from '../enums';
 import { UserEntity } from './user.entity';
 
 export type DashboardWidgetsConfig = Record<string, { enabled: boolean }>;
@@ -21,17 +27,17 @@ export class UserConfig {
   @JoinColumn({ name: 'user_id' })
   user: UserEntity;
 
-  @Column({ type: 'varchar', length: 10, default: 'kg' })
-  preferred_weight_unit: string;
+  @Column({ type: 'enum', enum: WeightUnit, default: WeightUnit.KG })
+  preferred_weight_unit: WeightUnit;
 
-  @Column({ type: 'varchar', length: 10, default: 'cm' })
-  preferred_height_unit: string;
+  @Column({ type: 'enum', enum: HeightUnit, default: HeightUnit.CM })
+  preferred_height_unit: HeightUnit;
 
-  @Column({ type: 'varchar', length: 10, default: 'km' })
-  preferred_distance_unit: string;
+  @Column({ type: 'enum', enum: DistanceUnit, default: DistanceUnit.KM })
+  preferred_distance_unit: DistanceUnit;
 
-  @Column({ type: 'varchar', length: 10, default: 'mg_dl' })
-  preferred_glucose_unit: string;
+  @Column({ type: 'enum', enum: GlucoseUnit, default: GlucoseUnit.MG_DL })
+  preferred_glucose_unit: GlucoseUnit;
 
   @Column({ type: 'jsonb', nullable: true })
   dashboard_widgets: DashboardWidgetsConfig | null;

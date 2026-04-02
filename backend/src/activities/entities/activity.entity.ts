@@ -16,10 +16,7 @@ export class Activity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({
-    type: 'varchar',
-    length: 50,
-  })
+  @Column({ type: 'enum', enum: SportType })
   sport_type: SportType;
 
   @Column({ type: 'timestamptz' })
@@ -55,10 +52,7 @@ export class Activity {
   @Column({ type: 'integer', nullable: true })
   total_calories: number | null;
 
-  @Column({
-    type: 'varchar',
-    length: 10,
-  })
+  @Column({ type: 'enum', enum: FileSourceType })
   file_source_type: FileSourceType;
 
   @CreateDateColumn({ type: 'timestamptz' })

@@ -8,6 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Activity } from '../../activities/entities/activity.entity';
+import { UserSex } from '../enums';
 import { UserConfig } from './user-config.entity';
 import { UserWeightReading } from './user-weight-reading.entity';
 import { UserBloodGlucoseReading } from './user-blood-glucose-reading.entity';
@@ -26,8 +27,8 @@ export class UserEntity {
   @Column({ type: 'date', nullable: true })
   date_of_birth: Date | null;
 
-  @Column({ type: 'varchar', length: 50, nullable: true })
-  sex: string | null;
+  @Column({ type: 'enum', enum: UserSex, nullable: true })
+  sex: UserSex | null;
 
   @Column({ type: 'decimal', precision: 5, scale: 2, nullable: true })
   height_cm: number | null;

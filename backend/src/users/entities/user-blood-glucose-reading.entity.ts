@@ -7,6 +7,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { GlucoseReadingContext, GlucoseUnit } from '../enums';
 import { UserEntity } from './user.entity';
 
 @Index('idx_user_blood_glucose_readings_user_recorded', ['user', 'recorded_at'])
@@ -27,12 +28,11 @@ export class UserBloodGlucoseReading {
   @Column({ type: 'decimal', precision: 6, scale: 2 })
   value: number;
 
-  @Column({ type: 'varchar', length: 10 })
-  unit: string;
+  @Column({ type: 'enum', enum: GlucoseUnit })
+  unit: GlucoseUnit;
 
-  /** e.g. fasting, before_meal, after_meal, random */
-  @Column({ type: 'varchar', length: 30, nullable: true })
-  context: string | null;
+  @Column({ type: 'enum', enum: GlucoseReadingContext, nullable: true })
+  context: GlucoseReadingContext | null;
 
   @Column({ type: 'text', nullable: true })
   notes: string | null;

@@ -7,6 +7,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { WeightUnit } from '../enums';
 import { UserEntity } from './user.entity';
 
 @Index('idx_user_weight_readings_user_recorded', ['user', 'recorded_at'])
@@ -27,8 +28,8 @@ export class UserWeightReading {
   @Column({ type: 'decimal', precision: 6, scale: 2 })
   value: number;
 
-  @Column({ type: 'varchar', length: 10 })
-  unit: string;
+  @Column({ type: 'enum', enum: WeightUnit })
+  unit: WeightUnit;
 
   @Column({ type: 'text', nullable: true })
   notes: string | null;
