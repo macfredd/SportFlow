@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { Activity } from '../../activities/entities/activity.entity';
 import { UserConfig } from './user-config.entity';
+import { UserWeightReading } from './user-weight-reading.entity';
 
 @Entity('users')
 export class UserEntity {
@@ -41,4 +42,7 @@ export class UserEntity {
 
   @OneToOne(() => UserConfig, (config: UserConfig) => config.user)
   config: UserConfig;
+
+  @OneToMany(() => UserWeightReading, (weight_reading: UserWeightReading) => weight_reading.user)
+  weight_readings: UserWeightReading[];
 }
