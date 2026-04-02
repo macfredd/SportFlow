@@ -10,6 +10,7 @@ import {
 import { Activity } from '../../activities/entities/activity.entity';
 import { UserConfig } from './user-config.entity';
 import { UserWeightReading } from './user-weight-reading.entity';
+import { UserBloodGlucoseReading } from './user-blood-glucose-reading.entity';
 
 @Entity('users')
 export class UserEntity {
@@ -45,4 +46,7 @@ export class UserEntity {
 
   @OneToMany(() => UserWeightReading, (weight_reading: UserWeightReading) => weight_reading.user)
   weight_readings: UserWeightReading[];
+
+  @OneToMany(() => UserBloodGlucoseReading, (blood_glucose_reading: UserBloodGlucoseReading) => blood_glucose_reading.user)
+  blood_glucose_readings: UserBloodGlucoseReading[];
 }

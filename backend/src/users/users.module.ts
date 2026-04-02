@@ -3,9 +3,17 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
 import { UserConfig } from './entities/user-config.entity';
 import { UserWeightReading } from './entities/user-weight-reading.entity';
+import { UserBloodGlucoseReading } from './entities/user-blood-glucose-reading.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UserEntity, UserConfig, UserWeightReading])],
+  imports: [
+    TypeOrmModule.forFeature([
+      UserEntity,
+      UserConfig,
+      UserWeightReading,
+      UserBloodGlucoseReading,
+    ]),
+  ],
   exports: [TypeOrmModule],
   controllers: [],
   providers: [],
