@@ -3,10 +3,12 @@ import {
   CreateDateColumn,
   Entity,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Activity } from '../../activities/entities/activity.entity';
+import { UserConfig } from './user-config.entity';
 
 @Entity('users')
 export class UserEntity {
@@ -25,7 +27,6 @@ export class UserEntity {
   @Column({ type: 'varchar', length: 50, nullable: true })
   sex: string | null;
 
-  /** Última estatura conocida (cm); null si aún no registrada. */
   @Column({ type: 'decimal', precision: 5, scale: 2, nullable: true })
   height_cm: number | null;
 
@@ -37,4 +38,7 @@ export class UserEntity {
 
   @OneToMany(() => Activity, (activity: Activity) => activity.user)
   activities: Activity[];
+
+  @OneToOne(() => UserConfig, (config: UserConfig) => config.user)
+  config: UserConfig;
 }
