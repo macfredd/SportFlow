@@ -9,6 +9,7 @@ import {
   mapParsedActivityToActivity,
   mapParsedTrackPointToTrackPoint,
 } from './mappers/parsed-activity.mapper';
+import { UserEntity } from '../users/entities/user.entity';
 
 @Injectable()
 export class ActivityService {
@@ -25,8 +26,9 @@ export class ActivityService {
     return this.activityRepository.save(entity);
   }
 
-  async findAll(): Promise<Activity[]> {
+  async findAll(userId: string): Promise<Activity[]> {
     return this.activityRepository.find({
+      where: { user: { id: userId } },
       order: { start_time: 'DESC' },
     });
   }
@@ -39,9 +41,12 @@ export class ActivityService {
     return this.activityRepository.findOne({ where: { id } });
   }
 
-  async findTrackPointsByActivityId(activityId: string): Promise<TrackPoint[] | null> {
+  async findTrackPointsByActivityId(
+    activityId: string,
+    userId: string,
+  ): Promise<TrackPoint[] | null> {
     const activity = await this.activityRepository.findOne({
-      where: { id: activityId },
+      where: { id: activityId, user: { id: userId } },
       relations: ['trackPoints'],
     });
     if (!activity) return null;
@@ -57,11 +62,17 @@ export class ActivityService {
     return await parser.parse(file.buffer);
   }
 
-  async uploadAndSave(file: Express.Multer.File): Promise<Activity> {
+  async uploadAndSave(
+    file: Express.Multer.File,
+    userId: string,
+  ): Promise<Activity> {
     const parsed = await this.parseActivity(file);
     const activityData = mapParsedActivityToActivity(parsed);
     const activity = await this.activityRepository.save(
-      this.activityRepository.create(activityData),
+      this.activityRepository.create({
+        ...activityData,
+        user: { id: userId } as UserEntity,
+      }),
     );
 
     if (parsed.trackPoints.length > 0) {
