@@ -5,6 +5,7 @@ import { ActivitiesModule } from './activities/activities.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TrackPointsModule } from './trackPoints/track-points.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { TrackPointsModule } from './trackPoints/track-points.module';
       }),
       inject: [ConfigService],
     }),
+    UsersModule,
     ActivitiesModule,
     TrackPointsModule,
   ],
