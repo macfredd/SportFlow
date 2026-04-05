@@ -1,0 +1,11 @@
+.activities-list__table-wrap {
+  background-color: var(--bg);
+}
+
+.activities-list__table {
+  background-color: var(--bg);
+}
+
+::ng-deep .activities-list__filter .mat-mdc-form-field-subscript-wrapper {
+  display: none;
+}
