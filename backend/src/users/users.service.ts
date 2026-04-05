@@ -10,6 +10,8 @@ export class UsersService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly usersRepository: Repository<UserEntity>,
+    @InjectRepository(UserConfig)
+    private readonly userConfigRepository: Repository<UserConfig>,
   ) {}
 
   async create(dto: CreateUserDto): Promise<UserEntity> {
@@ -40,6 +42,12 @@ export class UsersService {
       await manager.save(config);
 
       return savedUser;
+    });
+  }
+
+  async getUserConfig(id: string): Promise<UserConfig | null> {
+    return await this.userConfigRepository.findOne({
+      where: { user: { id } },
     });
   }
 }
