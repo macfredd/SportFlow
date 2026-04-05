@@ -28,10 +28,17 @@ export class GpxParserService implements IActivityParser {
       parseTagValue: true,
     });
 
-    const root = xmlParser.parse(buffer.toString('utf-8')) as Record<
-      string,
-      unknown
-    >;
+    let root: Record<string, unknown>;
+    try {
+      root = xmlParser.parse(buffer.toString('utf-8')) as Record<
+        string,
+        unknown
+      >;
+    } catch {
+      throw new BadRequestException(
+        'Invalid GPX/XML: the file could not be parsed. Ensure it is a non-empty, valid UTF-8 XML file (e.g. a real .gpx export).',
+      );
+    }
     const gpxDoc = root.gpx;
 
     if (gpxDoc == null || typeof gpxDoc !== 'object') {

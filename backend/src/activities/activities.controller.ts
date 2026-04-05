@@ -53,6 +53,11 @@ export class ActivityController {
     if (!id) {
       throw new BadRequestException('userId path parameter is required');
     }
+    if (!file) {
+      throw new BadRequestException(
+        'No file received. Send multipart form field "file" with the activity binary (e.g. .gpx / .fit).',
+      );
+    }
     return this.activityService.uploadAndSave(file, id);
   }
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Activity } from './entities/activity.entity';
@@ -54,12 +54,32 @@ export class ActivityService {
   }
 
   async parseActivity(file: Express.Multer.File): Promise<ParsedActivity> {
+    if (!file.buffer || file.buffer.length === 0) {
+      throw new BadRequestException(
+        'Uploaded file is empty. Check the file exists on disk (REST clients) or that the browser sent the full body.',
+      );
+    }
+
     const extension = file.originalname.split('.').pop()?.toLowerCase();
     const parser = this.parserRegistryService.getParserFromExtension(extension);
     if (!parser) {
-      throw new Error(`Unsupported file format: ${extension}`);
+      throw new BadRequestException(
+        `Unsupported file format: ${extension ?? 'unknown'}`,
+      );
     }
-    return await parser.parse(file.buffer);
+
+    try {
+      return await parser.parse(file.buffer);
+    } catch (err) {
+      if (err instanceof BadRequestException) {
+        throw err;
+      }
+      const message =
+        err instanceof Error ? err.message : 'Unknown parse error';
+      throw new BadRequestException(
+        `Could not parse activity file: ${message}`,
+      );
+    }
   }
 
   async uploadAndSave(
