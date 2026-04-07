@@ -6,6 +6,15 @@
   background-color: var(--bg);
 }
 
+// Hover fila (tokens SportFlow + superficie Material disponible en tema)
+::ng-deep .activities-list__table tbody .mat-mdc-row:hover .mat-mdc-cell {
+  background-color: color-mix(in srgb, var(--primary-light) 14%, var(--bg));
+}
+
+::ng-deep .activities-list__table tbody .mat-mdc-row .mat-mdc-cell {
+  transition: background-color 0.12s ease;
+}
+
 ::ng-deep .activities-list__filter .mat-mdc-form-field-subscript-wrapper {
   display: none;
 }
