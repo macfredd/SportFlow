@@ -1,12 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {
-  ChangeDetectorRef,
-  Component,
-  OnInit,
-  ViewChild,
-  inject,
-  signal,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -94,11 +87,20 @@ export class ActivitiesListPageComponent implements OnInit {
     };
 
     this.dataSource.filterPredicate = (data, filter) => {
+
+    let distance: number;
+    if (this.userConfig()?.preferred_distance_unit === 'km') {
+      distance = toNumber(data.distance_meters)/1000;
+    } else if (this.userConfig()?.preferred_distance_unit === 'mi') {
+      distance = toNumber(data.distance_meters)/1609.34;
+    } else {
+      distance = toNumber(data.distance_meters);
+    }
       const t = [
         data.sport_type,
         data.start_time.slice(0, 10),
         String(data.duration_seconds),
-        String(toNumber(data.distance_meters)),
+        String(distance),
       ]
         .join(' ')
         .toLowerCase();
