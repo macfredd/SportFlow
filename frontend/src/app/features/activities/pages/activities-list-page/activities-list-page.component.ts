@@ -96,10 +96,12 @@ export class ActivitiesListPageComponent implements OnInit {
     } else {
       distance = toNumber(data.distance_meters);
     }
+
+    const duration = formatDurationHms(toNumber(data.duration_seconds));
       const t = [
         data.sport_type,
         data.start_time.slice(0, 10),
-        String(data.duration_seconds),
+        duration,
         String(distance),
       ]
         .join(' ')
