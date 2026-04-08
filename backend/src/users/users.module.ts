@@ -6,6 +6,7 @@ import { UserWeightReading } from './entities/user-weight-reading.entity';
 import { UserBloodGlucoseReading } from './entities/user-blood-glucose-reading.entity';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
+import { ImageFileValidatorPipe } from 'src/common/pipes/image-file-validator.pipe';
 
 @Module({
   imports: [
@@ -18,6 +19,6 @@ import { UsersService } from './users.service';
   ],
   exports: [TypeOrmModule],
   controllers: [UsersController],
-  providers: [UsersService],
+  providers: [UsersService, ImageFileValidatorPipe],
 })
 export class UsersModule {}

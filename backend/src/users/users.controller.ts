@@ -1,7 +1,17 @@
-import { BadRequestException, Body, Controller, Get, Param, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { ImageFileValidatorPipe } from '../common/pipes/image-file-validator.pipe';
 
 @Controller('users')
 export class UsersController {
@@ -16,19 +26,15 @@ export class UsersController {
   @UseInterceptors(FileInterceptor('file'))
   uploadAvatar(
     @Param('id') userId: string,
-    @UploadedFile() file: Express.Multer.File | undefined,
+    @UploadedFile(ImageFileValidatorPipe) file: Express.Multer.File | undefined,
   ) {
-    if (!file) {
-      throw new BadRequestException('No file uploaded');
-    }
-
     console.log('[avatar] received', {
       userId,
-      fieldname: file.fieldname,
-      originalname: file.originalname,
-      encoding: file.encoding,
-      mimetype: file.mimetype,
-      size: file.size,
+      fieldname: file?.fieldname,
+      originalname: file?.originalname,
+      encoding: file?.encoding,
+      mimetype: file?.mimetype,
+      size: file?.size,
     });
 
     return { ok: true, userId };
