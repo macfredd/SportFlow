@@ -33,6 +33,9 @@ export class UserEntity {
   @Column({ type: 'decimal', precision: 5, scale: 2, nullable: true })
   height_cm: number | null;
 
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  avatar_key: string | null;
+
   @CreateDateColumn({ type: 'timestamptz' })
   created_at: Date;
 
@@ -45,9 +48,16 @@ export class UserEntity {
   @OneToOne(() => UserConfig, (config: UserConfig) => config.user)
   config: UserConfig;
 
-  @OneToMany(() => UserWeightReading, (weight_reading: UserWeightReading) => weight_reading.user)
+  @OneToMany(
+    () => UserWeightReading,
+    (weight_reading: UserWeightReading) => weight_reading.user,
+  )
   weight_readings: UserWeightReading[];
 
-  @OneToMany(() => UserBloodGlucoseReading, (blood_glucose_reading: UserBloodGlucoseReading) => blood_glucose_reading.user)
+  @OneToMany(
+    () => UserBloodGlucoseReading,
+    (blood_glucose_reading: UserBloodGlucoseReading) =>
+      blood_glucose_reading.user,
+  )
   blood_glucose_readings: UserBloodGlucoseReading[];
 }
