@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Get,
@@ -26,18 +25,9 @@ export class UsersController {
   @UseInterceptors(FileInterceptor('file'))
   uploadAvatar(
     @Param('id') userId: string,
-    @UploadedFile(ImageFileValidatorPipe) file: Express.Multer.File | undefined,
-  ) {
-    console.log('[avatar] received', {
-      userId,
-      fieldname: file?.fieldname,
-      originalname: file?.originalname,
-      encoding: file?.encoding,
-      mimetype: file?.mimetype,
-      size: file?.size,
-    });
-
-    return { ok: true, userId };
+    @UploadedFile(ImageFileValidatorPipe) file: Express.Multer.File,
+  ): Promise<{ userId: string; avatar_key: string }> {
+    return this.usersService.updateUserAvatar(userId, file);
   }
 
   @Get(':id/config')

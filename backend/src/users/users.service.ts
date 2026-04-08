@@ -1,5 +1,14 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
+import { randomUUID } from 'crypto';
+import * as fs from 'fs/promises';
+import * as path from 'path';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserConfig } from './entities/user-config.entity';
@@ -12,6 +21,7 @@ export class UsersService {
     private readonly usersRepository: Repository<UserEntity>,
     @InjectRepository(UserConfig)
     private readonly userConfigRepository: Repository<UserConfig>,
+    private readonly configService: ConfigService,
   ) {}
 
   async create(dto: CreateUserDto): Promise<UserEntity> {
@@ -49,5 +59,59 @@ export class UsersService {
     return await this.userConfigRepository.findOne({
       where: { user: { id } },
     });
+  }
+
+  async updateUserAvatar(
+    userId: string,
+    file: Express.Multer.File,
+  ): Promise<{ userId: string; avatar_key: string }> {
+    const user = await this.usersRepository.findOne({
+      where: { id: userId },
+    });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    const rawPath = this.configService.getOrThrow<string>('AVATAR_STORAGE_PATH');
+    const backendRoot = path.join(__dirname, '..', '..');
+    const avatarDir = path.isAbsolute(rawPath)
+      ? rawPath
+      : path.resolve(backendRoot, rawPath);
+
+    await fs.mkdir(avatarDir, { recursive: true });
+
+    const extension = path.extname(file.originalname ?? '').toLowerCase();
+    const newKey = `${randomUUID()}${extension}`;
+    const newAbsPath = path.join(avatarDir, newKey);
+
+    const buf = file.buffer;
+    if (!buf?.length) {
+      throw new InternalServerErrorException('File buffer missing');
+    }
+
+    if (user.avatar_key) {
+      const oldPath = path.join(avatarDir, user.avatar_key);
+      try {
+        await fs.unlink(oldPath);
+      } catch (err) {
+        const code = (err as NodeJS.ErrnoException).code;
+        if (code !== 'ENOENT') {
+          throw new InternalServerErrorException(
+            'Could not remove previous avatar file',
+          );
+        }
+      }
+    }
+
+    try {
+      await fs.writeFile(newAbsPath, buf);
+    } catch {
+      throw new InternalServerErrorException('Could not save avatar file');
+    }
+
+    user.avatar_key = newKey;
+    await this.usersRepository.save(user);
+
+    return { userId: user.id, avatar_key: newKey };
   }
 }
