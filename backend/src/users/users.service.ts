@@ -11,6 +11,7 @@ import * as fs from 'fs/promises';
 import * as path from 'path';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UserPublicResponseDto } from './dto/user-public-response.dto';
 import { UserConfig } from './entities/user-config.entity';
 import { UserEntity } from './entities/user.entity';
 
@@ -23,6 +24,59 @@ export class UsersService {
     private readonly userConfigRepository: Repository<UserConfig>,
     private readonly configService: ConfigService,
   ) {}
+
+  private getPublicApiBase(): string {
+    return this.configService
+      .getOrThrow<string>('PUBLIC_API_URL')
+      .replace(/\/+$/, '');
+  }
+
+  private getAvatarDir(): string {
+    const rawPath = this.configService.getOrThrow<string>('AVATAR_STORAGE_PATH');
+    const backendRoot = path.join(__dirname, '..', '..');
+    return path.isAbsolute(rawPath)
+      ? rawPath
+      : path.resolve(backendRoot, rawPath);
+  }
+
+  private toPublicUser(user: UserEntity): UserPublicResponseDto {
+    const base = this.getPublicApiBase();
+    return {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      date_of_birth: user.date_of_birth,
+      sex: user.sex,
+      height_cm: user.height_cm !== null && user.height_cm !== undefined
+        ? Number(user.height_cm)
+        : null,
+      avatar_url: user.avatar_key
+        ? `${base}/users/${user.id}/avatar`
+        : null,
+      created_at: user.created_at,
+      updated_at: user.updated_at,
+    };
+  }
+
+  async findUserPublic(id: string): Promise<UserPublicResponseDto | null> {
+    const user = await this.usersRepository.findOne({ where: { id } });
+    if (!user) return null;
+    return this.toPublicUser(user);
+  }
+
+  /** Absolute path to avatar file, or null if user/avatar/file missing. */
+  async resolveAvatarAbsolutePath(userId: string): Promise<string | null> {
+    const user = await this.usersRepository.findOne({ where: { id: userId } });
+    if (!user?.avatar_key) return null;
+    const avatarDir = this.getAvatarDir();
+    const absPath = path.join(avatarDir, user.avatar_key);
+    try {
+      await fs.access(absPath);
+      return absPath;
+    } catch {
+      return null;
+    }
+  }
 
   async create(dto: CreateUserDto): Promise<UserEntity> {
     if (dto.email) {
@@ -72,12 +126,7 @@ export class UsersService {
       throw new NotFoundException('User not found');
     }
 
-    const rawPath = this.configService.getOrThrow<string>('AVATAR_STORAGE_PATH');
-    const backendRoot = path.join(__dirname, '..', '..');
-    const avatarDir = path.isAbsolute(rawPath)
-      ? rawPath
-      : path.resolve(backendRoot, rawPath);
-
+    const avatarDir = this.getAvatarDir();
     await fs.mkdir(avatarDir, { recursive: true });
 
     const extension = path.extname(file.originalname ?? '').toLowerCase();
