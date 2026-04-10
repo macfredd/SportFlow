@@ -1,4 +1,9 @@
-import { UserSex } from '../enums';
+import { HeightUnit, UserSex } from '../enums';
+
+export interface UserHeightPublicDto {
+  display: string;
+  unit: HeightUnit;
+}
 
 /** Serializable user for API; includes computed avatar_url (no avatar_key). */
 export interface UserPublicResponseDto {
@@ -7,7 +12,7 @@ export interface UserPublicResponseDto {
   email: string | null;
   date_of_birth: Date | null;
   sex: UserSex | null;
-  height_cm: number | null;
+  height: UserHeightPublicDto | null;
   avatar_url: string | null;
   created_at: Date;
   updated_at: Date;

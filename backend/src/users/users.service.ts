@@ -14,6 +14,8 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UserPublicResponseDto } from './dto/user-public-response.dto';
 import { UserConfig } from './entities/user-config.entity';
 import { UserEntity } from './entities/user.entity';
+import { HeightUnit } from './enums';
+import { buildHeightForPublic } from './height-display.util';
 
 @Injectable()
 export class UsersService {
@@ -41,15 +43,16 @@ export class UsersService {
 
   private toPublicUser(user: UserEntity): UserPublicResponseDto {
     const base = this.getPublicApiBase();
+    const heightUnit =
+      user.config?.preferred_height_unit ?? HeightUnit.CM;
+    const height = buildHeightForPublic(user.height_cm, heightUnit);
     return {
       id: user.id,
       name: user.name,
       email: user.email,
       date_of_birth: user.date_of_birth,
       sex: user.sex,
-      height_cm: user.height_cm !== null && user.height_cm !== undefined
-        ? Number(user.height_cm)
-        : null,
+      height,
       avatar_url: user.avatar_key
         ? `${base}/users/${user.id}/avatar`
         : null,
@@ -59,7 +62,10 @@ export class UsersService {
   }
 
   async findUserPublic(id: string): Promise<UserPublicResponseDto | null> {
-    const user = await this.usersRepository.findOne({ where: { id } });
+    const user = await this.usersRepository.findOne({
+      where: { id },
+      relations: ['config'],
+    });
     if (!user) return null;
     return this.toPublicUser(user);
   }
