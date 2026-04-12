@@ -105,4 +105,11 @@ export class ActivityService {
 
     return activity;
   }
+
+  async findLastestActivity(userId: string): Promise<Activity | null> {
+    return this.activityRepository.findOne({
+      where: { user: { id: userId } },
+      order: { start_time: 'DESC' },
+    });
+  }
 }

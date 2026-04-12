@@ -43,6 +43,15 @@ export class ActivityController {
     return trackPoints;
   }
 
+  @Get(':lastest')
+  getLastestActivity(@Param('userId') userId: string) {
+    const id = userId?.trim();
+    if (!id) {
+      throw new BadRequestException('userId path parameter is required');
+    }
+    return this.activityService.findLastestActivity(id);
+  }
+
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
   uploadActivity(
