@@ -42,4 +42,10 @@ export class CreateUserDto {
   @Min(50)
   @Max(275)
   height_cm?: number;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(255)
+  @Transform(({ value }) => (typeof value === 'string' ? value.trim() : value))
+  nationality?: string;
 }

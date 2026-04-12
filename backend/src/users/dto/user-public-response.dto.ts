@@ -13,6 +13,7 @@ export interface UserPublicResponseDto {
   date_of_birth: Date | null;
   sex: UserSex | null;
   height: UserHeightPublicDto | null;
+  nationality: string | null;
   avatar_url: string | null;
   created_at: Date;
   updated_at: Date;

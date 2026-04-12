@@ -53,6 +53,7 @@ export class UsersService {
       date_of_birth: user.date_of_birth,
       sex: user.sex,
       height,
+      nationality: user.nationality ?? null,
       avatar_url: user.avatar_key
         ? `${base}/users/${user.id}/avatar`
         : null,
@@ -105,6 +106,7 @@ export class UsersService {
         date_of_birth: dateOfBirth,
         sex: dto.sex ?? null,
         height_cm: dto.height_cm ?? null,
+        nationality: dto.nationality ?? null,
       });
       const savedUser = await manager.save(user);
 

@@ -34,6 +34,9 @@ export class UserEntity {
   height_cm: number | null;
 
   @Column({ type: 'varchar', length: 255, nullable: true })
+  nationality: string | null;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })
   avatar_key: string | null;
 
   @CreateDateColumn({ type: 'timestamptz' })
