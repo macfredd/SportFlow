@@ -2,6 +2,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { finalize } from 'rxjs';
 
 import type { UserProfile } from '../../../shared/models/user-profile.model';
+import { ageInYearsFromIsoDate } from '../../../shared/utils/age-from-birth-date';
 import { UsersApiService } from '../data/users-api.service';
 
 @Component({
@@ -31,5 +32,11 @@ export class UserSidebarPanel implements OnInit {
           this.loadError.set('No se pudo cargar el perfil.');
         },
       });
+  }
+
+  /** Edad en años para mostrar en la tarjeta (solo número + "años"). */
+  ageLabel(u: UserProfile): string {
+    const age = ageInYearsFromIsoDate(u.date_of_birth);
+    return age !== null ? `${age} años` : '—';
   }
 }

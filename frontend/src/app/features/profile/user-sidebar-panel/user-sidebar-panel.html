@@ -28,21 +28,13 @@
         <h2 class="user-sidebar-card__name">{{ u.name }}</h2>
         <p class="user-sidebar-card__email">{{ u.email }}</p>
 
-        <dl class="user-sidebar-card__meta">
-          <div class="user-sidebar-card__row">
-            <dt>Nacimiento</dt>
-            <dd>{{ u.date_of_birth }}</dd>
-          </div>
-          <div class="user-sidebar-card__row">
-            <dt>Sexo</dt>
-            <dd>{{ u.sex }}</dd>
-          </div>
-          <div class="user-sidebar-card__row">
-            <dt>Altura</dt>
-            <dd>{{ u.height.display }} ({{ u.height.unit }})</dd>
-          </div>
-         
-        </dl>
+        <p class="user-sidebar-card__meta">
+          <span>{{ ageLabel(u) }}</span>
+          <span class="user-sidebar-card__meta-sep" aria-hidden="true">·</span>
+          <span>{{ u.sex }}</span>
+          <span class="user-sidebar-card__meta-sep" aria-hidden="true">·</span>
+          <span>{{ u.height.display }}</span>
+        </p>
       </div>
     </article>
   }
