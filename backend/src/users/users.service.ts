@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   InternalServerErrorException,
@@ -11,6 +12,7 @@ import * as fs from 'fs/promises';
 import * as path from 'path';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 import { UserPublicResponseDto } from './dto/user-public-response.dto';
 import { UserConfig } from './entities/user-config.entity';
 import { UserEntity } from './entities/user.entity';
@@ -121,6 +123,70 @@ export class UsersService {
     return await this.userConfigRepository.findOne({
       where: { user: { id } },
     });
+  }
+
+  /**
+   * Applies only fields present in the DTO (undefined keys are ignored).
+   */
+  async update(
+    id: string,
+    dto: UpdateUserDto,
+  ): Promise<UserPublicResponseDto> {
+    const user = await this.usersRepository.findOne({
+      where: { id },
+      relations: ['config'],
+    });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    const patch = this.buildPatchFromUpdateDto(dto);
+    if (Object.keys(patch).length === 0) {
+      throw new BadRequestException('No fields to update');
+    }
+
+    if (
+      patch.email !== undefined &&
+      patch.email !== null &&
+      patch.email !== user.email
+    ) {
+      const existing = await this.usersRepository.findOne({
+        where: { email: patch.email },
+      });
+      if (existing && existing.id !== user.id) {
+        throw new ConflictException('Email already registered');
+      }
+    }
+
+    Object.assign(user, patch);
+    await this.usersRepository.save(user);
+
+    return this.toPublicUser(user);
+  }
+
+  private buildPatchFromUpdateDto(dto: UpdateUserDto): Partial<UserEntity> {
+    const p: Partial<UserEntity> = {};
+    if (dto.name !== undefined) {
+      p.name = dto.name;
+    }
+    if (dto.email !== undefined) {
+      p.email = dto.email ?? null;
+    }
+    if (dto.dateOfBirth !== undefined) {
+      p.date_of_birth = dto.dateOfBirth
+        ? new Date(`${dto.dateOfBirth}T12:00:00.000Z`)
+        : null;
+    }
+    if (dto.sex !== undefined) {
+      p.sex = dto.sex ?? null;
+    }
+    if (dto.height_cm !== undefined) {
+      p.height_cm = dto.height_cm ?? null;
+    }
+    if (dto.nationality !== undefined) {
+      p.nationality = dto.nationality?.trim() || null;
+    }
+    return p;
   }
 
   async updateUserAvatar(

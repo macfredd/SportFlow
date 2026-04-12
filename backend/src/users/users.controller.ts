@@ -4,6 +4,7 @@ import {
   Get,
   NotFoundException,
   Param,
+  Patch,
   Post,
   StreamableFile,
   UploadedFile,
@@ -14,6 +15,8 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { ImageFileValidatorPipe } from '../common/pipes/image-file-validator.pipe';
 import { mimeTypeForAvatarFile } from './avatar-mime.util';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { UserPublicResponseDto } from './dto/user-public-response.dto';
 import { UsersService } from './users.service';
 
 @Controller('users')
@@ -23,6 +26,14 @@ export class UsersController {
   @Post()
   createUser(@Body() dto: CreateUserDto) {
     return this.usersService.create(dto);
+  }
+
+  @Patch(':id')
+  updateUser(
+    @Param('id') id: string,
+    @Body() dto: UpdateUserDto,
+  ): Promise<UserPublicResponseDto> {
+    return this.usersService.update(id, dto);
   }
 
   @Post(':id/avatar')
