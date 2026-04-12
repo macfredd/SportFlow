@@ -21,6 +21,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { map } from 'rxjs';
 
+import { UserSidebarPanel } from '../../../features/profile/user-sidebar-panel/user-sidebar-panel';
+
 export interface AppNavLink {
   readonly label: string;
   readonly path: string;
@@ -42,6 +44,7 @@ export interface AppNavLink {
     MatButtonModule,
     MatIconModule,
     MatMenuModule,
+    UserSidebarPanel,
   ],
   templateUrl: './app-layout.component.html',
   styleUrl: './app-layout.component.scss',

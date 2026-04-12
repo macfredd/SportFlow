@@ -9,18 +9,11 @@
       class="app-layout__sidenav border-r border-[var(--border-subtle)]"
     >
       <div
-        class="flex h-full w-72 max-w-[85vw] flex-col gap-4 p-4 md:p-5"
+        class="flex h-full w-89 max-w-[85vw] flex-col p-3 md:p-4"
         role="complementary"
-        aria-label="Panel de widgets"
+        aria-label="Panel lateral"
       >
-        <p
-          class="text-xs font-semibold uppercase tracking-wide text-[var(--text-secondary)]"
-        >
-          Panel lateral
-        </p>
-        <p class="text-sm leading-relaxed text-[var(--text-secondary)]">
-          Área para widgets, filtros o resúmenes. La navegación principal está en la barra superior.
-        </p>
+        <app-user-sidebar-panel class="w-full min-h-0 flex-1" />
       </div>
     </mat-sidenav>
 

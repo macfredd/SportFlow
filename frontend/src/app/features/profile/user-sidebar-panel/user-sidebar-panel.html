@@ -1,0 +1,49 @@
+<div class="user-sidebar-panel w-full">
+  @if (loading()) {
+    <p
+      class="py-8 text-center text-sm text-[var(--text-secondary)]"
+    >
+      Cargando perfil…
+    </p>
+  } @else if (loadError(); as errMsg) {
+    <p class="rounded-lg border border-[var(--border-subtle)] bg-[var(--surface)] px-3 py-4 text-center text-sm text-[var(--error)]">
+      {{ errMsg }}
+    </p>
+  } @else if (user(); as u) {
+    <article
+      class="user-sidebar-card text-center"
+      aria-label="Perfil de usuario"
+    >
+      <div class="user-sidebar-card__avatar-ring">
+        <img
+          class="user-sidebar-card__avatar"
+          [src]="u.avatar_url"
+          [alt]="'Foto de ' + u.name"
+          width="80"
+          height="80"
+        />
+      </div>
+
+      <div class="user-sidebar-card__body">
+        <h2 class="user-sidebar-card__name">{{ u.name }}</h2>
+        <p class="user-sidebar-card__email">{{ u.email }}</p>
+
+        <dl class="user-sidebar-card__meta">
+          <div class="user-sidebar-card__row">
+            <dt>Nacimiento</dt>
+            <dd>{{ u.date_of_birth }}</dd>
+          </div>
+          <div class="user-sidebar-card__row">
+            <dt>Sexo</dt>
+            <dd>{{ u.sex }}</dd>
+          </div>
+          <div class="user-sidebar-card__row">
+            <dt>Altura</dt>
+            <dd>{{ u.height.display }} ({{ u.height.unit }})</dd>
+          </div>
+         
+        </dl>
+      </div>
+    </article>
+  }
+</div>
