@@ -106,7 +106,7 @@ export class UsersService {
         date_of_birth: dateOfBirth,
         sex: dto.sex ?? null,
         height_cm: dto.height_cm ?? null,
-        nationality: dto.nationality ?? null,
+        nationality: dto.nationality?.trim() || null,
       });
       const savedUser = await manager.save(user);
 

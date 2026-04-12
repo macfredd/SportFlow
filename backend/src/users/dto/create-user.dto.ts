@@ -44,8 +44,14 @@ export class CreateUserDto {
   height_cm?: number;
 
   @IsOptional()
+  @Transform(({ value }) => {
+    if (value === null || value === undefined || value === '') {
+      return undefined;
+    }
+    const trimmed = typeof value === 'string' ? value.trim() : value;
+    return trimmed === '' ? undefined : trimmed;
+  })
   @IsString()
   @MaxLength(255)
-  @Transform(({ value }) => (typeof value === 'string' ? value.trim() : value))
   nationality?: string;
 }
