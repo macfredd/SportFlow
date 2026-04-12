@@ -9,4 +9,5 @@ export interface UserProfile {
     readonly unit: string;
   };
   readonly avatar_url: string;
+  readonly nationality: string | null;
 }

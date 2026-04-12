@@ -87,3 +87,13 @@
   word-break: break-all;
   color: var(--text-secondary);
 }
+
+.user-sidebar-card__meta-nationality {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  font-weight: bold;
+  line-height: 1.4;
+}

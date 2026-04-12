@@ -1,19 +1,14 @@
 <div class="user-sidebar-panel w-full">
   @if (loading()) {
-    <p
-      class="py-8 text-center text-sm text-[var(--text-secondary)]"
-    >
-      Cargando perfil…
-    </p>
+    <p class="py-8 text-center text-sm text-[var(--text-secondary)]">Cargando perfil…</p>
   } @else if (loadError(); as errMsg) {
-    <p class="rounded-lg border border-[var(--border-subtle)] bg-[var(--surface)] px-3 py-4 text-center text-sm text-[var(--error)]">
+    <p
+      class="rounded-lg border border-[var(--border-subtle)] bg-[var(--surface)] px-3 py-4 text-center text-sm text-[var(--error)]"
+    >
       {{ errMsg }}
     </p>
   } @else if (user(); as u) {
-    <article
-      class="user-sidebar-card text-center"
-      aria-label="Perfil de usuario"
-    >
+    <article class="user-sidebar-card text-center" aria-label="Perfil de usuario">
       <div class="user-sidebar-card__avatar-ring">
         <img
           class="user-sidebar-card__avatar"
@@ -34,6 +29,11 @@
           <span>{{ u.sex }}</span>
           <span class="user-sidebar-card__meta-sep" aria-hidden="true">·</span>
           <span>{{ u.height.display }}</span>
+        </p>
+
+        <p class="user-sidebar-card__meta">
+          <mat-icon>add_location</mat-icon>
+          <span class="user-sidebar-card__meta-nationality">{{ u.nationality ?? '—' }}</span>
         </p>
       </div>
     </article>

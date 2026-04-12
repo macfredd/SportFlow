@@ -1,5 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { finalize } from 'rxjs';
+import { MatIconModule } from '@angular/material/icon';
 
 import type { UserProfile } from '../../../shared/models/user-profile.model';
 import { ageInYearsFromIsoDate } from '../../../shared/utils/age-from-birth-date';
@@ -7,7 +8,7 @@ import { UsersApiService } from '../data/users-api.service';
 
 @Component({
   selector: 'app-user-sidebar-panel',
-  imports: [],
+  imports: [MatIconModule],
   templateUrl: './user-sidebar-panel.html',
   styleUrl: './user-sidebar-panel.scss',
 })
