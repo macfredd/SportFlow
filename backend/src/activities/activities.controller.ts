@@ -43,13 +43,17 @@ export class ActivityController {
     return trackPoints;
   }
 
-  @Get(':lastest')
-  getLastestActivity(@Param('userId') userId: string) {
+  @Get('latest')
+  async getLatestActivity(@Param('userId') userId: string) {
     const id = userId?.trim();
     if (!id) {
       throw new BadRequestException('userId path parameter is required');
     }
-    return this.activityService.findLastestActivity(id);
+    const latest = await this.activityService.findLatestActivityPublic(id);
+    if (!latest) {
+      throw new NotFoundException('No activity found');
+    }
+    return latest;
   }
 
   @Post('upload')

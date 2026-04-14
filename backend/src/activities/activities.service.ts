@@ -10,6 +10,14 @@ import {
   mapParsedTrackPointToTrackPoint,
 } from './mappers/parsed-activity.mapper';
 import { UserEntity } from '../users/entities/user.entity';
+import { UserConfig } from '../users/entities/user-config.entity';
+import { DistanceUnit } from '../users/enums';
+import { LatestActivityPublicDto } from './dto/latest-activity-public.dto';
+import {
+  buildDistanceForPublic,
+  buildRelativeActivityStartEs,
+  formatDurationDisplayEs,
+} from './activity-display.util';
 
 @Injectable()
 export class ActivityService {
@@ -18,6 +26,8 @@ export class ActivityService {
     private readonly activityRepository: Repository<Activity>,
     @InjectRepository(TrackPoint)
     private readonly trackPointRepository: Repository<TrackPoint>,
+    @InjectRepository(UserConfig)
+    private readonly userConfigRepository: Repository<UserConfig>,
     private readonly parserRegistryService: ParserRegistryService,
   ) {}
 
@@ -106,10 +116,32 @@ export class ActivityService {
     return activity;
   }
 
-  async findLastestActivity(userId: string): Promise<Activity | null> {
-    return this.activityRepository.findOne({
+  async findLatestActivityPublic(
+    userId: string,
+  ): Promise<LatestActivityPublicDto | null> {
+    const activity = await this.activityRepository.findOne({
       where: { user: { id: userId } },
       order: { start_time: 'DESC' },
     });
+    if (!activity) {
+      return null;
+    }
+
+    const config = await this.userConfigRepository.findOne({
+      where: { user: { id: userId } },
+    });
+    const distanceUnit =
+      config?.preferred_distance_unit ?? DistanceUnit.KM;
+
+    return {
+      id: activity.id,
+      sport_type: activity.sport_type,
+      duration: formatDurationDisplayEs(activity.duration_seconds),
+      distance: buildDistanceForPublic(
+        activity.distance_meters,
+        distanceUnit,
+      ),
+      started_ago: buildRelativeActivityStartEs(activity.start_time),
+    };
   }
 }
