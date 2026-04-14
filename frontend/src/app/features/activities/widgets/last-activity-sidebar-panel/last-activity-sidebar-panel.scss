@@ -1,0 +1,103 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.last-activity-card {
+  width: 100%;
+  margin-top: 0;
+  padding: 1rem 1rem 1.1rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--border-subtle);
+  background-color: var(--bg);
+  box-shadow:
+    0 4px 6px -1px color-mix(in srgb, var(--text-primary) 6%, transparent),
+    0 2px 4px -2px color-mix(in srgb, var(--text-primary) 6%, transparent);
+}
+
+.last-activity-card__header {
+  text-align: center;
+}
+
+.last-activity-card__title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.last-activity-card__when {
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.last-activity-card__divider {
+  margin: 0.85rem 0 0.75rem;
+  height: 0;
+  border: 0;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.last-activity-card__body {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.65rem;
+  text-align: left;
+}
+
+.last-activity-card__sport-icon {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  font-size: 1.75rem;
+  line-height: 1;
+  color: var(--primary);
+}
+
+.last-activity-card__line {
+  margin: 0;
+  flex: 1;
+  min-width: 0;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--text-primary);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.25rem 0.35rem;
+}
+
+.last-activity-card__sport-name {
+  font-weight: 600;
+}
+
+.last-activity-card__sep {
+  color: var(--text-secondary);
+  user-select: none;
+}
+
+.last-activity-card__distance {
+  font-variant-numeric: tabular-nums;
+}
+
+.last-activity-card__duration {
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.last-activity-card__actions {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.last-activity-card__detail-link {
+  justify-content: center;
+}

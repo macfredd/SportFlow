@@ -20,3 +20,15 @@ export interface Activity {
   readonly file_source_type: FileSourceType;
   readonly created_at: string;
 }
+
+/** Shape returned by `GET /users/:userId/activities/latest`. */
+export interface LastActivitySummary {
+  readonly id: string;
+  readonly sport_type: SportType;
+  readonly duration: string;
+  readonly distance: {
+    readonly display: string;
+    readonly unit: string;
+  };
+  readonly started_ago: string;
+}

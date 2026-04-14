@@ -3,7 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import type { Observable } from 'rxjs';
 
 import { API_BASE_URL, DEV_USER_ID } from '../../../core/config/api.tokens';
-import type { Activity } from '../../../shared/models/activity.model';
+import type { Activity, LastActivitySummary } from '../../../shared/models/activity.model';
 
 @Injectable({ providedIn: 'root' })
 export class ActivitiesApiService {
@@ -22,6 +22,13 @@ export class ActivitiesApiService {
     const userId = this.requireUserId();
     return this.http.get<Activity[]>(
       `${this.baseUrl}/users/${userId}/activities`,
+    );
+  }
+
+  getLastActivity(): Observable<LastActivitySummary> {
+    const userId = this.requireUserId();
+    return this.http.get<LastActivitySummary>(
+      `${this.baseUrl}/users/${userId}/activities/latest`,
     );
   }
 }

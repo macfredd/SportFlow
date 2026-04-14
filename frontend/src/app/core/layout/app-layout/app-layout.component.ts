@@ -22,6 +22,7 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { map } from 'rxjs';
 
 import { UserSidebarPanel } from '../../../features/profile/user-sidebar-panel/user-sidebar-panel';
+import { LastActivitySidebarPanel } from '../../../features/activities/widgets/last-activity-sidebar-panel/last-activity-sidebar-panel';
 
 export interface AppNavLink {
   readonly label: string;
@@ -45,6 +46,7 @@ export interface AppNavLink {
     MatIconModule,
     MatMenuModule,
     UserSidebarPanel,
+    LastActivitySidebarPanel
   ],
   templateUrl: './app-layout.component.html',
   styleUrl: './app-layout.component.scss',
