@@ -18,6 +18,11 @@ import {
   buildRelativeActivityStartEs,
   formatDurationDisplayEs,
 } from './activity-display.util';
+import { SportType } from 'src/common/enums/sport-type.enum';
+import { ActivitiesBySportType } from './dto/activities-by-sport-type.dto';
+
+/** Max window when filtering by `days` (avoids huge scans / abuse). */
+export const MAX_ACTIVITY_WINDOW_DAYS = 3650;
 
 @Injectable()
 export class ActivityService {
@@ -130,18 +135,62 @@ export class ActivityService {
     const config = await this.userConfigRepository.findOne({
       where: { user: { id: userId } },
     });
-    const distanceUnit =
-      config?.preferred_distance_unit ?? DistanceUnit.KM;
+    const distanceUnit = config?.preferred_distance_unit ?? DistanceUnit.KM;
 
     return {
       id: activity.id,
       sport_type: activity.sport_type,
       duration: formatDurationDisplayEs(activity.duration_seconds),
-      distance: buildDistanceForPublic(
-        activity.distance_meters,
-        distanceUnit,
-      ),
+      distance: buildDistanceForPublic(activity.distance_meters, distanceUnit),
       started_ago: buildRelativeActivityStartEs(activity.start_time),
     };
+  }
+
+  /**
+   * Count activities per sport type for a user. If `daysRaw` is set, only activities
+   * with `start_time` in the last N days; if omitted or blank, all activities (no date filter).
+   */
+  async getTotalActivitiesBySportType(
+    userId: string,
+    daysRaw?: string,
+  ): Promise<ActivitiesBySportType[]> {
+    let days: number | undefined;
+    if (daysRaw?.trim()) {
+      const value = Number(daysRaw);
+      if (
+        !Number.isInteger(value) ||
+        value <= 0 ||
+        value > MAX_ACTIVITY_WINDOW_DAYS
+      ) {
+        throw new BadRequestException('days must be a positive integer');
+      }
+      days = value;
+    }
+
+    const qb = this.activityRepository
+      .createQueryBuilder('activity')
+      .select('activity.sport_type', 'sport_type')
+      .addSelect('COUNT(*)', 'total')
+      .where('activity.user_id = :userId', { userId })
+      .groupBy('activity.sport_type')
+      .orderBy('total', 'DESC');
+
+    if (days !== undefined) {
+      const cutoff = new Date();
+      cutoff.setTime(
+        cutoff.getTime() - days * 24 * 60 * 60 * 1000,
+      );
+      qb.andWhere('activity.start_time >= :cutoff', { cutoff });
+    }
+
+    const rows = await qb.getRawMany<{
+      sport_type: string;
+      total: string;
+    }>();
+
+    return rows.map((row) => ({
+      sport_type: row.sport_type as SportType,
+      total: Number(row.total),
+    }));
   }
 }

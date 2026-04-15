@@ -5,11 +5,13 @@ import {
   NotFoundException,
   Param,
   Post,
+  Query,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ActivityService } from './activities.service';
+import { ActivitiesBySportType } from './dto/activities-by-sport-type.dto';
 
 @Controller('users/:userId/activities')
 export class ActivityController {
@@ -22,6 +24,18 @@ export class ActivityController {
       throw new BadRequestException('userId path parameter is required');
     }
     return this.activityService.findAll(id);
+  }
+
+  @Get('total-by-sport-type')
+  getTotalActivitiesBySportType(
+    @Param('userId') userId: string,
+    @Query('days') daysRaw?: string,
+  ): Promise<ActivitiesBySportType[]> {
+    const id = userId?.trim();
+    if (!id) {
+      throw new BadRequestException('userId path parameter is required');
+    }
+    return this.activityService.getTotalActivitiesBySportType(id, daysRaw);
   }
 
   @Get(':activityId/trackpoints')
