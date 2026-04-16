@@ -9,9 +9,37 @@
 }
 
 .app-layout__sidenav {
+  width: min(22.25rem, 85vw);
+  max-width: 100%;
   background-color: var(--surface);
   color: var(--text-primary);
   border-color: var(--border-subtle) !important;
+  overflow-x: hidden;
+}
+
+/**
+ * Scroll en el cuerpo del drawer: el panel lateral puede crecer en altura y
+ * desplazarse con rueda/trackpad; la barra se oculta pero el scroll sigue activo.
+ */
+:host ::ng-deep .app-layout__sidenav .mat-drawer-inner-container,
+:host ::ng-deep .app-layout__sidenav .mat-mdc-drawer-inner-container {
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: 100% !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+}
+
+.app-layout__sidenav-inner {
+  box-sizing: border-box;
 }
 
 .app-layout__toolbar {

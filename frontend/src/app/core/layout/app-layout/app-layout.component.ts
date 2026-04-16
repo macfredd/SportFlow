@@ -23,6 +23,7 @@ import { map } from 'rxjs';
 
 import { UserSidebarPanel } from '../../../features/profile/user-sidebar-panel/user-sidebar-panel';
 import { LastActivitySidebarPanel } from '../../../features/activities/widgets/last-activity-sidebar-panel/last-activity-sidebar-panel';
+import { TotalActivitySidebarPanel } from '../../../features/activities/widgets/total-activity-sidebar-panel/total-activity-sidebar-panel';
 
 export interface AppNavLink {
   readonly label: string;
@@ -46,7 +47,8 @@ export interface AppNavLink {
     MatIconModule,
     MatMenuModule,
     UserSidebarPanel,
-    LastActivitySidebarPanel
+    LastActivitySidebarPanel,
+    TotalActivitySidebarPanel
   ],
   templateUrl: './app-layout.component.html',
   styleUrl: './app-layout.component.scss',

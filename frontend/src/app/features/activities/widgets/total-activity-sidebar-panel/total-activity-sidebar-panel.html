@@ -1,0 +1,63 @@
+<div class="total-activity-sidebar w-full">
+  @if (loading()) {
+    <p class="py-8 text-center text-sm text-[var(--text-secondary)]">Cargando total de actividades…</p>
+  } @else if (loadError(); as errMsg) {
+    <p
+      class="rounded-lg border border-[var(--border-subtle)] bg-[var(--surface)] px-3 py-4 text-center text-sm text-[var(--error)]"
+    >
+      {{ errMsg }}
+    </p>
+  } @else {
+    <article class="total-activity-card" aria-label="Total de actividades por tipo">
+      <header class="total-activity-card__header">
+        <h2 class="total-activity-card__title">
+          Total de actividades:
+          <span class="total-activity-card__count">{{ grandTotal() }}</span>
+        </h2>
+      </header>
+
+      <div class="total-activity-card__divider" role="presentation"></div>
+
+      <div
+        class="total-activity-card__period-toolbar"
+        role="group"
+        aria-label="Periodo de agregación"
+      >
+        @for (p of periods; track p.id) {
+          <button
+            type="button"
+            class="total-activity-card__period-btn"
+            [class.total-activity-card__period-btn--active]="isPeriodSelected(p.id)"
+            [attr.aria-pressed]="isPeriodSelected(p.id)"
+            [matTooltip]="p.hint"
+            matTooltipPosition="above"
+            (click)="selectPeriod(p.id)"
+          >
+            {{ p.label }}
+          </button>
+        }
+      </div>
+
+      <div class="total-activity-card__divider total-activity-card__divider--tight" role="presentation"></div>
+
+      <ul class="total-activity-card__list">
+        @for (row of totalActivitiesBySportType(); track row.sport_type) {
+          <li class="total-activity-card__row">
+            <div class="total-activity-card__row-head">
+              <mat-icon class="total-activity-card__sport-icon" aria-hidden="true">
+                {{ sportIcon(row.sport_type) }}
+              </mat-icon>
+              <span class="total-activity-card__sport-name">{{ sportLabel(row.sport_type) }}</span>
+              <span class="total-activity-card__total-num">{{ row.total }}</span>
+            </div>
+            <div class="total-activity-card__bar" role="presentation">
+              <div class="total-activity-card__bar-fill" [style.width.%]="barFillPercent(row.total)"></div>
+            </div>
+          </li>
+        } @empty {
+          <li class="total-activity-card__empty">Sin actividades en este periodo.</li>
+        }
+      </ul>
+    </article>
+  }
+</div>

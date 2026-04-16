@@ -9,12 +9,13 @@
       class="app-layout__sidenav border-r border-[var(--border-subtle)]"
     >
       <div
-        class="flex h-full w-89 max-w-[85vw] flex-col gap-3 p-3 md:gap-4 md:p-4"
+        class="app-layout__sidenav-inner flex min-w-0 max-w-full flex-col gap-3 p-3 md:gap-4 md:p-4"
         role="complementary"
         aria-label="Panel lateral"
       >
-        <app-user-sidebar-panel class="w-full shrink-0" />
-        <app-last-activity-sidebar-panel class="w-full shrink-0" />
+        <app-user-sidebar-panel class="min-w-0 w-full shrink-0" />
+        <app-last-activity-sidebar-panel class="min-w-0 w-full shrink-0" />
+        <app-total-activity-sidebar-panel class="min-w-0 w-full shrink-0" />
       </div>
     </mat-sidenav>
 

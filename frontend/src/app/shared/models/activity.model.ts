@@ -32,3 +32,9 @@ export interface LastActivitySummary {
   };
   readonly started_ago: string;
 }
+
+/** Shape returned by `GET /users/:userId/activities/total-by-sport-type`. */
+export interface ActivitiesBySportType {
+  readonly sport_type: SportType;
+  readonly total: number;
+}
