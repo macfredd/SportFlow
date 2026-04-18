@@ -13,7 +13,7 @@ import {
 import { createReadStream } from 'fs';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ImageFileValidatorPipe } from '../common/pipes/image-file-validator.pipe';
-import { mimeTypeForAvatarFile } from './avatar-mime.util';
+import { mimeTypeForAvatarFile } from './utils/avatar-mime.util';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserPublicResponseDto } from './dto/user-public-response.dto';
@@ -22,7 +22,10 @@ import { UserPreferencesService } from './user-preferences.service';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService, private readonly userPreferencesService: UserPreferencesService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly userPreferencesService: UserPreferencesService,
+  ) {}
 
   @Post()
   createUser(@Body() dto: CreateUserDto) {

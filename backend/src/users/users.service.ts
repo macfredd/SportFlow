@@ -17,7 +17,7 @@ import { UserPublicResponseDto } from './dto/user-public-response.dto';
 import { UserConfig } from './entities/user-config.entity';
 import { UserEntity } from './entities/user.entity';
 import { HeightUnit } from './enums';
-import { buildHeightForPublic } from './height-display.util';
+import { buildHeightForPublic } from './utils/height-display.util';
 import { UserPreferencesService } from './user-preferences.service';
 
 @Injectable()
@@ -36,7 +36,9 @@ export class UsersService {
   }
 
   private getAvatarDir(): string {
-    const rawPath = this.configService.getOrThrow<string>('AVATAR_STORAGE_PATH');
+    const rawPath = this.configService.getOrThrow<string>(
+      'AVATAR_STORAGE_PATH',
+    );
     const backendRoot = path.join(__dirname, '..', '..');
     return path.isAbsolute(rawPath)
       ? rawPath
@@ -45,8 +47,7 @@ export class UsersService {
 
   private toPublicUser(user: UserEntity): UserPublicResponseDto {
     const base = this.getPublicApiBase();
-    const heightUnit =
-      user.config?.preferred_height_unit ?? HeightUnit.CM;
+    const heightUnit = user.config?.preferred_height_unit ?? HeightUnit.CM;
     const height = buildHeightForPublic(user.height_cm, heightUnit);
     return {
       id: user.id,
@@ -56,9 +57,7 @@ export class UsersService {
       sex: user.sex,
       height,
       nationality: user.nationality ?? null,
-      avatar_url: user.avatar_key
-        ? `${base}/users/${user.id}/avatar`
-        : null,
+      avatar_url: user.avatar_key ? `${base}/users/${user.id}/avatar` : null,
       created_at: user.created_at,
       updated_at: user.updated_at,
     };
@@ -122,10 +121,7 @@ export class UsersService {
   /**
    * Applies only fields present in the DTO (undefined keys are ignored).
    */
-  async update(
-    id: string,
-    dto: UpdateUserDto,
-  ): Promise<UserPublicResponseDto> {
+  async update(id: string, dto: UpdateUserDto): Promise<UserPublicResponseDto> {
     const user = await this.usersRepository.findOne({
       where: { id },
       relations: ['config'],

@@ -1,4 +1,4 @@
-import { HeightUnit } from './enums';
+import { HeightUnit } from '../enums';
 
 export interface HeightPublicShape {
   display: string;
