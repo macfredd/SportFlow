@@ -26,6 +26,7 @@ export class ActivityController {
     return this.activityService.findAll(id);
   }
 
+  /** Static paths must be registered before `@Get(':activityId')` or they are captured as IDs. */
   @Get('total-by-sport-type')
   getTotalActivitiesBySportType(
     @Param('userId') userId: string,
@@ -36,6 +37,19 @@ export class ActivityController {
       throw new BadRequestException('userId path parameter is required');
     }
     return this.activityService.getTotalActivitiesBySportType(id, daysRaw);
+  }
+
+  @Get('latest')
+  async getLatestActivity(@Param('userId') userId: string) {
+    const id = userId?.trim();
+    if (!id) {
+      throw new BadRequestException('userId path parameter is required');
+    }
+    const latest = await this.activityService.findLatestActivityPublic(id);
+    if (!latest) {
+      throw new NotFoundException('No activity found');
+    }
+    return latest;
   }
 
   @Get(':activityId/trackpoints')
@@ -57,17 +71,20 @@ export class ActivityController {
     return trackPoints;
   }
 
-  @Get('latest')
-  async getLatestActivity(@Param('userId') userId: string) {
+  @Get(':activityId')
+  async getActivity(
+    @Param('userId') userId: string,
+    @Param('activityId') activityId: string,
+  ) {
     const id = userId?.trim();
     if (!id) {
       throw new BadRequestException('userId path parameter is required');
     }
-    const latest = await this.activityService.findLatestActivityPublic(id);
-    if (!latest) {
-      throw new NotFoundException('No activity found');
+    const activity = await this.activityService.findActivityById(id, activityId);
+    if (!activity) {
+      throw new NotFoundException('Activity not found');
     }
-    return latest;
+    return activity;
   }
 
   @Post('upload')

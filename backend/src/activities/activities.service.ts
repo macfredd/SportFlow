@@ -40,6 +40,10 @@ export class ActivityService {
     return this.activityRepository.save(entity);
   }
 
+  async findActivityById(userId: string, activityId: string): Promise<Activity | null> {
+    return this.activityRepository.findOne({ where: { id: activityId, user: { id: userId } } });
+  }
+
   async findAll(userId: string): Promise<Activity[]> {
     return this.activityRepository.find({
       where: { user: { id: userId } },
