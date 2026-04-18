@@ -19,14 +19,16 @@ import {
 } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { TranslocoPipe } from '@ngneat/transloco';
 import { map } from 'rxjs';
 
 import { UserSidebarPanel } from '../../../features/profile/user-sidebar-panel/user-sidebar-panel';
 import { LastActivitySidebarPanel } from '../../../features/activities/widgets/last-activity-sidebar-panel/last-activity-sidebar-panel';
 import { TotalActivitySidebarPanel } from '../../../features/activities/widgets/total-activity-sidebar-panel/total-activity-sidebar-panel';
+import { LanguageSwitcherComponent } from '../language-switcher/language-switcher.component';
 
 export interface AppNavLink {
-  readonly label: string;
+  readonly labelKey: string;
   readonly path: string;
   readonly exact?: boolean;
 }
@@ -46,9 +48,11 @@ export interface AppNavLink {
     MatButtonModule,
     MatIconModule,
     MatMenuModule,
+    TranslocoPipe,
     UserSidebarPanel,
     LastActivitySidebarPanel,
-    TotalActivitySidebarPanel
+    TotalActivitySidebarPanel,
+    LanguageSwitcherComponent,
   ],
   templateUrl: './app-layout.component.html',
   styleUrl: './app-layout.component.scss',
@@ -57,11 +61,11 @@ export class AppLayoutComponent {
   private readonly breakpoint = inject(BreakpointObserver);
 
   readonly navLinks: readonly AppNavLink[] = [
-    { label: 'Home', path: '/', exact: true },
-    { label: 'Actividades', path: '/activities', exact: false },
-    { label: 'Mapa', path: '/mapa', exact: false },
-    { label: 'Fotos', path: '/fotos', exact: false },
-    { label: 'Retos', path: '/retos', exact: false },
+    { labelKey: 'nav.home', path: '/', exact: true },
+    { labelKey: 'nav.activities', path: '/activities', exact: false },
+    { labelKey: 'nav.map', path: '/mapa', exact: false },
+    { labelKey: 'nav.photos', path: '/fotos', exact: false },
+    { labelKey: 'nav.challenges', path: '/retos', exact: false },
   ];
 
   readonly isCompact = toSignal(

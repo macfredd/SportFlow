@@ -1,0 +1,93 @@
+{
+  "activity": {
+    "unknown": "Otra",
+    "walking": "Caminar",
+    "running": "Correr",
+    "cycling": "Ciclismo",
+    "total": "Total de actividades",
+    "totalLoading": "Cargando total de actividades…",
+    "totalError": "No se pudieron cargar los totales por tipo de actividad.",
+    "totalAria": "Total de actividades por tipo",
+    "periodToolbarAria": "Periodo de agregación",
+    "emptyPeriod": "Sin actividades en este periodo.",
+    "lastActivity": "Última actividad",
+    "lastActivityLoading": "Cargando última actividad…",
+    "lastActivityError": "No se pudo cargar la última actividad.",
+    "lastActivityAria": "Última actividad",
+    "durationIn": "en",
+    "detailLink": "Ver detalle",
+    "periods": {
+      "w": "W",
+      "m": "M",
+      "3m": "3M",
+      "6m": "6M",
+      "1y": "1Y",
+      "all": "Todo",
+      "hint": {
+        "w": "Semana (últimos 7 días)",
+        "m": "Mes (últimos 30 días)",
+        "3m": "Tres meses (últimos 90 días)",
+        "6m": "Seis meses (últimos 180 días)",
+        "1y": "Un año (últimos 365 días)",
+        "all": "Todo el historial"
+      }
+    },
+    "table": {
+      "sport": "Actividad",
+      "date": "Fecha",
+      "duration": "Duración",
+      "distance": "Distancia",
+      "detail": "Detalle",
+      "export": "Exportar",
+      "view": "Ver",
+      "exportPending": "Pendiente de implementar en el backend",
+      "filterLabel": "Filtrar tabla",
+      "filterPlaceholder": "Tipo, fecha, duración, distancia…",
+      "noRows": "Sin filas que coincidan con el filtro."
+    },
+    "listError": "No se pudieron cargar actividades o la configuración. ¿Backend en marcha y CORS habilitado?",
+    "listTitle": "Actividades",
+    "detailTitle": "Detalle de actividad",
+    "detailIdLabel": "ID",
+    "detailPlaceholder": "Aquí irá el detalle (mapa, métricas, trackpoints). Por ahora es un marcador de posición."
+  },
+  "nav": {
+    "home": "Inicio",
+    "activities": "Actividades",
+    "map": "Mapa",
+    "photos": "Fotos",
+    "challenges": "Retos",
+    "section": "Sección",
+    "activityDetail": "Detalle"
+  },
+  "language": {
+    "option": {
+      "es": "Español",
+      "en": "Inglés"
+    }
+  },
+  "layout": {
+    "sidebarAria": "Panel lateral",
+    "openNavMenu": "Abrir menú de navegación",
+    "mainNavAria": "Navegación principal",
+    "footerBuiltWith": "Hecho con Angular",
+    "languageMenu": "Seleccionar idioma"
+  },
+  "section": {
+    "placeholder": "Contenido de esta sección (placeholder). Aquí cargarán las vistas reales."
+  },
+  "user": {
+    "loading": "Cargando perfil…",
+    "error": "No se pudo cargar el perfil.",
+    "aria": "Perfil de usuario",
+    "avatarAlt": "Foto de {{name}}",
+    "ageYears": "{{years}} años"
+  },
+  "common": {
+    "empty": "—"
+  },
+  "brand": {
+    "name": "SportFlow",
+    "logoAlt": "SportFlow"
+  }
+}

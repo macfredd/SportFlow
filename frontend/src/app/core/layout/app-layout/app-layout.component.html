@@ -11,7 +11,7 @@
       <div
         class="app-layout__sidenav-inner flex min-w-0 max-w-full flex-col gap-3 p-3 md:gap-4 md:p-4"
         role="complementary"
-        aria-label="Panel lateral"
+        [attr.aria-label]="'layout.sidebarAria' | transloco"
       >
         <app-user-sidebar-panel class="min-w-0 w-full shrink-0" />
         <app-last-activity-sidebar-panel class="min-w-0 w-full shrink-0" />
@@ -41,7 +41,7 @@
           >
             <img
               src="/sportflow-logo.png"
-              alt="SportFlow"
+              [attr.alt]="'brand.logoAlt' | transloco"
               class="h-7 w-auto max-h-9 max-w-full shrink-0 object-contain object-left sm:h-10 md:h-11"
             />
           </a>
@@ -49,11 +49,12 @@
           <span class="flex-1"></span>
 
           @if (isCompact()) {
+            <app-language-switcher class="shrink-0" />
             <button
               mat-icon-button
               type="button"
               [matMenuTriggerFor]="navMenu"
-              aria-label="Abrir menú de navegación"
+              [attr.aria-label]="'layout.openNavMenu' | transloco"
               class="shrink-0"
             >
               <mat-icon>menu</mat-icon>
@@ -66,14 +67,14 @@
                   routerLinkActive="app-layout__nav-link--active"
                   [routerLinkActiveOptions]="link.exact ? { exact: true } : { exact: false }"
                 >
-                  {{ link.label }}
+                  {{ link.labelKey | transloco }}
                 </a>
               }
             </mat-menu>
           } @else {
             <nav
               class="flex flex-wrap items-center justify-end gap-1 md:gap-2"
-              aria-label="Navegación principal"
+              [attr.aria-label]="'layout.mainNavAria' | transloco"
             >
               @for (link of navLinks; track link.path) {
                 <a
@@ -82,9 +83,10 @@
                   routerLinkActive="app-layout__nav-active"
                   [routerLinkActiveOptions]="link.exact ? { exact: true } : { exact: false }"
                 >
-                  {{ link.label }}
+                  {{ link.labelKey | transloco }}
                 </a>
               }
+              <app-language-switcher class="shrink-0" />
             </nav>
           }
         </div>
@@ -100,9 +102,9 @@
       <footer
         class="shrink-0 border-t border-[var(--border-subtle)] bg-[var(--bg)] px-4 py-3 text-center text-xs text-[var(--text-secondary)] md:py-4 md:text-sm"
       >
-        <span class="font-medium text-[var(--text-primary)]">SportFlow</span>
+        <span class="font-medium text-[var(--text-primary)]">{{ 'brand.name' | transloco }}</span>
         <span class="mx-2 text-[color-mix(in_srgb,var(--text-secondary)_70%,transparent)]">·</span>
-        <span>Built with Angular</span>
+        <span>{{ 'layout.footerBuiltWith' | transloco }}</span>
       </footer>
     </mat-sidenav-content>
   </mat-sidenav-container>

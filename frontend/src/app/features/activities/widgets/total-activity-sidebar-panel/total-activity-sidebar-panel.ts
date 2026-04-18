@@ -1,33 +1,34 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
+import { TranslocoPipe } from '@ngneat/transloco';
 import { finalize } from 'rxjs';
 
 import type { ActivitiesBySportType } from '../../../../shared/models/activity.model';
 import { ActivitiesApiService } from '../../data/activities-api.service';
-import { sportTypeIconName, sportTypeLabel } from '../../utils/activity-display.util';
+import { sportTypeIconName, sportTypeLabelKey } from '../../utils/activity-display.util';
 
 export type TotalActivityPeriodId = 'w' | 'm' | '3m' | '6m' | '1y' | 'all';
 
 export interface TotalActivityPeriod {
   readonly id: TotalActivityPeriodId;
-  readonly label: string;
-  readonly hint: string;
+  readonly labelKey: string;
+  readonly hintKey: string;
   readonly days: number | null;
 }
 
 export const TOTAL_ACTIVITY_PERIODS: readonly TotalActivityPeriod[] = [
-  { id: 'w', label: 'W', hint: 'Semana (últimos 7 días)', days: 7 },
-  { id: 'm', label: 'M', hint: 'Mes (últimos 30 días)', days: 30 },
-  { id: '3m', label: '3M', hint: 'Tres meses (últimos 90 días)', days: 90 },
-  { id: '6m', label: '6M', hint: 'Seis meses (últimos 180 días)', days: 180 },
-  { id: '1y', label: '1Y', hint: 'Un año (últimos 365 días)', days: 365 },
-  { id: 'all', label: 'All Time', hint: 'Todo el historial', days: null },
+  { id: 'w', labelKey: 'activity.periods.w', hintKey: 'activity.periods.hint.w', days: 7 },
+  { id: 'm', labelKey: 'activity.periods.m', hintKey: 'activity.periods.hint.m', days: 30 },
+  { id: '3m', labelKey: 'activity.periods.3m', hintKey: 'activity.periods.hint.3m', days: 90 },
+  { id: '6m', labelKey: 'activity.periods.6m', hintKey: 'activity.periods.hint.6m', days: 180 },
+  { id: '1y', labelKey: 'activity.periods.1y', hintKey: 'activity.periods.hint.1y', days: 365 },
+  { id: 'all', labelKey: 'activity.periods.all', hintKey: 'activity.periods.hint.all', days: null },
 ] as const;
 
 @Component({
   selector: 'app-total-activity-sidebar-panel',
-  imports: [MatIconModule, MatTooltipModule],
+  imports: [MatIconModule, MatTooltipModule, TranslocoPipe],
   templateUrl: './total-activity-sidebar-panel.html',
   styleUrl: './total-activity-sidebar-panel.scss',
 })
@@ -39,10 +40,10 @@ export class TotalActivitySidebarPanel implements OnInit {
 
   readonly totalActivitiesBySportType = signal<ActivitiesBySportType[]>([]);
   readonly loading = signal(true);
-  readonly loadError = signal<string | null>(null);
+  readonly loadErrorKey = signal<string | null>(null);
 
   readonly sportIcon = sportTypeIconName;
-  readonly sportLabel = sportTypeLabel;
+  readonly sportLabelKey = sportTypeLabelKey;
 
   readonly grandTotal = computed(() =>
     this.totalActivitiesBySportType().reduce((sum, row) => sum + row.total, 0),
@@ -85,7 +86,7 @@ export class TotalActivitySidebarPanel implements OnInit {
 
   private reload(): void {
     this.loading.set(true);
-    this.loadError.set(null);
+    this.loadErrorKey.set(null);
     const days = this.daysForSelectedPeriod();
 
     this.activitiesApi
@@ -94,11 +95,11 @@ export class TotalActivitySidebarPanel implements OnInit {
       .subscribe({
         next: (rows) => {
           this.totalActivitiesBySportType.set(rows);
-          this.loadError.set(null);
+          this.loadErrorKey.set(null);
         },
         error: () => {
           this.totalActivitiesBySportType.set([]);
-          this.loadError.set('No se pudieron cargar los totales por tipo de actividad.');
+          this.loadErrorKey.set('activity.totalError');
         },
       });
   }

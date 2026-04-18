@@ -10,6 +10,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { TranslocoPipe } from '@ngneat/transloco';
 import { forkJoin } from 'rxjs';
 
 import type { Activity } from '../../../../shared/models/activity.model';
@@ -20,7 +21,7 @@ import {
   formatActivityDistance,
   formatDurationHms,
   sportTypeIconName,
-  sportTypeLabel,
+  sportTypeLabelKey,
   toNumber,
 } from '../../utils/activity-display.util';
 
@@ -39,6 +40,7 @@ import {
     MatInputModule,
     MatProgressSpinnerModule,
     MatTooltipModule,
+    TranslocoPipe,
   ],
   templateUrl: './activities-list-page.component.html',
   styleUrl: './activities-list-page.component.scss',
@@ -52,7 +54,7 @@ export class ActivitiesListPageComponent implements OnInit {
   @ViewChild(MatPaginator) private paginator!: MatPaginator;
 
   readonly loading = signal(true);
-  readonly loadError = signal<string | null>(null);
+  readonly loadErrorKey = signal<string | null>(null);
   readonly userConfig = signal<UserConfig | null>(null);
 
   readonly dataSource = new MatTableDataSource<Activity>([]);
@@ -67,7 +69,7 @@ export class ActivitiesListPageComponent implements OnInit {
   ];
 
   readonly sportIcon = sportTypeIconName;
-  readonly sportLabel = sportTypeLabel;
+  readonly sportLabelKey = sportTypeLabelKey;
   readonly formatDuration = formatDurationHms;
 
   ngOnInit(): void {
@@ -87,17 +89,16 @@ export class ActivitiesListPageComponent implements OnInit {
     };
 
     this.dataSource.filterPredicate = (data, filter) => {
+      let distance: number;
+      if (this.userConfig()?.preferred_distance_unit === 'km') {
+        distance = toNumber(data.distance_meters) / 1000;
+      } else if (this.userConfig()?.preferred_distance_unit === 'mi') {
+        distance = toNumber(data.distance_meters) / 1609.34;
+      } else {
+        distance = toNumber(data.distance_meters);
+      }
 
-    let distance: number;
-    if (this.userConfig()?.preferred_distance_unit === 'km') {
-      distance = toNumber(data.distance_meters)/1000;
-    } else if (this.userConfig()?.preferred_distance_unit === 'mi') {
-      distance = toNumber(data.distance_meters)/1609.34;
-    } else {
-      distance = toNumber(data.distance_meters);
-    }
-
-    const duration = formatDurationHms(toNumber(data.duration_seconds));
+      const duration = formatDurationHms(toNumber(data.duration_seconds));
       const t = [
         data.sport_type,
         data.start_time.slice(0, 10),
@@ -126,9 +127,7 @@ export class ActivitiesListPageComponent implements OnInit {
         }
       },
       error: () => {
-        this.loadError.set(
-          'No se pudieron cargar actividades o la configuración. ¿Backend en marcha y CORS habilitado?',
-        );
+        this.loadErrorKey.set('activity.listError');
         this.loading.set(false);
       },
     });

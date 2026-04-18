@@ -13,32 +13,32 @@ export const routes: Routes = [
       {
         path: '',
         component: SectionPlaceholderComponent,
-        data: { title: 'Home' },
+        data: { titleKey: 'nav.home' },
       },
       {
         path: 'activities',
         component: ActivitiesListPageComponent,
-        data: { title: 'Actividades' },
+        data: { titleKey: 'nav.activities' },
       },
       {
         path: 'activities/:activityId',
         component: ActivityDetailPageComponent,
-        data: { title: 'Detalle' },
+        data: { titleKey: 'nav.activityDetail' },
       },
       {
         path: 'mapa',
         component: SectionPlaceholderComponent,
-        data: { title: 'Mapa' },
+        data: { titleKey: 'nav.map' },
       },
       {
         path: 'fotos',
         component: SectionPlaceholderComponent,
-        data: { title: 'Fotos' },
+        data: { titleKey: 'nav.photos' },
       },
       {
         path: 'retos',
         component: SectionPlaceholderComponent,
-        data: { title: 'Retos' },
+        data: { titleKey: 'nav.challenges' },
       },
     ],
   },

@@ -1,0 +1,93 @@
+{
+  "activity": {
+    "unknown": "Other",
+    "walking": "Walking",
+    "running": "Running",
+    "cycling": "Cycling",
+    "total": "Total activities",
+    "totalLoading": "Loading activity totals…",
+    "totalError": "Could not load totals by activity type.",
+    "totalAria": "Total activities by type",
+    "periodToolbarAria": "Aggregation period",
+    "emptyPeriod": "No activities in this period.",
+    "lastActivity": "Last activity",
+    "lastActivityLoading": "Loading last activity…",
+    "lastActivityError": "Could not load the last activity.",
+    "lastActivityAria": "Last activity",
+    "durationIn": "in",
+    "detailLink": "View details",
+    "periods": {
+      "w": "W",
+      "m": "M",
+      "3m": "3M",
+      "6m": "6M",
+      "1y": "1Y",
+      "all": "All",
+      "hint": {
+        "w": "Week (last 7 days)",
+        "m": "Month (last 30 days)",
+        "3m": "Three months (last 90 days)",
+        "6m": "Six months (last 180 days)",
+        "1y": "One year (last 365 days)",
+        "all": "All time"
+      }
+    },
+    "table": {
+      "sport": "Sport",
+      "date": "Date",
+      "duration": "Duration",
+      "distance": "Distance",
+      "detail": "Detail",
+      "export": "Export",
+      "view": "View",
+      "exportPending": "Pending backend implementation",
+      "filterLabel": "Filter table",
+      "filterPlaceholder": "Type, date, duration, distance…",
+      "noRows": "No rows match the filter."
+    },
+    "listError": "Could not load activities or user settings. Is the backend running with CORS enabled?",
+    "listTitle": "Activities",
+    "detailTitle": "Activity details",
+    "detailIdLabel": "ID",
+    "detailPlaceholder": "Activity details (map, metrics, trackpoints) will appear here. This is a placeholder for now."
+  },
+  "nav": {
+    "home": "Home",
+    "activities": "Activities",
+    "map": "Map",
+    "photos": "Photos",
+    "challenges": "Challenges",
+    "section": "Section",
+    "activityDetail": "Details"
+  },
+  "language": {
+    "option": {
+      "es": "Spanish",
+      "en": "English"
+    }
+  },
+  "layout": {
+    "sidebarAria": "Side panel",
+    "openNavMenu": "Open navigation menu",
+    "mainNavAria": "Main navigation",
+    "footerBuiltWith": "Built with Angular",
+    "languageMenu": "Choose language"
+  },
+  "section": {
+    "placeholder": "This section’s content is a placeholder. Real views will load here."
+  },
+  "user": {
+    "loading": "Loading profile…",
+    "error": "Could not load profile.",
+    "aria": "User profile",
+    "avatarAlt": "Photo of {{name}}",
+    "ageYears": "{{years}} years old"
+  },
+  "common": {
+    "empty": "—"
+  },
+  "brand": {
+    "name": "SportFlow",
+    "logoAlt": "SportFlow"
+  }
+}

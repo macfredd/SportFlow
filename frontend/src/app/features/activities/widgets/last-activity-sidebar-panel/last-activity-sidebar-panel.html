@@ -1,17 +1,19 @@
 <div class="last-activity-sidebar w-full">
   @if (loading()) {
-    <p class="py-8 text-center text-sm text-[var(--text-secondary)]">Cargando última actividad…</p>
-  } @else if (loadError(); as errMsg) {
+    <p class="py-8 text-center text-sm text-[var(--text-secondary)]">
+      {{ 'activity.lastActivityLoading' | transloco }}
+    </p>
+  } @else if (loadErrorKey(); as errKey) {
     <p
       class="rounded-lg border border-[var(--border-subtle)] bg-[var(--surface)] px-3 py-4 text-center text-sm text-[var(--error)]"
     >
-      {{ errMsg }}
+      {{ errKey | transloco }}
     </p>
   } @else if (activity(); as a) {
-    <article class="last-activity-card" aria-label="Última actividad">
+    <article class="last-activity-card" [attr.aria-label]="'activity.lastActivityAria' | transloco">
       <header class="last-activity-card__header">
         <h2 class="last-activity-card__title">
-          Última actividad:
+          {{ 'activity.lastActivity' | transloco }}:
           <span class="last-activity-card__when">{{ a.started_ago }}</span>
         </h2>
       </header>
@@ -23,17 +25,24 @@
           {{ sportIcon(a.sport_type) }}
         </mat-icon>
         <p class="last-activity-card__line">
-          <span class="last-activity-card__sport-name">{{ sportLabel(a.sport_type) }}</span>
+          <span class="last-activity-card__sport-name">{{ sportLabelKey(a.sport_type) | transloco }}</span>
           <span class="last-activity-card__sep" aria-hidden="true">·</span>
           <span class="last-activity-card__distance">{{ a.distance.display }}</span>
           <span class="last-activity-card__sep" aria-hidden="true">·</span>
-          <span class="last-activity-card__duration">en {{ a.duration }}</span>
+          <span class="last-activity-card__duration"
+            >{{ 'activity.durationIn' | transloco }} {{ a.duration }}</span
+          >
         </p>
       </div>
 
       <div class="last-activity-card__actions">
-        <a mat-stroked-button color="primary" class="last-activity-card__detail-link w-full" [routerLink]="['/activities', a.id]">
-          Ver detalle
+        <a
+          mat-stroked-button
+          color="primary"
+          class="last-activity-card__detail-link w-full"
+          [routerLink]="['/activities', a.id]"
+        >
+          {{ 'activity.detailLink' | transloco }}
         </a>
       </div>
     </article>

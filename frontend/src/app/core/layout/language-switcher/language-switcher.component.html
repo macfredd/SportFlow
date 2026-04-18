@@ -1,0 +1,41 @@
+<button
+  mat-icon-button
+  type="button"
+  [matMenuTriggerFor]="langMenu"
+  [attr.aria-label]="'layout.languageMenu' | transloco"
+  [attr.aria-haspopup]="true"
+  class="language-switcher__trigger shrink-0"
+>
+  <mat-icon>public</mat-icon>
+</button>
+
+<mat-menu #langMenu="matMenu" class="language-switcher__panel">
+  <button
+    mat-menu-item
+    type="button"
+    (click)="setLang('es')"
+    [class.language-switcher__item--active]="activeLang() === 'es'"
+  >
+    <span class="language-switcher__row">
+      <span class="language-switcher__flag" aria-hidden="true">&#x1F1EA;&#x1F1F8;</span>
+      <span class="language-switcher__label">{{ 'language.option.es' | transloco }}</span>
+      @if (activeLang() === 'es') {
+        <mat-icon class="language-switcher__check">check</mat-icon>
+      }
+    </span>
+  </button>
+  <button
+    mat-menu-item
+    type="button"
+    (click)="setLang('en')"
+    [class.language-switcher__item--active]="activeLang() === 'en'"
+  >
+    <span class="language-switcher__row">
+      <span class="language-switcher__flag" aria-hidden="true">&#x1F1FA;&#x1F1F8;</span>
+      <span class="language-switcher__label">{{ 'language.option.en' | transloco }}</span>
+      @if (activeLang() === 'en') {
+        <mat-icon class="language-switcher__check">check</mat-icon>
+      }
+    </span>
+  </button>
+</mat-menu>

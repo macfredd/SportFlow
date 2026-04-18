@@ -1,6 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { finalize } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';
+import { TranslocoPipe } from '@ngneat/transloco';
 
 import type { UserProfile } from '../../../shared/models/user-profile.model';
 import { ageInYearsFromIsoDate } from '../../../shared/utils/age-from-birth-date';
@@ -8,7 +9,7 @@ import { UsersApiService } from '../data/users-api.service';
 
 @Component({
   selector: 'app-user-sidebar-panel',
-  imports: [MatIconModule],
+  imports: [MatIconModule, TranslocoPipe],
   templateUrl: './user-sidebar-panel.html',
   styleUrl: './user-sidebar-panel.scss',
 })
@@ -17,7 +18,7 @@ export class UserSidebarPanel implements OnInit {
 
   readonly user = signal<UserProfile | null>(null);
   readonly loading = signal(true);
-  readonly loadError = signal<string | null>(null);
+  readonly loadErrorKey = signal<string | null>(null);
 
   ngOnInit(): void {
     this.usersApi
@@ -26,18 +27,16 @@ export class UserSidebarPanel implements OnInit {
       .subscribe({
         next: (profile) => {
           this.user.set(profile);
-          this.loadError.set(null);
+          this.loadErrorKey.set(null);
         },
         error: () => {
           this.user.set(null);
-          this.loadError.set('No se pudo cargar el perfil.');
+          this.loadErrorKey.set('user.error');
         },
       });
   }
 
-  /** Edad en años para mostrar en la tarjeta (solo número + "años"). */
-  ageLabel(u: UserProfile): string {
-    const age = ageInYearsFromIsoDate(u.date_of_birth);
-    return age !== null ? `${age} años` : '—';
+  ageYears(u: UserProfile): number | null {
+    return ageInYearsFromIsoDate(u.date_of_birth);
   }
 }

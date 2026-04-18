@@ -1,17 +1,19 @@
 <div class="total-activity-sidebar w-full">
   @if (loading()) {
-    <p class="py-8 text-center text-sm text-[var(--text-secondary)]">Cargando total de actividades…</p>
-  } @else if (loadError(); as errMsg) {
+    <p class="py-8 text-center text-sm text-[var(--text-secondary)]">
+      {{ 'activity.totalLoading' | transloco }}
+    </p>
+  } @else if (loadErrorKey(); as errKey) {
     <p
       class="rounded-lg border border-[var(--border-subtle)] bg-[var(--surface)] px-3 py-4 text-center text-sm text-[var(--error)]"
     >
-      {{ errMsg }}
+      {{ errKey | transloco }}
     </p>
   } @else {
-    <article class="total-activity-card" aria-label="Total de actividades por tipo">
+    <article class="total-activity-card" [attr.aria-label]="'activity.totalAria' | transloco">
       <header class="total-activity-card__header">
         <h2 class="total-activity-card__title">
-          Total de actividades:
+          {{ 'activity.total' | transloco }}:
           <span class="total-activity-card__count">{{ grandTotal() }}</span>
         </h2>
       </header>
@@ -21,7 +23,7 @@
       <div
         class="total-activity-card__period-toolbar"
         role="group"
-        aria-label="Periodo de agregación"
+        [attr.aria-label]="'activity.periodToolbarAria' | transloco"
       >
         @for (p of periods; track p.id) {
           <button
@@ -29,11 +31,11 @@
             class="total-activity-card__period-btn"
             [class.total-activity-card__period-btn--active]="isPeriodSelected(p.id)"
             [attr.aria-pressed]="isPeriodSelected(p.id)"
-            [matTooltip]="p.hint"
+            [matTooltip]="p.hintKey | transloco"
             matTooltipPosition="above"
             (click)="selectPeriod(p.id)"
           >
-            {{ p.label }}
+            {{ p.labelKey | transloco }}
           </button>
         }
       </div>
@@ -47,7 +49,7 @@
               <mat-icon class="total-activity-card__sport-icon" aria-hidden="true">
                 {{ sportIcon(row.sport_type) }}
               </mat-icon>
-              <span class="total-activity-card__sport-name">{{ sportLabel(row.sport_type) }}</span>
+              <span class="total-activity-card__sport-name">{{ sportLabelKey(row.sport_type) | transloco }}</span>
               <span class="total-activity-card__total-num">{{ row.total }}</span>
             </div>
             <div class="total-activity-card__bar" role="presentation">
@@ -55,7 +57,7 @@
             </div>
           </li>
         } @empty {
-          <li class="total-activity-card__empty">Sin actividades en este periodo.</li>
+          <li class="total-activity-card__empty">{{ 'activity.emptyPeriod' | transloco }}</li>
         }
       </ul>
     </article>

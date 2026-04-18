@@ -1,0 +1,18 @@
+<section class="mx-auto max-w-3xl px-2 md:px-4">
+  <h1 class="text-xl font-semibold text-[var(--text-primary)] md:text-2xl">
+    {{ 'activity.detailTitle' | transloco }}
+  </h1>
+  <p class="mt-2 text-sm text-[var(--text-secondary)]">
+    {{ 'activity.detailIdLabel' | transloco }}:
+    @if (activityId(); as id) {
+      <code class="rounded bg-[var(--surface)] px-1 py-0.5 text-[var(--text-primary)]">{{ id }}</code>
+    } @else {
+      <code class="rounded bg-[var(--surface)] px-1 py-0.5 text-[var(--text-primary)]">{{
+        'common.empty' | transloco
+      }}</code>
+    }
+  </p>
+  <p class="mt-4 text-sm text-[var(--text-secondary)]">
+    {{ 'activity.detailPlaceholder' | transloco }}
+  </p>
+</section>
