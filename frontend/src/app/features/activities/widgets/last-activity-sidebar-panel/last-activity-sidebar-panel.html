@@ -27,11 +27,13 @@
         <p class="last-activity-card__line">
           <span class="last-activity-card__sport-name">{{ sportLabelKey(a.sport_type) | transloco }}</span>
           <span class="last-activity-card__sep" aria-hidden="true">·</span>
-          <span class="last-activity-card__distance">{{ a.distance.display }}</span>
+          <span class="last-activity-card__distance">{{
+            lastActivityMeasurementLabels().distance
+          }}</span>
           <span class="last-activity-card__sep" aria-hidden="true">·</span>
-          <span class="last-activity-card__duration"
-            >{{ 'activity.durationIn' | transloco }} {{ a.duration }}</span
-          >
+          <span class="last-activity-card__duration">{{
+            lastActivityMeasurementLabels().duration
+          }}</span>
         </p>
       </div>
 

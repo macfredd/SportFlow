@@ -25,11 +25,11 @@ export interface Activity {
 export interface LastActivitySummary {
   readonly id: string;
   readonly sport_type: SportType;
-  readonly duration: string;
+  readonly duration_seconds: number;
   readonly distance: {
-    readonly display: string;
-    readonly unit: string;
-  };
+    readonly value: number;
+    readonly unit: 'km' | 'mi';
+  } | null;
   /** ISO 8601 (UTC). Relative “ago” copy is built on the client with Transloco. */
   readonly start_time: string;
 }

@@ -32,7 +32,6 @@
       "agoYears": "{{label}} ago",
       "agoYearsAndMonths": "{{years}} and {{months}} ago"
     },
-    "durationIn": "in",
     "detailLink": "View details",
     "periods": {
       "w": "W",
@@ -103,6 +102,25 @@
   },
   "common": {
     "empty": "—"
+  },
+  "units": {
+    "distance": {
+      "km": "km",
+      "mi": "mi"
+    },
+    "height": {
+      "cm": "cm",
+      "m": "m",
+      "ft": "ft",
+      "in": "in"
+    },
+    "duration": {
+      "hoursOne": "{{count}} hr",
+      "hoursOther": "{{count}} hrs",
+      "minutes": "{{count}} min",
+      "secondPart": "{{value}} sec",
+      "zero": "0 sec"
+    }
   },
   "brand": {
     "name": "SportFlow",

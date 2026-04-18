@@ -7,6 +7,10 @@ import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { combineLatest, finalize, map, merge, of, switchMap } from 'rxjs';
 
 import type { LastActivitySummary } from '../../../../shared/models/activity.model';
+import {
+  formatDistanceDisplay,
+  formatDurationCompactDisplay,
+} from '../../../../shared/utils/measurement-display.util';
 import { buildRelativeActivityStart } from '../../../../shared/utils/relative-activity-start.util';
 import { ActivitiesApiService } from '../../data/activities-api.service';
 import { sportTypeIconName, sportTypeLabelKey } from '../../utils/activity-display.util';
@@ -45,6 +49,30 @@ export class LastActivitySidebarPanel implements OnInit {
       }),
     ),
     { initialValue: '' },
+  );
+
+  /** Recomputed when activity or active language changes so unit strings stay translated. */
+  readonly lastActivityMeasurementLabels = toSignal(
+    combineLatest([
+      toObservable(this.activity),
+      merge(of(this.transloco.getActiveLang()), this.transloco.langChanges$).pipe(
+        switchMap(() => this.transloco.selectTranslation()),
+      ),
+    ]).pipe(
+      map(([act]) => {
+        if (!act) {
+          return { distance: '', duration: '' };
+        }
+        const t = (key: string, params?: Record<string, unknown>) =>
+          this.transloco.translate(key, params);
+        const distance = act.distance
+          ? formatDistanceDisplay(act.distance.value, act.distance.unit, t)
+          : '';
+        const duration = formatDurationCompactDisplay(act.duration_seconds, t);
+        return { distance, duration };
+      }),
+    ),
+    { initialValue: { distance: '', duration: '' } },
   );
 
   ngOnInit(): void {

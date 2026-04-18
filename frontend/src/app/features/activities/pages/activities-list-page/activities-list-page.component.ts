@@ -1,5 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit, ViewChild, inject, signal } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  DestroyRef,
+  OnInit,
+  ViewChild,
+  inject,
+  signal,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -10,15 +19,18 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { TranslocoPipe } from '@ngneat/transloco';
+import { TranslocoPipe, TranslocoService } from '@ngneat/transloco';
 import { forkJoin } from 'rxjs';
 
 import type { Activity } from '../../../../shared/models/activity.model';
 import type { UserConfig } from '../../../../shared/models/user-config.model';
+import {
+  formatDistanceDisplay,
+  type DistanceUnitCode,
+} from '../../../../shared/utils/measurement-display.util';
 import { ActivitiesApiService } from '../../data/activities-api.service';
 import { UserConfigApiService } from '../../data/user-config-api.service';
 import {
-  formatActivityDistance,
   formatDurationHms,
   sportTypeIconName,
   sportTypeLabelKey,
@@ -48,6 +60,8 @@ import {
 export class ActivitiesListPageComponent implements OnInit {
   private readonly activitiesApi = inject(ActivitiesApiService);
   private readonly userConfigApi = inject(UserConfigApiService);
+  private readonly transloco = inject(TranslocoService);
+  private readonly destroyRef = inject(DestroyRef);
   private readonly cdr = inject(ChangeDetectorRef);
 
   @ViewChild(MatSort) private sort!: MatSort;
@@ -73,6 +87,10 @@ export class ActivitiesListPageComponent implements OnInit {
   readonly formatDuration = formatDurationHms;
 
   ngOnInit(): void {
+    this.transloco.langChanges$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => this.cdr.markForCheck());
+
     this.dataSource.sortingDataAccessor = (item, prop) => {
       switch (prop) {
         case 'duration_seconds':
@@ -142,9 +160,13 @@ export class ActivitiesListPageComponent implements OnInit {
   }
 
   distanceDisplay(row: Activity): string {
-    return formatActivityDistance(
-      toNumber(row.distance_meters),
-      this.userConfig()?.preferred_distance_unit,
+    const meters = toNumber(row.distance_meters);
+    const unit: DistanceUnitCode =
+      this.userConfig()?.preferred_distance_unit === 'mi' ? 'mi' : 'km';
+    const value =
+      unit === 'km' ? meters / 1000 : meters * 0.000621371192;
+    return formatDistanceDisplay(value, unit, (key, params) =>
+      this.transloco.translate(key, params),
     );
   }
 

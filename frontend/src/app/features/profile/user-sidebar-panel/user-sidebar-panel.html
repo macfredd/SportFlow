@@ -34,7 +34,9 @@
           <span class="user-sidebar-card__meta-sep" aria-hidden="true">·</span>
           <span>{{ u.sex }}</span>
           <span class="user-sidebar-card__meta-sep" aria-hidden="true">·</span>
-          <span>{{ u.height.display }}</span>
+          <span>{{
+            u.height ? heightDisplayLabel() : ('common.empty' | transloco)
+          }}</span>
         </p>
 
         <p class="user-sidebar-card__meta">

@@ -39,14 +39,3 @@ export function sportTypeIconName(sport: string): string {
   }
 }
 
-/** Uses `UserConfig.preferred_distance_unit` (`km`, `mi`, …). */
-export function formatActivityDistance(
-  meters: number,
-  preferredUnit: string | undefined | null,
-): string {
-  const u = (preferredUnit ?? 'km').toLowerCase();
-  if (u === 'mi' || u === 'mile' || u === 'miles') {
-    return `${(meters * 0.000621371192).toFixed(2)} mi`;
-  }
-  return `${(meters / 1000).toFixed(2)} km`;
-}
