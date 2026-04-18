@@ -6,5 +6,5 @@ export class LatestActivityPublicDto {
   sport_type!: SportType;
   duration!: string;
   distance!: DistancePublicShape | null;
-  started_ago!: string;
+  start_time!: Date;
 }

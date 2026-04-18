@@ -15,7 +15,6 @@ import { DistanceUnit } from '../users/enums';
 import { LatestActivityPublicDto } from './dto/latest-activity-public.dto';
 import {
   buildDistanceForPublic,
-  buildRelativeActivityStartEs,
   formatDurationDisplayEs,
 } from './activity-display.util';
 import { SportType } from 'src/common/enums/sport-type.enum';
@@ -142,7 +141,7 @@ export class ActivityService {
       sport_type: activity.sport_type,
       duration: formatDurationDisplayEs(activity.duration_seconds),
       distance: buildDistanceForPublic(activity.distance_meters, distanceUnit),
-      started_ago: buildRelativeActivityStartEs(activity.start_time),
+      start_time: activity.start_time,
     };
   }
 
@@ -177,9 +176,7 @@ export class ActivityService {
 
     if (days !== undefined) {
       const cutoff = new Date();
-      cutoff.setTime(
-        cutoff.getTime() - days * 24 * 60 * 60 * 1000,
-      );
+      cutoff.setTime(cutoff.getTime() - days * 24 * 60 * 60 * 1000);
       qb.andWhere('activity.start_time >= :cutoff', { cutoff });
     }
 
