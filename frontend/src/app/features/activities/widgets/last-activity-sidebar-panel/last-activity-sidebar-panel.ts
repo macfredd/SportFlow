@@ -1,10 +1,10 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslocoPipe, TranslocoService } from '@ngneat/transloco';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { finalize } from 'rxjs';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { combineLatest, finalize, map, merge, of, switchMap } from 'rxjs';
 
 import type { LastActivitySummary } from '../../../../shared/models/activity.model';
 import { buildRelativeActivityStart } from '../../../../shared/utils/relative-activity-start.util';
@@ -21,10 +21,6 @@ export class LastActivitySidebarPanel implements OnInit {
   private readonly activitiesApi = inject(ActivitiesApiService);
   private readonly transloco = inject(TranslocoService);
 
-  private readonly activeLang = toSignal(this.transloco.langChanges$, {
-    initialValue: this.transloco.getActiveLang(),
-  });
-
   readonly activity = signal<LastActivitySummary | null>(null);
   readonly loading = signal(true);
   readonly loadErrorKey = signal<string | null>(null);
@@ -32,16 +28,24 @@ export class LastActivitySidebarPanel implements OnInit {
   readonly sportIcon = sportTypeIconName;
   readonly sportLabelKey = sportTypeLabelKey;
 
-  readonly relativeStartLabel = computed(() => {
-    this.activeLang();
-    const act = this.activity();
-    if (!act?.start_time) {
-      return '';
-    }
-    return buildRelativeActivityStart(act.start_time, (key, params) =>
-      this.transloco.translate(key, params),
-    );
-  });
+  readonly relativeStartLabel = toSignal(
+    combineLatest([
+      toObservable(this.activity),
+      merge(of(this.transloco.getActiveLang()), this.transloco.langChanges$).pipe(
+        switchMap(() => this.transloco.selectTranslation()),
+      ),
+    ]).pipe(
+      map(([act]) => {
+        if (!act?.start_time) {
+          return '';
+        }
+        return buildRelativeActivityStart(act.start_time, (key, params) =>
+          this.transloco.translate(key, params),
+        );
+      }),
+    ),
+    { initialValue: '' },
+  );
 
   ngOnInit(): void {
     this.activitiesApi
