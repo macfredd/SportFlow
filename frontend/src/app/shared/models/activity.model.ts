@@ -30,7 +30,8 @@ export interface LastActivitySummary {
     readonly display: string;
     readonly unit: string;
   };
-  readonly started_ago: string;
+  /** ISO 8601 (UTC). Relative “ago” copy is built on the client with Transloco. */
+  readonly start_time: string;
 }
 
 /** Shape returned by `GET /users/:userId/activities/total-by-sport-type`. */
