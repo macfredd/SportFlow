@@ -10,7 +10,6 @@ import {
   mapParsedTrackPointToTrackPoint,
 } from './mappers/parsed-activity.mapper';
 import { UserEntity } from '../users/entities/user.entity';
-import { UserConfig } from '../users/entities/user-config.entity';
 import { DistanceUnit } from '../users/enums';
 import { LatestActivityPublicDto } from './dto/latest-activity-public.dto';
 import {
@@ -19,6 +18,7 @@ import {
 } from './activity-display.util';
 import { SportType } from 'src/common/enums/sport-type.enum';
 import { ActivitiesBySportType } from './dto/activities-by-sport-type.dto';
+import { UserPreferencesService } from 'src/users/user-preferences.service';
 
 /** Max window when filtering by `days` (avoids huge scans / abuse). */
 export const MAX_ACTIVITY_WINDOW_DAYS = 3650;
@@ -30,8 +30,7 @@ export class ActivityService {
     private readonly activityRepository: Repository<Activity>,
     @InjectRepository(TrackPoint)
     private readonly trackPointRepository: Repository<TrackPoint>,
-    @InjectRepository(UserConfig)
-    private readonly userConfigRepository: Repository<UserConfig>,
+    private readonly userPreferencesService: UserPreferencesService,
     private readonly parserRegistryService: ParserRegistryService,
   ) {}
 
@@ -135,10 +134,9 @@ export class ActivityService {
       return null;
     }
 
-    const config = await this.userConfigRepository.findOne({
-      where: { user: { id: userId } },
-    });
-    const distanceUnit = config?.preferred_distance_unit ?? DistanceUnit.KM;
+    const prefs = await this.userPreferencesService.getUserPreferences(userId);
+
+    const distanceUnit = prefs?.preferred_distance_unit ?? DistanceUnit.KM;
 
     return {
       id: activity.id,

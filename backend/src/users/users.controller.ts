@@ -18,10 +18,11 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserPublicResponseDto } from './dto/user-public-response.dto';
 import { UsersService } from './users.service';
+import { UserPreferencesService } from './user-preferences.service';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService, private readonly userPreferencesService: UserPreferencesService) {}
 
   @Post()
   createUser(@Body() dto: CreateUserDto) {
@@ -45,9 +46,10 @@ export class UsersController {
     return this.usersService.updateUserAvatar(userId, file);
   }
 
+  // TODO: move to user-preferences.controller later
   @Get(':id/config')
   getUserConfig(@Param('id') id: string) {
-    return this.usersService.getUserConfig(id);
+    return this.userPreferencesService.getUserPreferences(id);
   }
 
   @Get(':id/avatar')

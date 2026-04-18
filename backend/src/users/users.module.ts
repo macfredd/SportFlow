@@ -7,6 +7,7 @@ import { UserBloodGlucoseReading } from './entities/user-blood-glucose-reading.e
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 import { ImageFileValidatorPipe } from 'src/common/pipes/image-file-validator.pipe';
+import { UserPreferencesService } from './user-preferences.service';
 
 @Module({
   imports: [
@@ -17,8 +18,8 @@ import { ImageFileValidatorPipe } from 'src/common/pipes/image-file-validator.pi
       UserBloodGlucoseReading,
     ]),
   ],
-  exports: [TypeOrmModule],
+  exports: [TypeOrmModule, UserPreferencesService],
   controllers: [UsersController],
-  providers: [UsersService, ImageFileValidatorPipe],
+  providers: [UsersService, UserPreferencesService, ImageFileValidatorPipe],
 })
 export class UsersModule {}
