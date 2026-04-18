@@ -49,12 +49,6 @@ export class UsersController {
     return this.usersService.updateUserAvatar(userId, file);
   }
 
-  // TODO: move to user-preferences.controller later
-  @Get(':id/config')
-  getUserConfig(@Param('id') id: string) {
-    return this.userPreferencesService.getUserPreferences(id);
-  }
-
   @Get(':id/avatar')
   async getUserAvatar(@Param('id') id: string) {
     const absPath = await this.usersService.resolveAvatarAbsolutePath(id);

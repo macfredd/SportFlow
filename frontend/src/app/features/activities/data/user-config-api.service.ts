@@ -21,7 +21,7 @@ export class UserConfigApiService {
   getConfig(): Observable<UserConfig> {
     const userId = this.requireUserId();
     return this.http.get<UserConfig>(
-      `${this.baseUrl}/users/${userId}/config`,
+      `${this.baseUrl}/users/${userId}/preferences`,
     );
   }
 }

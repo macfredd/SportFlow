@@ -8,6 +8,7 @@ import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 import { ImageFileValidatorPipe } from 'src/common/pipes/image-file-validator.pipe';
 import { UserPreferencesService } from './user-preferences.service';
+import { UserPreferencesController } from './user-preferences.controller';
 
 @Module({
   imports: [
@@ -19,7 +20,7 @@ import { UserPreferencesService } from './user-preferences.service';
     ]),
   ],
   exports: [TypeOrmModule, UserPreferencesService],
-  controllers: [UsersController],
+  controllers: [UsersController, UserPreferencesController],
   providers: [UsersService, UserPreferencesService, ImageFileValidatorPipe],
 })
 export class UsersModule {}
