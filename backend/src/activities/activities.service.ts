@@ -15,7 +15,7 @@ import { LatestActivityPublicDto } from './dto/latest-activity-public.dto';
 import {
   buildDistanceForPublic,
   formatDurationDisplayEs,
-} from './activity-display.util';
+} from './shared/display';
 import { SportType } from 'src/common/enums/sport-type.enum';
 import { ActivitiesBySportType } from './dto/activities-by-sport-type.dto';
 import { UserPreferencesService } from 'src/users/user-preferences.service';
