@@ -1,9 +1,5 @@
+import type { UserHeightPublicDto } from '../dto/user-public-response.dto';
 import { HeightUnit } from '../enums';
-
-export interface HeightPublicShape {
-  display: string;
-  unit: HeightUnit;
-}
 
 function toCmNumber(raw: unknown): number | null {
   if (raw === null || raw === undefined) return null;
@@ -28,26 +24,20 @@ function cmToFeetInches(cm: number): { ft: number; inches: number } {
 export function buildHeightForPublic(
   heightCmRaw: unknown,
   preferredUnit: HeightUnit,
-): HeightPublicShape | null {
+): UserHeightPublicDto | null {
   const cm = toCmNumber(heightCmRaw);
   if (cm === null) return null;
 
   switch (preferredUnit) {
     case HeightUnit.CM: {
-      const rounded = Math.round(cm);
-      return { display: `${rounded} cm`, unit: preferredUnit };
+      return { unit: HeightUnit.CM, value: Math.round(cm) };
     }
     case HeightUnit.M: {
-      const m = cm / 100;
-      const text = m.toFixed(2).replace(/\.?0+$/, '');
-      return { display: `${text} m`, unit: preferredUnit };
+      return { unit: HeightUnit.M, value: cm / 100 };
     }
     case HeightUnit.IN: {
       const { ft, inches } = cmToFeetInches(cm);
-      return {
-        display: `${ft} ft ${inches} in`,
-        unit: preferredUnit,
-      };
+      return { unit: HeightUnit.IN, feet: ft, inches };
     }
   }
 }

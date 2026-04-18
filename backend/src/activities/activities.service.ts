@@ -12,10 +12,7 @@ import {
 import { UserEntity } from '../users/entities/user.entity';
 import { DistanceUnit } from '../users/enums';
 import { LatestActivityPublicDto } from './dto/latest-activity-public.dto';
-import {
-  buildDistanceForPublic,
-  formatDurationDisplayEs,
-} from './shared/display';
+import { buildDistanceForPublic } from './shared/display';
 import { SportType } from 'src/common/enums/sport-type.enum';
 import { ActivitiesBySportType } from './dto/activities-by-sport-type.dto';
 import { UserPreferencesService } from 'src/users/user-preferences.service';
@@ -141,7 +138,7 @@ export class ActivityService {
     return {
       id: activity.id,
       sport_type: activity.sport_type,
-      duration: formatDurationDisplayEs(activity.duration_seconds),
+      duration_seconds: Math.max(0, Math.floor(Number(activity.duration_seconds) || 0)),
       distance: buildDistanceForPublic(activity.distance_meters, distanceUnit),
       start_time: activity.start_time,
     };

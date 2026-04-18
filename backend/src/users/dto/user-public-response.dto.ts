@@ -1,9 +1,10 @@
 import { HeightUnit, UserSex } from '../enums';
 
-export interface UserHeightPublicDto {
-  display: string;
-  unit: HeightUnit;
-}
+/** Canonical height for API clients; unit labels are localized in the app. */
+export type UserHeightPublicDto =
+  | { unit: HeightUnit.CM; value: number }
+  | { unit: HeightUnit.M; value: number }
+  | { unit: HeightUnit.IN; feet: number; inches: number };
 
 /** Serializable user for API; includes computed avatar_url (no avatar_key). */
 export interface UserPublicResponseDto {
