@@ -16,6 +16,10 @@ import { buildDistanceForPublic } from './shared/display';
 import { SportType } from 'src/common/enums/sport-type.enum';
 import { ActivitiesBySportType } from './dto/activities-by-sport-type.dto';
 import { UserPreferencesService } from 'src/users/user-preferences.service';
+import { ActivityDetailPublicDto } from './dto/activity-detail-public.dto';
+import { SpeedUnit } from 'src/users/enums/speed-unit.enum';
+import { buildSpeedForPublic } from './shared/display/speed-display';
+import { toNumber } from './shared/display/coerce-number';
 
 /** Max window when filtering by `days` (avoids huge scans / abuse). */
 export const MAX_ACTIVITY_WINDOW_DAYS = 3650;
@@ -36,8 +40,39 @@ export class ActivityService {
     return this.activityRepository.save(entity);
   }
 
-  async findActivityById(userId: string, activityId: string): Promise<Activity | null> {
-    return this.activityRepository.findOne({ where: { id: activityId, user: { id: userId } } });
+  async findActivityById(
+    userId: string,
+    activityId: string,
+  ): Promise<ActivityDetailPublicDto | null> {
+    const activity = await this.activityRepository.findOne({
+      where: { id: activityId, user: { id: userId } },
+    });
+    if (!activity) {
+      return null;
+    }
+
+    const prefs = await this.userPreferencesService.getUserPreferences(userId);
+    const distanceUnit = prefs?.preferred_distance_unit ?? DistanceUnit.KM;
+    const speedUnit = prefs?.preferred_speed_unit ?? SpeedUnit.MPS;
+
+    return {
+      id: activity.id,
+      sport_type: activity.sport_type,
+      start_time: activity.start_time,
+      end_time: activity.end_time,
+      duration_seconds: Math.max(
+        0,
+        Math.floor(toNumber(activity.duration_seconds) ?? 0),
+      ),
+      distance: buildDistanceForPublic(activity.distance_meters, distanceUnit),
+      elevation_gain_meters: toNumber(activity.elevation_gain_meters),
+      elevation_loss_meters: toNumber(activity.elevation_loss_meters),
+      max_speed: buildSpeedForPublic(activity.max_speed, speedUnit),
+      avg_speed: buildSpeedForPublic(activity.avg_speed, speedUnit),
+      max_heart_rate: toNumber(activity.max_heart_rate),
+      avg_heart_rate: toNumber(activity.avg_heart_rate),
+      total_calories: toNumber(activity.total_calories),
+    };
   }
 
   async findAll(userId: string): Promise<Activity[]> {
@@ -49,10 +84,6 @@ export class ActivityService {
 
   async remove(id: string): Promise<void> {
     await this.activityRepository.delete(id);
-  }
-
-  async findOneById(id: string): Promise<Activity | null> {
-    return this.activityRepository.findOne({ where: { id } });
   }
 
   async findTrackPointsByActivityId(
@@ -138,7 +169,10 @@ export class ActivityService {
     return {
       id: activity.id,
       sport_type: activity.sport_type,
-      duration_seconds: Math.max(0, Math.floor(Number(activity.duration_seconds) || 0)),
+      duration_seconds: Math.max(
+        0,
+        Math.floor(Number(activity.duration_seconds) || 0),
+      ),
       distance: buildDistanceForPublic(activity.distance_meters, distanceUnit),
       start_time: activity.start_time,
     };

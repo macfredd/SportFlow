@@ -1,5 +1,7 @@
 import { DistanceUnit } from '../../../users/enums';
-import { toNumber } from './coerce-number';
+import { roundToDecimals, toNumber } from './coerce-number';
+
+const DISTANCE_DISPLAY_DECIMALS = 2;
 
 /** Numeric value in `unit` (km or mi); labels are localized on the client. */
 export interface DistancePublicValue {
@@ -22,12 +24,17 @@ export function buildDistanceForPublic(
   switch (preferredUnit) {
     case DistanceUnit.KM: {
       const km = meters * METERS_TO_KM;
-      return { value: km, unit: preferredUnit };
+      return {
+        value: roundToDecimals(km, DISTANCE_DISPLAY_DECIMALS),
+        unit: preferredUnit,
+      };
     }
     case DistanceUnit.MI: {
       const mi = meters * METERS_TO_MILES;
- 
-      return { value: mi, unit: preferredUnit };
+      return {
+        value: roundToDecimals(mi, DISTANCE_DISPLAY_DECIMALS),
+        unit: preferredUnit,
+      };
     }
   }
 }

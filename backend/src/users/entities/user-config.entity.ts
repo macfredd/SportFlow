@@ -13,6 +13,7 @@ import {
   WeightUnit,
 } from '../enums';
 import { UserEntity } from './user.entity';
+import { SpeedUnit } from '../enums/speed-unit.enum';
 
 export type DashboardWidgetsConfig = Record<string, { enabled: boolean }>;
 
@@ -35,6 +36,9 @@ export class UserConfig {
 
   @Column({ type: 'enum', enum: DistanceUnit, default: DistanceUnit.KM })
   preferred_distance_unit: DistanceUnit;
+
+  @Column({ type: 'enum', enum: SpeedUnit, default: SpeedUnit.MPS })
+  preferred_speed_unit: SpeedUnit;
 
   @Column({ type: 'enum', enum: GlucoseUnit, default: GlucoseUnit.MG_DL })
   preferred_glucose_unit: GlucoseUnit;
