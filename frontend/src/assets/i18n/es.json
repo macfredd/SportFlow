@@ -1,7 +1,7 @@
 {
   "activity": {
     "unknown": "Otra",
-    "walking": "Caminar",
+    "walking": "Caminata",
     "running": "Correr",
     "cycling": "Ciclismo",
     "total": "Total de actividades",
@@ -66,7 +66,31 @@
     "listTitle": "Actividades",
     "detailTitle": "Detalle de actividad",
     "detailIdLabel": "ID",
-    "detailPlaceholder": "Aquí irá el detalle (mapa, métricas, trackpoints). Por ahora es un marcador de posición."
+    "detailPlaceholder": "Aquí irá el detalle (mapa, métricas, trackpoints). Por ahora es un marcador de posición.",
+    "detailLoadError": "No se pudo cargar esta actividad.",
+    "summary": {
+      "sport": "Actividad",
+      "start": "Inicio",
+      "end": "Fin",
+      "duration": "Duración",
+      "movingTime": "Tiempo en movimiento",
+      "distance": "Distancia",
+      "pace": "Ritmo",
+      "paceSuffixKm": "/km",
+      "paceSuffixMi": "/mi",
+      "startTimeLabel": "Hora de inicio",
+      "endTimeLabel": "Hora de finalización",
+      "statsOverviewAria": "Resumen estadístico de la actividad",
+      "elevationGain": "Desnivel positivo",
+      "elevationLoss": "Desnivel negativo",
+      "avgSpeed": "Velocidad media",
+      "maxSpeed": "Velocidad máx.",
+      "avgHeartRate": "FC media",
+      "maxHeartRate": "FC máx.",
+      "calories": "Calorías",
+      "kcal": "kcal",
+      "bpm": "lpm"
+    }
   },
   "nav": {
     "home": "Inicio",
@@ -120,6 +144,13 @@
       "minutes": "{{count}} min",
       "secondPart": "{{value}} seg",
       "zero": "0 seg"
+    },
+    "speed": {
+      "kmh": "km/h",
+      "mph": "mph"
+    },
+    "elevation": {
+      "m": "m"
     }
   },
   "brand": {

@@ -1,0 +1,302 @@
+.summary {
+  overflow: hidden;
+  border-radius: 0.75rem;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg);
+  box-shadow:
+    0 1px 2px color-mix(in srgb, var(--text-primary) 6%, transparent),
+    0 4px 12px color-mix(in srgb, var(--text-primary) 4%, transparent);
+  width: 100%;
+  max-width: 100%;
+}
+
+/* —— Hero (accent band, SportFlow primary tones) —— */
+.summary__hero {
+  padding: 1.25rem clamp(1rem, 3vw, 2.25rem);
+  background: linear-gradient(
+    125deg,
+    color-mix(in srgb, var(--primary) 16%, var(--surface)) 0%,
+    color-mix(in srgb, var(--primary-light) 10%, var(--bg)) 55%,
+    color-mix(in srgb, var(--primary) 6%, var(--bg)) 100%
+  );
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.summary__hero-text {
+  min-width: min(100%, 12rem);
+}
+
+.summary__meta {
+  margin: 0 0 0.35rem;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: var(--text-secondary);
+}
+
+.summary__headline {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: clamp(1.25rem, 2.8vw, 1.625rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.summary__headline-icon {
+  flex-shrink: 0;
+  width: 1.75rem;
+  height: 1.75rem;
+  font-size: 1.75rem;
+  color: var(--primary-dark);
+}
+
+/* —— Primary metrics: 5 columns on wide viewports —— */
+.summary__primary {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.35rem 0;
+  padding: 1.35rem clamp(0.5rem, 2vw, 1.75rem) 1.15rem;
+}
+
+.summary__primary-cell {
+  position: relative;
+  padding: 0.35rem clamp(0.35rem, 1.2vw, 0.85rem);
+  text-align: center;
+
+  &:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 15%;
+    right: 0;
+    bottom: 15%;
+    width: 1px;
+    background: var(--border-subtle);
+  }
+}
+
+.summary__primary-value {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.2rem 0.35rem;
+  min-height: 2.5rem;
+}
+
+.summary__primary-value--pace {
+  align-items: baseline;
+}
+
+.summary__primary-value--hr {
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem 0.4rem;
+}
+
+.summary__hr-icon {
+  flex-shrink: 0;
+  width: 1.35rem;
+  height: 1.35rem;
+  font-size: 1.35rem;
+  color: color-mix(in srgb, var(--error) 82%, var(--primary));
+}
+
+.summary__hr-icon--max {
+  color: color-mix(in srgb, var(--error) 95%, var(--text-primary));
+}
+
+.summary__primary-number {
+  font-size: clamp(1.2rem, 2.2vw, 1.85rem);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+  color: var(--primary-dark);
+  line-height: 1.1;
+}
+
+.summary__primary-number--time {
+  font-size: clamp(1.15rem, 2vw, 1.65rem);
+}
+
+.summary__primary-number--hr {
+  font-size: clamp(1.15rem, 2vw, 1.7rem);
+}
+
+.summary__primary-number--empty {
+  font-size: clamp(1.15rem, 2vw, 1.75rem);
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.summary__primary-unit {
+  font-size: clamp(0.8125rem, 1.5vw, 1rem);
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.summary__primary-unit--suffix {
+  font-size: clamp(0.8125rem, 1.4vw, 0.9375rem);
+  font-weight: 600;
+  color: color-mix(in srgb, var(--primary-dark) 75%, var(--text-secondary));
+}
+
+.summary__primary-label {
+  margin: 0.5rem 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  line-height: 1.25;
+  padding-inline: 0.125rem;
+}
+
+.summary__primary-label-icon {
+  flex-shrink: 0;
+  width: 0.9375rem;
+  height: 0.9375rem;
+  font-size: 0.9375rem;
+  color: color-mix(in srgb, var(--primary) 55%, var(--text-secondary));
+}
+
+.summary__rule {
+  height: 1px;
+  margin: 0 clamp(1rem, 3vw, 2rem);
+  background: var(--border-subtle);
+}
+
+/* —— Details: Avg/Max speed, calories, elevation, start/end (DOM order = display order) —— */
+.summary__details {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 1rem 1.25rem;
+  padding: 1.15rem clamp(1rem, 3vw, 2rem) 1.35rem;
+  background: color-mix(in srgb, var(--surface) 55%, var(--bg));
+  width: 100%;
+  box-sizing: border-box;
+  justify-items: stretch;
+}
+
+/* Full-width cells, content centered inside each cell only (no shifting the whole block). */
+.summary__details .summary__stat-block {
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+}
+
+.summary__stat-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.summary__stat-label {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.35rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  line-height: 1.3;
+}
+
+.summary__details .summary__stat-label {
+  justify-content: center;
+  width: 100%;
+}
+
+.summary__stat-icon {
+  flex-shrink: 0;
+  width: 1rem;
+  height: 1rem;
+  font-size: 1rem;
+  color: color-mix(in srgb, var(--primary) 45%, var(--text-secondary));
+}
+
+.summary__stat-icon--gain {
+  color: var(--success);
+}
+
+.summary__stat-icon--loss {
+  color: color-mix(in srgb, var(--text-secondary) 75%, var(--primary));
+}
+
+.summary__stat-icon--calories {
+  color: var(--warning);
+}
+
+.summary__stat-value {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+  line-height: 1.35;
+  word-break: break-word;
+}
+
+.summary__details .summary__stat-value {
+  width: 100%;
+  text-align: center;
+}
+
+.summary__stat-unit {
+  margin-left: 0.2rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 1023px) {
+  .summary__primary {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .summary__primary-cell:nth-child(3):not(:last-child)::after {
+    display: none;
+  }
+
+  .summary__details {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 639px) {
+  .summary__primary {
+    grid-template-columns: 1fr;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .summary__primary-cell {
+    padding: 0.65rem 0.25rem;
+
+    &::after {
+      display: none;
+    }
+
+    &:not(:last-child) {
+      border-bottom: 1px solid var(--border-subtle);
+    }
+  }
+
+  .summary__details {
+    grid-template-columns: 1fr;
+  }
+
+  .summary__rule {
+    margin-inline: 1rem;
+  }
+}

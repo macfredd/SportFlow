@@ -66,7 +66,31 @@
     "listTitle": "Activities",
     "detailTitle": "Activity details",
     "detailIdLabel": "ID",
-    "detailPlaceholder": "Activity details (map, metrics, trackpoints) will appear here. This is a placeholder for now."
+    "detailPlaceholder": "Activity details (map, metrics, trackpoints) will appear here. This is a placeholder for now.",
+    "detailLoadError": "Could not load this activity.",
+    "summary": {
+      "sport": "Sport",
+      "start": "Start",
+      "end": "End",
+      "duration": "Duration",
+      "movingTime": "Moving time",
+      "distance": "Distance",
+      "pace": "Pace",
+      "paceSuffixKm": "/km",
+      "paceSuffixMi": "/mi",
+      "startTimeLabel": "Start time",
+      "endTimeLabel": "End time",
+      "statsOverviewAria": "Activity summary statistics",
+      "elevationGain": "Elevation gain",
+      "elevationLoss": "Elevation loss",
+      "avgSpeed": "Avg speed",
+      "maxSpeed": "Max speed",
+      "avgHeartRate": "Avg heart rate",
+      "maxHeartRate": "Max heart rate",
+      "calories": "Calories",
+      "kcal": "kcal",
+      "bpm": "bpm"
+    }
   },
   "nav": {
     "home": "Home",
@@ -120,6 +144,13 @@
       "minutes": "{{count}} min",
       "secondPart": "{{value}} sec",
       "zero": "0 sec"
+    },
+    "speed": {
+      "kmh": "km/h",
+      "mph": "mph"
+    },
+    "elevation": {
+      "m": "m"
     }
   },
   "brand": {

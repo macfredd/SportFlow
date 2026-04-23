@@ -6,6 +6,7 @@ import { API_BASE_URL, DEV_USER_ID } from '../../../core/config/api.tokens';
 import type {
   ActivitiesBySportType,
   Activity,
+  ActivityDetailSummary,
   LastActivitySummary,
 } from '../../../shared/models/activity.model';
 
@@ -30,6 +31,13 @@ export class ActivitiesApiService {
   getLastActivity(): Observable<LastActivitySummary> {
     const userId = this.requireUserId();
     return this.http.get<LastActivitySummary>(`${this.baseUrl}/users/${userId}/activities/latest`);
+  }
+
+  getActivityById(activityId: string): Observable<ActivityDetailSummary> {
+    const userId = this.requireUserId();
+    return this.http.get<ActivityDetailSummary>(
+      `${this.baseUrl}/users/${userId}/activities/${activityId}`,
+    );
   }
 
   getTotalActivitiesBySportType(days: number | null): Observable<ActivitiesBySportType[]> {

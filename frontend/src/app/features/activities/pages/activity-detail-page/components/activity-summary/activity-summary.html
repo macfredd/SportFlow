@@ -1,0 +1,171 @@
+@let a = activity();
+
+<section
+  class="summary"
+  role="region"
+  [attr.aria-label]="'activity.summary.statsOverviewAria' | transloco"
+>
+  <header class="summary__hero">
+    <div class="summary__hero-text">
+      <p class="summary__meta">
+        {{ a.start_time | date: 'shortTime' : '' : dateLocale() }} ·
+        {{ a.start_time | date: 'fullDate' : '' : dateLocale() }}
+      </p>
+      <h2 class="summary__headline">
+        <mat-icon class="summary__headline-icon" aria-hidden="true">{{ sportIconName() }}</mat-icon>
+        <span>{{ sportLabelKey() | transloco }}</span>
+      </h2>
+    </div>
+  </header>
+
+  <div class="summary__primary">
+    <div class="summary__primary-cell">
+      <div class="summary__primary-value">
+        <span class="summary__primary-number">{{ a.distance.value | number: '1.0-2' }}</span>
+        <span class="summary__primary-unit">{{ distanceUnitKey() | transloco }}</span>
+      </div>
+      <p class="summary__primary-label">
+        <mat-icon class="summary__primary-label-icon" aria-hidden="true">straighten</mat-icon>
+        <span>{{ 'activity.summary.distance' | transloco }}</span>
+      </p>
+    </div>
+    <div class="summary__primary-cell">
+      <div class="summary__primary-value">
+        <span class="summary__primary-number summary__primary-number--time">{{ durationFormatted() }}</span>
+      </div>
+      <p class="summary__primary-label">
+        <mat-icon class="summary__primary-label-icon" aria-hidden="true">timer</mat-icon>
+        <span>{{ 'activity.summary.movingTime' | transloco }}</span>
+      </p>
+    </div>
+    <div class="summary__primary-cell">
+      <div class="summary__primary-value summary__primary-value--pace">
+        @if (paceFormatted(); as pace) {
+          <span class="summary__primary-number">{{ pace }}</span>
+          <span class="summary__primary-unit summary__primary-unit--suffix">{{
+            paceSuffixKey() | transloco
+          }}</span>
+        } @else {
+          <span class="summary__primary-number summary__primary-number--empty">{{
+            'common.empty' | transloco
+          }}</span>
+        }
+      </div>
+      <p class="summary__primary-label">
+        <mat-icon class="summary__primary-label-icon" aria-hidden="true">speed</mat-icon>
+        <span>{{ 'activity.summary.pace' | transloco }}</span>
+      </p>
+    </div>
+    <div class="summary__primary-cell summary__primary-cell--hr">
+      <div class="summary__primary-value summary__primary-value--hr">
+        <mat-icon class="summary__hr-icon" aria-hidden="true">favorite</mat-icon>
+        @if (avgHeartRateBpm(); as bpmAvg) {
+          <span class="summary__primary-number summary__primary-number--hr">{{
+            bpmAvg | number: '1.0-0'
+          }}</span>
+          <span class="summary__primary-unit">{{ 'activity.summary.bpm' | transloco }}</span>
+        } @else {
+          <span class="summary__primary-number summary__primary-number--hr summary__primary-number--empty">{{
+            'common.empty' | transloco
+          }}</span>
+        }
+      </div>
+      <p class="summary__primary-label">
+        <span>{{ 'activity.summary.avgHeartRate' | transloco }}</span>
+      </p>
+    </div>
+    <div class="summary__primary-cell summary__primary-cell--hr">
+      <div class="summary__primary-value summary__primary-value--hr">
+        <mat-icon class="summary__hr-icon summary__hr-icon--max" aria-hidden="true">monitor_heart</mat-icon>
+        @if (maxHeartRateBpm(); as bpmMax) {
+          <span class="summary__primary-number summary__primary-number--hr">{{
+            bpmMax | number: '1.0-0'
+          }}</span>
+          <span class="summary__primary-unit">{{ 'activity.summary.bpm' | transloco }}</span>
+        } @else {
+          <span class="summary__primary-number summary__primary-number--hr summary__primary-number--empty">{{
+            'common.empty' | transloco
+          }}</span>
+        }
+      </div>
+      <p class="summary__primary-label">
+        <span>{{ 'activity.summary.maxHeartRate' | transloco }}</span>
+      </p>
+    </div>
+  </div>
+
+  <div class="summary__rule" role="presentation"></div>
+
+  <!-- Order: Avg Speed → Max Speed → Calories → Elevation Gain → Elevation Loss → Start → End -->
+  <div class="summary__details">
+    <div class="summary__stat-block">
+      <span class="summary__stat-label">
+        <mat-icon class="summary__stat-icon" aria-hidden="true">show_chart</mat-icon>
+        {{ 'activity.summary.avgSpeed' | transloco }}
+      </span>
+      <span class="summary__stat-value"
+        >{{ a.avg_speed.value | number: '1.0-1' }}
+        <span class="summary__stat-unit">{{ avgSpeedUnitKey() | transloco }}</span></span
+      >
+    </div>
+    <div class="summary__stat-block">
+      <span class="summary__stat-label">
+        <mat-icon class="summary__stat-icon" aria-hidden="true">bolt</mat-icon>
+        {{ 'activity.summary.maxSpeed' | transloco }}
+      </span>
+      <span class="summary__stat-value"
+        >{{ a.max_speed.value | number: '1.0-1' }}
+        <span class="summary__stat-unit">{{ maxSpeedUnitKey() | transloco }}</span></span
+      >
+    </div>
+    <div class="summary__stat-block">
+      <span class="summary__stat-label">
+        <mat-icon class="summary__stat-icon summary__stat-icon--calories" aria-hidden="true"
+          >local_fire_department</mat-icon>
+        {{ 'activity.summary.calories' | transloco }}
+      </span>
+      <span class="summary__stat-value">
+        @if (a.total_calories != null) {
+          {{ a.total_calories | number: '1.0-0' }}
+          <span class="summary__stat-unit">{{ 'activity.summary.kcal' | transloco }}</span>
+        } @else {
+          {{ 'common.empty' | transloco }}
+        }
+      </span>
+    </div>
+    <div class="summary__stat-block">
+      <span class="summary__stat-label">
+        <mat-icon class="summary__stat-icon summary__stat-icon--gain" aria-hidden="true">trending_up</mat-icon>
+        {{ 'activity.summary.elevationGain' | transloco }}
+      </span>
+      <span class="summary__stat-value"
+        >{{ a.elevation_gain_meters | number: '1.0-0' }}
+        <span class="summary__stat-unit">{{ 'units.elevation.m' | transloco }}</span></span
+      >
+    </div>
+    <div class="summary__stat-block">
+      <span class="summary__stat-label">
+        <mat-icon class="summary__stat-icon summary__stat-icon--loss" aria-hidden="true">trending_down</mat-icon>
+        {{ 'activity.summary.elevationLoss' | transloco }}
+      </span>
+      <span class="summary__stat-value"
+        >{{ a.elevation_loss_meters | number: '1.0-0' }}
+        <span class="summary__stat-unit">{{ 'units.elevation.m' | transloco }}</span></span
+      >
+    </div>
+    <div class="summary__stat-block">
+      <span class="summary__stat-label">
+        <mat-icon class="summary__stat-icon" aria-hidden="true">schedule</mat-icon>
+        {{ 'activity.summary.startTimeLabel' | transloco }}
+      </span>
+      <span class="summary__stat-value">{{ a.start_time | date: 'shortTime' : '' : dateLocale() }}</span>
+    </div>
+    <div class="summary__stat-block">
+      <span class="summary__stat-label">
+        <mat-icon class="summary__stat-icon" aria-hidden="true">event</mat-icon>
+        {{ 'activity.summary.endTimeLabel' | transloco }}
+      </span>
+      <span class="summary__stat-value">{{ a.end_time | date: 'shortTime' : '' : dateLocale() }}</span>
+    </div>
+  </div>
+</section>
