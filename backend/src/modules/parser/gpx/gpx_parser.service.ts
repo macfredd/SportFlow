@@ -8,7 +8,10 @@ import { aggregateElevationFromTrackPoints } from '../helpers/elevation-stats.he
 import { aggregatePathDistanceMeters } from '../helpers/geo-distance.helper';
 import { aggregateHeartRateFromTrackPoints } from '../helpers/heart-rate-stats.helper';
 import {
+  averageSpeedFromDistanceAndMovingTime,
   averageSpeedMetersPerSecond,
+  estimateMovingTimeSecondsFromTrackPoints,
+  getSpeedStatsCapsForSport,
   maxSpeedFromTrackPoints,
 } from '../helpers/speed-stats.helper';
 import { asArray, xmlTextContent } from '../helpers/xml.helper';
@@ -91,11 +94,17 @@ export class GpxParserService implements IActivityParser {
     const { elevationGainMeters, elevationLossMeters } =
       aggregateElevationFromTrackPoints(parsedTrackPoints);
     const distanceMeters = aggregatePathDistanceMeters(parsedTrackPoints);
-    const avgSpeed = averageSpeedMetersPerSecond(
-      distanceMeters,
-      durationSeconds,
+    const movingSeconds = estimateMovingTimeSecondsFromTrackPoints(
+      parsedTrackPoints,
+      sport,
     );
-    const maxSpeed = maxSpeedFromTrackPoints(parsedTrackPoints);
+    const avgSpeed =
+      averageSpeedFromDistanceAndMovingTime(distanceMeters, movingSeconds) ??
+      averageSpeedMetersPerSecond(distanceMeters, durationSeconds);
+    const { segmentCapMps } = getSpeedStatsCapsForSport(sport);
+    const maxSpeed = maxSpeedFromTrackPoints(parsedTrackPoints, {
+      maxSegmentSpeedMetersPerSecond: segmentCapMps,
+    });
 
     const parsedActivity: ParsedActivity = {
       sport,
