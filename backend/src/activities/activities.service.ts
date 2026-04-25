@@ -20,6 +20,7 @@ import { ActivityDetailPublicDto } from './dto/activity-detail-public.dto';
 import { SpeedUnit } from 'src/users/enums/speed-unit.enum';
 import { buildSpeedForPublic } from './shared/display/speed-display';
 import { toNumber } from './shared/display/coerce-number';
+import { TrackPointRoutePublicDto } from './dto/track-point-route-public.dto';
 
 /** Max window when filtering by `days` (avoids huge scans / abuse). */
 export const MAX_ACTIVITY_WINDOW_DAYS = 3650;
@@ -93,9 +94,45 @@ export class ActivityService {
     const activity = await this.activityRepository.findOne({
       where: { id: activityId, user: { id: userId } },
       relations: ['trackPoints'],
+      order: { trackPoints: { date_time: 'ASC' } },
     });
     if (!activity) return null;
     return activity.trackPoints;
+  }
+
+  async findTrackPointsRouteByActivityId(
+    activityId: string,
+    userId: string,
+  ): Promise<TrackPointRoutePublicDto[] | null> {
+    const activity = await this.activityRepository.findOne({
+      where: { id: activityId, user: { id: userId } },
+      select: { id: true },
+    });
+    if (!activity) {
+      return null;
+    }
+
+    // getRawMany() with array .select() uses keys like tp_id / tp_position_latitude, not "id" / "position_…".
+    const rows = await this.trackPointRepository
+      .createQueryBuilder('tp')
+      .select('tp.id', 'id')
+      .addSelect('tp.position_latitude', 'position_latitude')
+      .addSelect('tp.position_longitude', 'position_longitude')
+      .where('tp.activity_id = :activityId', { activityId })
+      .andWhere('tp.position_latitude IS NOT NULL')
+      .andWhere('tp.position_longitude IS NOT NULL')
+      .orderBy('tp.date_time', 'ASC')
+      .getRawMany<{
+        id: string;
+        position_latitude: string;
+        position_longitude: string;
+      }>();
+
+    return rows.map((row) => ({
+      id: row.id,
+      latitude: Number(row.position_latitude),
+      longitude: Number(row.position_longitude),
+    }));
   }
 
   async parseActivity(file: Express.Multer.File): Promise<ParsedActivity> {

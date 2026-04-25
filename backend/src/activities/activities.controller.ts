@@ -71,6 +71,25 @@ export class ActivityController {
     return trackPoints;
   }
 
+  @Get(':activityId/route')
+  async getActivityRoute(
+    @Param('userId') userId: string,
+    @Param('activityId') activityId: string,
+  ) {
+    const uid = userId?.trim();
+    if (!uid) {
+      throw new BadRequestException('userId path parameter is required');
+    }
+    const route = await this.activityService.findTrackPointsRouteByActivityId(
+      activityId,
+      uid,
+    );
+    if (route === null) {
+      throw new NotFoundException('Activity not found');
+    }
+    return route;
+  }
+
   @Get(':activityId')
   async getActivity(
     @Param('userId') userId: string,
