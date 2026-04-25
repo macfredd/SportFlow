@@ -33,6 +33,9 @@ export class ActivityMap implements OnDestroy {
   private polyline: L.Polyline | null = null;
   private readonly mapReady = signal(false);
 
+  private startMarker: L.Marker | null = null;
+  private endMarker: L.Marker | null = null;
+
   constructor() {
     afterNextRender(() => {
       const el = this.mapHost().nativeElement;
@@ -58,16 +61,49 @@ export class ActivityMap implements OnDestroy {
           map.removeLayer(this.polyline);
           this.polyline = null;
         }
+        this.clearMarkers(map);
         return;
       }
       this.drawRoute(pts, map);
     });
   }
 
+  private clearMarkers(map: L.Map): void {
+    if (this.startMarker) {
+      map.removeLayer(this.startMarker);
+      this.startMarker = null;
+    }
+    if (this.endMarker) {
+      map.removeLayer(this.endMarker);
+      this.endMarker = null;
+    }
+  }
+
   private drawRoute(points: [number, number][], map: L.Map): void {
     if (this.polyline) {
       map.removeLayer(this.polyline);
     }
+    this.clearMarkers(map);
+
+    this.startMarker = L.marker([points[0][0], points[0][1]], {
+      icon: L.icon({
+        /** Ruta absoluta desde el origen para que cargue en rutas anidadas (p. ej. /activities/:id). */
+        iconUrl: '/assets/icons/map/map-marker-start.svg',
+        iconSize: [32, 32],
+        iconAnchor: [16, 32],
+        popupAnchor: [0, -32],
+      }),
+    }).addTo(map);
+
+    this.endMarker = L.marker([points[points.length - 1][0], points[points.length - 1][1]], {
+      icon: L.icon({
+        iconUrl: '/assets/icons/map/map-marker-finish.svg',
+        iconSize: [32, 32],
+        iconAnchor: [16, 32],
+        popupAnchor: [0, -32],
+      }),
+    }).addTo(map);
+
     this.polyline = L.polyline(points, {
       color: '#2563eb',
       weight: 4,
