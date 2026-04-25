@@ -25,9 +25,8 @@
     <div class="mt-6">
       <app-activity-summary [activity]="act" />
     </div>
+    <div class="mt-6">
+      <app-activity-map [route]="activityRoute() ?? []" />
+    </div>
   }
-
-  <p class="mt-6 text-sm text-[var(--text-secondary)]">
-    {{ 'activity.detailPlaceholder' | transloco }}
-  </p>
 </section>

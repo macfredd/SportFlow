@@ -66,3 +66,10 @@ export interface ActivitiesBySportType {
   readonly sport_type: SportType;
   readonly total: number;
 }
+
+/** Shape returned by `GET /users/:userId/activities/:activityId/route`. */
+export interface TrackPointRoute {
+  readonly id: string;
+  readonly latitude: number;
+  readonly longitude: number;
+}

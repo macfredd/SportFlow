@@ -1,0 +1,17 @@
+:host {
+  display: block;
+  width: 100%;
+  min-height: 20rem;
+}
+
+/* Leaflet añade .leaflet-container a este nodo: altura fija; % falla sin cadena de altura en padres. */
+.map-host {
+  width: 100%;
+  min-height: 20rem;
+  height: 32rem;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  border: 1px solid var(--border-subtle, #e0e0e0);
+  background: var(--surface, #f5f5f5);
+  z-index: 0;
+}

@@ -66,8 +66,8 @@
     "listTitle": "Actividades",
     "detailTitle": "Detalle de actividad",
     "detailIdLabel": "ID",
-    "detailPlaceholder": "Aquí irá el detalle (mapa, métricas, trackpoints). Por ahora es un marcador de posición.",
     "detailLoadError": "No se pudo cargar esta actividad.",
+    "mapRouteAria": "Mapa con la ruta de la actividad",
     "summary": {
       "sport": "Actividad",
       "start": "Inicio",

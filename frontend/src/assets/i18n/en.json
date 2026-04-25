@@ -66,8 +66,8 @@
     "listTitle": "Activities",
     "detailTitle": "Activity details",
     "detailIdLabel": "ID",
-    "detailPlaceholder": "Activity details (map, metrics, trackpoints) will appear here. This is a placeholder for now.",
     "detailLoadError": "Could not load this activity.",
+    "mapRouteAria": "Map showing the activity route",
     "summary": {
       "sport": "Sport",
       "start": "Start",

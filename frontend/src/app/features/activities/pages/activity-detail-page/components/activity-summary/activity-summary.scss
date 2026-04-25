@@ -160,6 +160,13 @@
   padding-inline: 0.125rem;
 }
 
+/* `text-transform: uppercase` en el padre rompe la fuente de Material Icons (aparece texto fragmentado). */
+.summary__primary-label mat-icon,
+.summary__stat-label mat-icon {
+  text-transform: none;
+  letter-spacing: normal;
+}
+
 .summary__primary-label-icon {
   flex-shrink: 0;
   width: 0.9375rem;

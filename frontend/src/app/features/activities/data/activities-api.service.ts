@@ -8,6 +8,7 @@ import type {
   Activity,
   ActivityDetailSummary,
   LastActivitySummary,
+  TrackPointRoute,
 } from '../../../shared/models/activity.model';
 
 @Injectable({ providedIn: 'root' })
@@ -48,5 +49,10 @@ export class ActivitiesApiService {
       params = params.set('days', String(days));
     }
     return this.http.get<ActivitiesBySportType[]>(url, { params });
+  }
+
+  getActivityRoute(activityId: string): Observable<TrackPointRoute[]> {
+    const userId = this.requireUserId();
+    return this.http.get<TrackPointRoute[]>(`${this.baseUrl}/users/${userId}/activities/${activityId}/route`);
   }
 }
