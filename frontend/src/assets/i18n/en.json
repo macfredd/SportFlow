@@ -68,6 +68,11 @@
     "detailIdLabel": "ID",
     "detailLoadError": "Could not load this activity.",
     "mapRouteAria": "Map showing the activity route",
+    "mapTilesGroupAria": "Base map type",
+    "mapTilesStreetAria": "OpenStreetMap (streets)",
+    "mapTilesSatelliteAria": "Satellite imagery",
+    "mapTilesStreetTooltip": "Street map",
+    "mapTilesSatelliteTooltip": "Satellite",
     "summary": {
       "sport": "Sport",
       "start": "Start",

@@ -1,6 +1,39 @@
-<div
-  #mapHost
-  class="map-host"
-  role="application"
-  [attr.aria-label]="('activity.mapRouteAria' | transloco)"
-></div>
+<div class="activity-map-shell">
+  <div
+    #mapHost
+    class="map-host"
+    role="application"
+    [attr.aria-label]="('activity.mapRouteAria' | transloco)"
+  ></div>
+
+  <div
+    class="activity-map-shell__tiles"
+    role="group"
+    [attr.aria-label]="('activity.mapTilesGroupAria' | transloco)"
+  >
+    <button
+      type="button"
+      class="activity-map-shell__tile-btn"
+      [class.activity-map-shell__tile-btn--active]="activeBase() === 'street'"
+      [attr.aria-pressed]="activeBase() === 'street'"
+      [attr.aria-label]="('activity.mapTilesStreetAria' | transloco)"
+      [matTooltip]="('activity.mapTilesStreetTooltip' | transloco)"
+      matTooltipPosition="left"
+      (click)="setActiveBase('street')"
+    >
+      <mat-icon aria-hidden="true">map</mat-icon>
+    </button>
+    <button
+      type="button"
+      class="activity-map-shell__tile-btn"
+      [class.activity-map-shell__tile-btn--active]="activeBase() === 'satellite'"
+      [attr.aria-pressed]="activeBase() === 'satellite'"
+      [attr.aria-label]="('activity.mapTilesSatelliteAria' | transloco)"
+      [matTooltip]="('activity.mapTilesSatelliteTooltip' | transloco)"
+      matTooltipPosition="left"
+      (click)="setActiveBase('satellite')"
+    >
+      <mat-icon aria-hidden="true">satellite_alt</mat-icon>
+    </button>
+  </div>
+</div>

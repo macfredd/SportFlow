@@ -68,6 +68,11 @@
     "detailIdLabel": "ID",
     "detailLoadError": "No se pudo cargar esta actividad.",
     "mapRouteAria": "Mapa con la ruta de la actividad",
+    "mapTilesGroupAria": "Tipo de mapa base",
+    "mapTilesStreetAria": "Vista OpenStreetMap (calles)",
+    "mapTilesSatelliteAria": "Imagen satélite",
+    "mapTilesStreetTooltip": "Mapa de calles",
+    "mapTilesSatelliteTooltip": "Satélite",
     "summary": {
       "sport": "Actividad",
       "start": "Inicio",
