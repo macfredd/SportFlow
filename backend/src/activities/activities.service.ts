@@ -18,12 +18,19 @@ import { ActivitiesBySportType } from './dto/activities-by-sport-type.dto';
 import { UserPreferencesService } from 'src/users/user-preferences.service';
 import { ActivityDetailPublicDto } from './dto/activity-detail-public.dto';
 import { SpeedUnit } from 'src/users/enums/speed-unit.enum';
-import { buildSpeedForPublic } from './shared/display/speed-display';
-import { toNumber } from './shared/display/coerce-number';
+import {
+  buildSpeedForPublic,
+} from './shared/display/speed-display';
+import { roundToDecimals, toNumber } from './shared/display/coerce-number';
 import { TrackPointRoutePublicDto } from './dto/track-point-route-public.dto';
+import { TrackPointChartDetailPublicDto, TrackPointChartPublicDto } from './dto/track-point-chart-public.dto';
+import { haversineDistanceMeters } from '../modules/parser/helpers/geo-distance.helper';
 
 /** Max window when filtering by `days` (avoids huge scans / abuse). */
 export const MAX_ACTIVITY_WINDOW_DAYS = 3650;
+
+const CHART_DISTANCE_METERS_DECIMALS = 2;
+const CHART_SPEED_MPS_DECIMALS = 4;
 
 @Injectable()
 export class ActivityService {
@@ -133,6 +140,104 @@ export class ActivityService {
       latitude: Number(row.position_latitude),
       longitude: Number(row.position_longitude),
     }));
+  }
+
+  async findTrackPointsChartByActivityId(
+    activityId: string,
+    userId: string,
+  ): Promise<TrackPointChartPublicDto | null> {
+    const activity = await this.activityRepository.findOne({
+      where: { id: activityId, user: { id: userId } },
+      select: { id: true },
+    });
+    if (!activity) {
+      return null;
+    }
+
+    const rows = await this.trackPointRepository
+      .createQueryBuilder('tp')
+      .select('tp.id', 'id')
+      .addSelect('tp.position_latitude', 'position_latitude')
+      .addSelect('tp.position_longitude', 'position_longitude')
+      .addSelect('tp.date_time', 'date_time')
+      .addSelect('tp.altitude_meters', 'altitude_meters')
+      .addSelect('tp.speed_m_s', 'speed_m_s')
+      .addSelect('tp.cadence', 'cadence')
+      .addSelect('tp.heart_rate', 'heart_rate')
+      .where('tp.activity_id = :activityId', { activityId })
+      .andWhere('tp.position_latitude IS NOT NULL')
+      .andWhere('tp.position_longitude IS NOT NULL')
+      .orderBy('tp.date_time', 'ASC')
+      .getRawMany<{
+        id: string;
+        date_time: Date | string;
+        position_latitude: string;
+        position_longitude: string;
+        altitude_meters: string | null;
+        speed_m_s: string | null;
+        cadence: string | null;
+        heart_rate: string | null;
+      }>();
+
+    const prefs = await this.userPreferencesService.getUserPreferences(userId);
+
+    const distanceUnit = prefs?.preferred_distance_unit ?? DistanceUnit.KM;
+    const speedUnit = prefs?.preferred_speed_unit ?? SpeedUnit.MPS;
+
+    let cumulativeMeters = 0;
+    let prevLat: number | null = null;
+    let prevLon: number | null = null;
+    let prevTime: Date | null = null;
+
+    const track_points: TrackPointChartDetailPublicDto[] = [];
+
+    for (const row of rows) {
+      const lat = Number(row.position_latitude);
+      const lon = Number(row.position_longitude);
+      const t = new Date(row.date_time);
+
+      let segmentMeters = 0;
+      if (prevLat !== null && prevLon !== null) {
+        segmentMeters = haversineDistanceMeters(prevLat, prevLon, lat, lon);
+        cumulativeMeters += segmentMeters;
+      }
+
+      const dbMps = toNumber(row.speed_m_s);
+      let speedMps: number | null = dbMps;
+
+      if (speedMps === null && prevTime !== null) {
+        const dtSec = (t.getTime() - prevTime.getTime()) / 1000;
+        if (dtSec > 0) {
+          speedMps = segmentMeters / dtSec;
+        }
+      }
+
+      prevLat = lat;
+      prevLon = lon;
+      prevTime = t;
+
+      track_points.push({
+        id: row.id,
+        accumulated_distance_meters: roundToDecimals(
+          cumulativeMeters,
+          CHART_DISTANCE_METERS_DECIMALS,
+        ),
+        altitude_meters: toNumber(row.altitude_meters),
+        speed_m_s:
+          speedMps !== null
+            ? roundToDecimals(speedMps, CHART_SPEED_MPS_DECIMALS)
+            : null,
+        cadence: toNumber(row.cadence),
+        heart_rate: toNumber(row.heart_rate),
+      });
+    }
+
+    return {
+      activity_id: activity.id,
+      preferred_distance_unit: distanceUnit,
+      preferred_speed_unit: speedUnit,
+      track_points,
+    };
   }
 
   async parseActivity(file: Express.Multer.File): Promise<ParsedActivity> {

@@ -90,6 +90,27 @@ export class ActivityController {
     return route;
   }
 
+  @Get(':activityId/chart')
+  async getActivityChart(
+    @Param('userId') userId: string,
+    @Param('activityId') activityId: string,
+  ) {
+    const uid = userId?.trim();
+    if (!uid) {
+      throw new BadRequestException('userId path parameter is required');
+    }
+
+    const chart = await this.activityService.findTrackPointsChartByActivityId(
+      activityId,
+      uid,
+    );
+    if (chart === null) {
+      throw new NotFoundException('Activity not found');
+    }
+    return chart;
+    
+  }
+
   @Get(':activityId')
   async getActivity(
     @Param('userId') userId: string,

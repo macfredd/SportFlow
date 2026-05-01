@@ -11,14 +11,10 @@ export interface SpeedPublicValue {
 const METERS_TO_KMH = 3.6;
 const METERS_TO_MPH = 2.2369362920544;
 
-/** Stored speeds are m/s; `null` / missing → no public value (not zero). */
-export function buildSpeedForPublic(
-  speedMetersPerSecondRaw: unknown,
+export function convertSpeedMpsToPublicValue(
+  mps: number,
   preferredUnit: SpeedUnit,
-): SpeedPublicValue | null {
-  const mps = toNumber(speedMetersPerSecondRaw);
-  if (mps === null) return null;
-
+): number {
   let value: number;
   switch (preferredUnit) {
     case SpeedUnit.KMH:
@@ -31,5 +27,18 @@ export function buildSpeedForPublic(
       value = mps;
       break;
   }
-  return { value: roundToDecimals(value, SPEED_DISPLAY_DECIMALS), unit: preferredUnit };
+  return roundToDecimals(value, SPEED_DISPLAY_DECIMALS);
+}
+
+export function buildSpeedForPublic(
+  speedMetersPerSecondRaw: unknown,
+  preferredUnit: SpeedUnit,
+): SpeedPublicValue | null {
+  const mps = toNumber(speedMetersPerSecondRaw);
+  if (mps === null) return null;
+
+  return {
+    value: convertSpeedMpsToPublicValue(mps, preferredUnit),
+    unit: preferredUnit,
+  };
 }
