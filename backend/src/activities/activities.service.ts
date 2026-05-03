@@ -218,6 +218,7 @@ export class ActivityService {
 
       track_points.push({
         id: row.id,
+        date_time: t,
         accumulated_distance_meters: roundToDecimals(
           cumulativeMeters,
           CHART_DISTANCE_METERS_DECIMALS,

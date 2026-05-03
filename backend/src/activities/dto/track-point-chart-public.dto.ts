@@ -10,6 +10,7 @@ export interface TrackPointChartPublicDto {
 
 export interface TrackPointChartDetailPublicDto {
   id: string;
+  date_time: Date;
   accumulated_distance_meters: number;
   altitude_meters: number | null;
   speed_m_s: number | null;
