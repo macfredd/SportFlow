@@ -13,6 +13,7 @@ import { API_BASE_URL, DEV_USER_ID } from './core/config/api.tokens';
 import { routes } from './app.routes';
 import { initAppLanguage } from './core/i18n/app-lang.init';
 import { TranslocoHttpLoader } from './core/i18n/transloco-http.loader';
+import { provideEchartsCore } from 'ngx-echarts';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -33,5 +34,10 @@ export const appConfig: ApplicationConfig = {
       loader: TranslocoHttpLoader,
     }),
     provideAppInitializer(initAppLanguage),
+    provideEchartsCore(
+      {
+        echarts: () => import('echarts'),
+      },
+    ),
   ],
 };

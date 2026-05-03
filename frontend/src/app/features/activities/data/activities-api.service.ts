@@ -8,6 +8,7 @@ import type {
   Activity,
   ActivityDetailSummary,
   LastActivitySummary,
+  TrackPointChartPublicDto,
   TrackPointRoute,
 } from '../../../shared/models/activity.model';
 
@@ -54,5 +55,10 @@ export class ActivitiesApiService {
   getActivityRoute(activityId: string): Observable<TrackPointRoute[]> {
     const userId = this.requireUserId();
     return this.http.get<TrackPointRoute[]>(`${this.baseUrl}/users/${userId}/activities/${activityId}/route`);
+  }
+
+  getActivityChartData(activityId: string): Observable<TrackPointChartPublicDto> {
+    const userId = this.requireUserId();
+    return this.http.get<TrackPointChartPublicDto>(`${this.baseUrl}/users/${userId}/activities/${activityId}/chart`);
   }
 }

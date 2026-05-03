@@ -73,3 +73,21 @@ export interface TrackPointRoute {
   readonly latitude: number;
   readonly longitude: number;
 }
+
+/** Shape returned by `GET /users/:userId/activities/:activityId/chart`. */
+export interface TrackPointChartPublicDto {
+  readonly activity_id: string;
+  readonly preferred_distance_unit: 'km' | 'mi';
+  readonly preferred_speed_unit: 'kmh' | 'mph' | 'mps';
+  readonly track_points: TrackPointChartDetailPublicDto[];
+}
+
+/** Shape returned by `GET /users/:userId/activities/:activityId/chart`. */
+export interface TrackPointChartDetailPublicDto {
+  readonly id: string;
+  readonly accumulated_distance_meters: number;
+  readonly altitude_meters: number | null;
+  readonly speed_m_s: number | null;
+  readonly cadence: number | null;
+  readonly heart_rate: number | null;
+}

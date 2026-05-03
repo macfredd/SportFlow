@@ -21,7 +21,9 @@
     "@angular/platform-browser": "^21.2.0",
     "@angular/router": "^21.2.0",
     "@ngneat/transloco": "^6.0.4",
+    "echarts": "^6.0.0",
     "leaflet": "^1.9.4",
+    "ngx-echarts": "^21.0.0",
     "rxjs": "~7.8.0",
     "tailwindcss": "^4.2.2",
     "tslib": "^2.3.0"
