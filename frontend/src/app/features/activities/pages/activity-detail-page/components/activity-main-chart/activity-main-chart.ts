@@ -15,12 +15,107 @@ function distanceAxisName(unit: 'km' | 'mi'): string {
   return unit === 'km' ? 'Distance (km)' : 'Distance (mi)';
 }
 
-function formatXAxisTickInteger(value: number, unit: 'km' | 'mi'): string {
-  const whole = Math.round(value);
-  if (value < 0 || Math.abs(value - whole) > 0.02) {
-    return '';
+const X_TICK_COUNT_MIN = 8;
+const X_TICK_COUNT_MAX = 12;
+const X_TICK_TARGET_ORDER = [10, 9, 11, 8, 12] as const;
+
+/** 1–2–2.5–5–10 style step (same axis as typical chart libs). */
+function niceStep(rough: number): number {
+  if (!Number.isFinite(rough) || rough <= 0) {
+    return 0.1;
   }
-  return `${whole} ${unit}`;
+  const exp = Math.floor(Math.log10(rough));
+  const base = 10 ** exp;
+  const m = rough / base;
+  let niceM: number;
+  if (m <= 1) {
+    niceM = 1;
+  } else if (m <= 2) {
+    niceM = 2;
+  } else if (m <= 2.5) {
+    niceM = 2.5;
+  } else if (m <= 5) {
+    niceM = 5;
+  } else {
+    niceM = 10;
+  }
+  return niceM * base;
+}
+
+/**
+ * Step and last tick so labels are step, 2*step, … maxTick (never the raw end if not on grid).
+ * Prefers ~10 divisions in [8, 12].
+ */
+function computeXAxisStep(lengthDisplay: number): { step: number; maxTick: number } {
+  const L = lengthDisplay;
+  const EPS = 1e-7;
+  if (L <= EPS) {
+    return { step: 1, maxTick: 0 };
+  }
+
+  let best: { step: number; count: number; score: number } | null = null;
+  for (const target of X_TICK_TARGET_ORDER) {
+    const step = niceStep(L / target);
+    const count = Math.floor(L / step + EPS);
+    if (count < X_TICK_COUNT_MIN || count > X_TICK_COUNT_MAX) {
+      continue;
+    }
+    const score = Math.abs(count - 10);
+    if (
+      !best ||
+      score < best.score ||
+      (score === best.score && Math.abs(step - L / 10) < Math.abs(best.step - L / 10))
+    ) {
+      best = { step, count, score };
+    }
+  }
+
+  if (best) {
+    const maxTick = best.count * best.step;
+    return { step: best.step, maxTick };
+  }
+
+  /** Fallback: ~10 divisions with 3-decimal step (e.g. 0.33). */
+  let step = Math.round((L / 10) * 1000) / 1000;
+  if (step <= 0) {
+    step = L;
+  }
+  let count = Math.floor(L / step + EPS);
+  if (count > X_TICK_COUNT_MAX) {
+    step = Math.round((L / X_TICK_COUNT_MAX) * 1000) / 1000;
+    if (step <= 0) step = L / X_TICK_COUNT_MAX;
+    count = Math.floor(L / step + EPS);
+  }
+  if (count < X_TICK_COUNT_MIN) {
+    step = Math.round((L / X_TICK_COUNT_MIN) * 1000) / 1000;
+    if (step <= 0) step = L / X_TICK_COUNT_MIN;
+    count = Math.floor(L / step + EPS);
+  }
+  const maxTick = count * step;
+  return { step, maxTick };
+}
+
+function isOnStepGrid(value: number, step: number): boolean {
+  if (step <= 0) {
+    return false;
+  }
+  const k = value / step;
+  return Math.abs(k - Math.round(k)) < 1e-4;
+}
+
+function decimalsForStep(step: number): number {
+  if (step >= 1 - 1e-9) {
+    return 0;
+  }
+  const t = step.toFixed(6).replace(/\.?0+$/, '');
+  const dot = t.indexOf('.');
+  return dot === -1 ? 0 : Math.min(2, t.length - dot - 1);
+}
+
+function formatXDistanceTickLabel(value: number, unit: 'km' | 'mi', step: number): string {
+  const d = decimalsForStep(step);
+  const n = d === 0 ? Math.round(value) : Number(value.toFixed(d));
+  return `${n} ${unit}`;
 }
 
 function formatYAxisTick(value: number): string {
@@ -47,7 +142,7 @@ function smoothElevationProfile(pairs: [number, number][], radius: number): [num
 function elevationAxisExtent(minAlt: number, maxAlt: number): { min: number; max: number } {
   const span = Math.max(maxAlt - minAlt, 1);
   const padBottom = Math.max(span * 0.14, 12);
-  const padTop = Math.max(span * 0.32, 45);
+  const padTop = Math.max(span * 0.5, 125);
   let yMin = minAlt - padBottom;
   let yMax = maxAlt + padTop;
   yMin = Math.floor(yMin / 10) * 10;
@@ -83,9 +178,6 @@ export class ActivityMainChart {
         xAxis: {
           type: 'value',
           name: distanceAxisName(distUnit),
-          axisLabel: {
-            formatter: (v: number) => formatXAxisTickInteger(v, distUnit),
-          },
         },
         yAxis: {
           type: 'value',
@@ -98,7 +190,7 @@ export class ActivityMainChart {
       } satisfies EChartsOption;
     }
 
-    const plotPairsM = smoothElevationProfile(pairs, 2);
+    const plotPairsM = smoothElevationProfile(pairs, 10);
     const plotPairs = plotPairsM.map(
       ([xm, y]) => [metersToAxisDistance(xm, distUnit), y] as [number, number],
     );
@@ -112,6 +204,8 @@ export class ActivityMainChart {
     /** Exact activity distance in display units (no extra padding). */
     const xMax = metersToAxisDistance(maxDistM, distUnit);
 
+    const { step: xStep, maxTick: xMaxTick } = computeXAxisStep(xMax);
+
     const distDigits = 2;
 
     return {
@@ -121,10 +215,21 @@ export class ActivityMainChart {
         name: distanceAxisName(distUnit),
         min: 0,
         max: xMax,
-        interval: 1,
+        interval: xStep,
         scale: false,
         axisLabel: {
-          formatter: (v: number) => formatXAxisTickInteger(v, distUnit),
+          formatter: (v: number) => {
+            if (v <= 0) {
+              return '';
+            }
+            if (v > xMaxTick + 1e-5) {
+              return '';
+            }
+            if (!isOnStepGrid(v, xStep)) {
+              return '';
+            }
+            return formatXDistanceTickLabel(v, distUnit, xStep);
+          },
         },
       },
       yAxis: {
