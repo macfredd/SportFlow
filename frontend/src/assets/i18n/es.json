@@ -73,8 +73,18 @@
     "mapTilesSatelliteAria": "Imagen satélite",
     "mapTilesStreetTooltip": "Mapa de calles",
     "mapTilesSatelliteTooltip": "Satélite",
+    "heartRateZones": {
+      "title": "Zonas de frecuencia cardíaca",
+      "precisionNote": "Para mayor precisión, la FC máxima estimada usa tu edad en la fecha de esta actividad (220 − edad). Si no hay fecha de nacimiento en el perfil, se usa un valor por defecto de {{defaultBpm}} lpm.",
+      "noData": "No hay datos suficientes de frecuencia cardiaca con marca de tiempo para mostrar zonas.",
+      "estimatedMax": "FC máx. estimada: {{bpm}} lpm",
+      "zoneZ1": "Z1 50–60 % Muy suave",
+      "zoneZ2": "Z2 60–70 % Suave",
+      "zoneZ3": "Z3 70–80 % Moderada",
+      "zoneZ4": "Z4 80–90 % Intensa",
+      "zoneZ5": "Z5 90–100 % Muy intensa"
+    },
     "summary": {
-      "sport": "Actividad",
       "start": "Inicio",
       "end": "Fin",
       "duration": "Duración",

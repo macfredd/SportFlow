@@ -190,7 +190,7 @@ export class ActivityMainChart {
       } satisfies EChartsOption;
     }
 
-    const plotPairsM = smoothElevationProfile(pairs, 10);
+    const plotPairsM = smoothElevationProfile(pairs, 2);
     const plotPairs = plotPairsM.map(
       ([xm, y]) => [metersToAxisDistance(xm, distUnit), y] as [number, number],
     );

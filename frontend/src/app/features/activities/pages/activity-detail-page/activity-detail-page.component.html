@@ -31,5 +31,8 @@
     <div class="mt-6">
       <app-activity-main-chart [chartData]="activityMainChart()" />
     </div>
+    <div class="mt-6 w-full min-w-0">
+      <app-activity-heart-rate-chart [zones]="heartRateZones()" />
+    </div>
   }
 </section>

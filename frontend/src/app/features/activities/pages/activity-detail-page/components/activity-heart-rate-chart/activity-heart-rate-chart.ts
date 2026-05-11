@@ -1,0 +1,186 @@
+import { Component, computed, inject, input } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import {
+  TranslocoPipe,
+  TranslocoService,
+  type TranslocoEvents,
+} from '@ngneat/transloco';
+import type { EChartsOption } from 'echarts';
+import { NgxEchartsDirective } from 'ngx-echarts';
+import { merge } from 'rxjs';
+import { filter, map, startWith } from 'rxjs/operators';
+import {
+  DEFAULT_ESTIMATED_MAX_HR_BPM,
+  type HeartRateZonesViewModel,
+} from '../../../../utils/heart-rate-zones.util';
+
+const ZONE_COLORS = ['#4e79a7', '#59a14f', '#edc948', '#f28e2b', '#e15759'] as const;
+
+const ZONE_I18N_KEYS = [
+  'activity.heartRateZones.zoneZ1',
+  'activity.heartRateZones.zoneZ2',
+  'activity.heartRateZones.zoneZ3',
+  'activity.heartRateZones.zoneZ4',
+  'activity.heartRateZones.zoneZ5',
+] as const;
+
+const STACK_ID = 'zones';
+
+/** Etiquetas cortas dentro de la barra (no dependen del idioma). */
+const ZONE_SHORT_LABELS = ['Z1', 'Z2', 'Z3', 'Z4', 'Z5'] as const;
+
+/** Solo mostramos etiqueta en el segmento si hay más del 10 %. */
+const MIN_PERCENT_FOR_IN_BAR_LABEL = 10;
+
+function inBarLabelColor(zoneIndex: number): string {
+  if (zoneIndex === 2) {
+    return 'rgba(15, 23, 42, 0.92)';
+  }
+  return 'rgba(255, 255, 255, 0.96)';
+}
+
+function borderRadiusForStackedSegment(
+  percents: readonly number[],
+  index: number,
+): number | [number, number, number, number] {
+  const firstIdx = percents.findIndex((v) => v > 0);
+  let lastIdx = -1;
+  for (let i = percents.length - 1; i >= 0; i--) {
+    if (percents[i] > 0) {
+      lastIdx = i;
+      break;
+    }
+  }
+  if (percents[index] <= 0 || firstIdx < 0 || lastIdx < 0) {
+    return 0;
+  }
+  if (firstIdx === lastIdx) {
+    return 8;
+  }
+  if (index === firstIdx) {
+    return [8, 0, 0, 8];
+  }
+  if (index === lastIdx) {
+    return [0, 8, 8, 0];
+  }
+  return 0;
+}
+
+type HeartRateZoneRow = {
+  readonly zoneKey: (typeof ZONE_I18N_KEYS)[number];
+  readonly percent: number;
+  readonly color: string;
+};
+
+@Component({
+  selector: 'app-activity-heart-rate-chart',
+  imports: [NgxEchartsDirective, TranslocoPipe],
+  templateUrl: './activity-heart-rate-chart.html',
+  styleUrl: './activity-heart-rate-chart.scss',
+})
+export class ActivityHeartRateChart {
+  private readonly transloco = inject(TranslocoService);
+
+  readonly zones = input<HeartRateZonesViewModel | null>(null);
+
+  /** Exposed for i18n `precisionNote` param (must match `DEFAULT_ESTIMATED_MAX_HR_BPM`). */
+  readonly defaultMaxBpm = DEFAULT_ESTIMATED_MAX_HR_BPM;
+
+  private readonly i18nTick = toSignal(
+    merge(
+      this.transloco.langChanges$,
+      this.transloco.events$.pipe(
+        filter(
+          (e: TranslocoEvents) => e.type === 'translationLoadSuccess' && !e.wasFailure,
+        ),
+      ),
+    ).pipe(
+      map(() => this.transloco.getActiveLang()),
+      startWith(this.transloco.getActiveLang()),
+    ),
+    { initialValue: this.transloco.getActiveLang() },
+  );
+
+  /** Leyenda: claves i18n; el texto sale del pipe (reactivo al idioma). */
+  readonly zoneRows = computed<readonly HeartRateZoneRow[]>(() => {
+    const m = this.zones();
+    if (!m) {
+      return [];
+    }
+    return ZONE_I18N_KEYS.map((key, i) => ({
+      zoneKey: key,
+      percent: m.zonePercents[i],
+      color: ZONE_COLORS[i],
+    }));
+  });
+
+  readonly chartOptions = computed<EChartsOption | null>(() => {
+    this.i18nTick();
+    const m = this.zones();
+    if (!m) {
+      return null;
+    }
+    const transloco = this.transloco;
+    const percents = m.zonePercents;
+
+    const series = ZONE_I18N_KEYS.map((key, i) => {
+      const showInBarLabel = percents[i] > MIN_PERCENT_FOR_IN_BAR_LABEL;
+      return {
+        /** Clave i18n (no texto traducido): el tooltip traduce al vuelo y evita keys “pegadas” tras merge/cambio de idioma. */
+        name: key,
+        type: 'bar' as const,
+        stack: STACK_ID,
+        barCategoryGap: '0%',
+        barGap: '0%',
+        itemStyle: {
+          color: ZONE_COLORS[i],
+          borderRadius: borderRadiusForStackedSegment(percents, i),
+        },
+        label: {
+          show: showInBarLabel,
+          position: 'inside' as const,
+          formatter: ZONE_SHORT_LABELS[i],
+          fontSize: 12,
+          fontWeight: 600,
+          color: inBarLabelColor(i),
+        },
+        emphasis: { focus: 'series' as const },
+        data: [percents[i]],
+      };
+    });
+
+    return {
+      animationDuration: 200,
+      grid: {
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        containLabel: false,
+      },
+      tooltip: {
+        trigger: 'item',
+        formatter: (params: unknown) => {
+          const p = params as { value?: unknown; marker?: string; seriesName?: string };
+          const v = typeof p.value === 'number' ? p.value : Number(p.value);
+          if (!(v > 0)) {
+            return '';
+          }
+          const title = transloco.translate(p.seriesName ?? '');
+          return `${p.marker ?? ''}${title}: ${v}%`;
+        },
+      },
+      xAxis: {
+        type: 'value',
+        max: 100,
+        show: false,
+      },
+      yAxis: {
+        type: 'category',
+        data: [''],
+        show: false,
+      },
+      series,
+    };
+  });
+}

@@ -85,6 +85,7 @@ export interface TrackPointChartPublicDto {
 /** Shape returned by `GET /users/:userId/activities/:activityId/chart`. */
 export interface TrackPointChartDetailPublicDto {
   readonly id: string;
+  readonly date_time: string;
   readonly accumulated_distance_meters: number;
   readonly altitude_meters: number | null;
   readonly speed_m_s: number | null;
