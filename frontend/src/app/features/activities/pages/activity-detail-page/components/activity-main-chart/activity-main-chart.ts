@@ -1,6 +1,12 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, DestroyRef, inject, input, NgZone, output } from '@angular/core';
 import { NgxEchartsDirective } from 'ngx-echarts';
 import type { EChartsOption } from 'echarts';
+import type { EChartsType } from 'echarts/core';
+
+export type TrackPointHoverPayload = {
+  readonly trackPointId: string | null;
+  readonly seq: number;
+};
 
 import type { TrackPointChartPublicDto } from '../../../../../../shared/models/activity.model';
 
@@ -153,27 +159,64 @@ function elevationAxisExtent(minAlt: number, maxAlt: number): { min: number; max
   return { min: yMin, max: yMax };
 }
 
-@Component({
-  selector: 'app-activity-main-chart',
-  imports: [NgxEchartsDirective],
-  templateUrl: './activity-main-chart.html',
-  styleUrl: './activity-main-chart.scss',
-})
-export class ActivityMainChart {
-  readonly chartData = input<TrackPointChartPublicDto | null>(null);
+type AxisPointerUpdateEvent = {
+  readonly seriesDataIndices?: ReadonlyArray<{
+    readonly seriesIndex?: number;
+    readonly dataIndex?: number;
+  }>;
+  readonly axesInfo?: ReadonlyArray<{
+    readonly axisDim?: string;
+    readonly value?: number | string;
+  }>;
+};
 
-  readonly chartOption = computed<EChartsOption>(() => {
-    const payload = this.chartData();
-    const points = payload?.track_points ?? [];
+type ChartBuildResult = {
+  readonly option: EChartsOption;
+  readonly plotPointIds: readonly string[];
+  readonly plotDistances: readonly number[];
+};
 
-    const pairs = points
-      .filter((p) => p.altitude_meters !== null)
-      .map((p) => [p.accumulated_distance_meters, p.altitude_meters as number] as [number, number]);
+/** Nearest index by monotonic x (distance on chart axis). */
+function nearestDataIndex(xs: readonly number[], x: number): number {
+  if (xs.length === 0) {
+    return -1;
+  }
+  if (x <= xs[0]) {
+    return 0;
+  }
+  const last = xs.length - 1;
+  if (x >= xs[last]) {
+    return last;
+  }
+  let lo = 0;
+  let hi = last;
+  while (lo < hi - 1) {
+    const mid = (lo + hi) >> 1;
+    if (xs[mid] <= x) {
+      lo = mid;
+    } else {
+      hi = mid;
+    }
+  }
+  return x - xs[lo] <= xs[hi] - x ? lo : hi;
+}
 
-    const distUnit = payload?.preferred_distance_unit ?? 'km';
+function buildChartModel(payload: TrackPointChartPublicDto | null): ChartBuildResult {
+  const points = payload?.track_points ?? [];
+  const distUnit = payload?.preferred_distance_unit ?? 'km';
 
-    if (pairs.length === 0) {
-      return {
+  const altitudePoints = points.filter((p) => p.altitude_meters !== null);
+  const plotPointIds = altitudePoints.map((p) => p.id);
+
+  const pairs = altitudePoints.map(
+    (p) => [p.accumulated_distance_meters, p.altitude_meters as number] as [number, number],
+  );
+
+  if (pairs.length === 0) {
+    return {
+      plotPointIds,
+      plotDistances: [],
+      option: {
         grid: { left: 48, right: 16, top: 16, bottom: 40, containLabel: true },
         xAxis: {
           type: 'value',
@@ -187,28 +230,35 @@ export class ActivityMainChart {
           },
         },
         series: [],
-      } satisfies EChartsOption;
-    }
+      } satisfies EChartsOption,
+    };
+  }
 
-    const plotPairsM = smoothElevationProfile(pairs, 2);
-    const plotPairs = plotPairsM.map(
-      ([xm, y]) => [metersToAxisDistance(xm, distUnit), y] as [number, number],
-    );
+  const plotPairsM = smoothElevationProfile(pairs, 2);
+  const plotPairs = plotPairsM.map(
+    ([xm, y]) => [metersToAxisDistance(xm, distUnit), y] as [number, number],
+  );
 
-    const ys = plotPairs.map((p) => p[1]);
-    const minAlt = Math.min(...ys);
-    const maxAlt = Math.max(...ys);
-    const yExtent = elevationAxisExtent(minAlt, maxAlt);
+  const ys = plotPairs.map((p) => p[1]);
+  const minAlt = Math.min(...ys);
+  const maxAlt = Math.max(...ys);
+  const yExtent = elevationAxisExtent(minAlt, maxAlt);
 
-    const maxDistM = Math.max(...plotPairsM.map((p) => p[0]));
-    /** Exact activity distance in display units (no extra padding). */
-    const xMax = metersToAxisDistance(maxDistM, distUnit);
+  const maxDistM = Math.max(...plotPairsM.map((p) => p[0]));
+  const xMax = metersToAxisDistance(maxDistM, distUnit);
 
-    const { step: xStep, maxTick: xMaxTick } = computeXAxisStep(xMax);
+  const { step: xStep, maxTick: xMaxTick } = computeXAxisStep(xMax);
 
-    const distDigits = 2;
+  const distDigits = 2;
 
-    return {
+  return {
+    plotPointIds,
+    plotDistances: plotPairs.map((p) => p[0]),
+    option: {
+      axisPointer: {
+        type: 'line',
+        snap: true,
+      },
       grid: { left: 48, right: 16, top: 16, bottom: 40, containLabel: true },
       xAxis: {
         type: 'value',
@@ -256,6 +306,7 @@ export class ActivityMainChart {
       ],
       tooltip: {
         trigger: 'axis',
+        axisPointer: { type: 'line', snap: true },
         formatter: (params: unknown) => {
           const list = Array.isArray(params) ? params : [params];
           const first = list[0] as { value?: [number, number] };
@@ -268,6 +319,100 @@ export class ActivityMainChart {
           return `${dist.toFixed(distDigits)} ${u}<br/>${alt} m`;
         },
       },
-    } satisfies EChartsOption;
-  });
+    } satisfies EChartsOption,
+  };
+}
+
+@Component({
+  selector: 'app-activity-main-chart',
+  imports: [NgxEchartsDirective],
+  templateUrl: './activity-main-chart.html',
+  styleUrl: './activity-main-chart.scss',
+})
+export class ActivityMainChart {
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly ngZone = inject(NgZone);
+
+  readonly chartData = input<TrackPointChartPublicDto | null>(null);
+  readonly trackPointHover = output<TrackPointHoverPayload>();
+
+  private readonly chartBuild = computed(() => buildChartModel(this.chartData()));
+
+  readonly chartOption = computed(() => this.chartBuild().option);
+
+  private readonly plotPointIds = computed(() => this.chartBuild().plotPointIds);
+  private readonly plotDistances = computed(() => this.chartBuild().plotDistances);
+
+  private chartInstance: EChartsType | null = null;
+  private hoverSeq = 0;
+
+  constructor() {
+    this.destroyRef.onDestroy(() => {
+      this.detachChartListeners();
+      this.chartInstance = null;
+    });
+  }
+
+  onChartInit(chart: EChartsType): void {
+    this.detachChartListeners();
+    this.chartInstance = chart;
+    this.hoverSeq = 0;
+    chart.on('updateAxisPointer', this.onAxisPointerUpdate);
+  }
+
+  onChartGlobalOut(): void {
+    this.clearHover();
+  }
+
+  /** Same event that drives the axis tooltip — keeps map in sync with the chart cursor. */
+  private readonly onAxisPointerUpdate = (event: unknown): void => {
+    const ev = event as AxisPointerUpdateEvent;
+
+    const dataIndex = ev.seriesDataIndices?.[0]?.dataIndex;
+    if (dataIndex != null && dataIndex >= 0) {
+      this.publishHoverByIndex(dataIndex);
+      return;
+    }
+
+    const xAxis = ev.axesInfo?.find((axis) => axis.axisDim === 'x');
+    if (xAxis?.value == null) {
+      return;
+    }
+
+    const xDist = typeof xAxis.value === 'number' ? xAxis.value : Number(xAxis.value);
+    if (!Number.isFinite(xDist)) {
+      return;
+    }
+
+    const index = nearestDataIndex(this.plotDistances(), xDist);
+    this.publishHoverByIndex(index);
+  };
+
+  private publishHoverByIndex(index: number): void {
+    const ids = this.plotPointIds();
+    if (index < 0 || index >= ids.length) {
+      return;
+    }
+    this.publishHover(ids[index]);
+  }
+
+  private publishHover(trackPointId: string | null): void {
+    this.hoverSeq += 1;
+    const seq = this.hoverSeq;
+    this.ngZone.run(() => this.trackPointHover.emit({ trackPointId, seq }));
+  }
+
+  private clearHover(): void {
+    if (this.hoverSeq === 0) {
+      return;
+    }
+    this.publishHover(null);
+  }
+
+  private detachChartListeners(): void {
+    const chart = this.chartInstance;
+    if (chart) {
+      chart.off('updateAxisPointer', this.onAxisPointerUpdate);
+    }
+  }
 }

@@ -28,10 +28,21 @@ export class ActivityMap implements OnDestroy {
   private readonly mapHost = viewChild.required<ElementRef<HTMLElement>>('mapHost');
 
   readonly route = input.required<TrackPointRoute[]>();
+  readonly highlightedPointId = input<string | null>(null);
+  /** Bumped on every chart hover tick so the marker moves even when the id is unchanged. */
+  readonly highlightSeq = input(0);
 
   private readonly points = computed(() =>
     this.route().map((p) => [p.latitude, p.longitude] as [number, number]),
   );
+
+  private readonly routeById = computed(() => {
+    const map = new Map<string, TrackPointRoute>();
+    for (const point of this.route()) {
+      map.set(point.id, point);
+    }
+    return map;
+  });
 
   private map: L.Map | null = null;
   private streetTiles: L.TileLayer | null = null;
@@ -43,6 +54,7 @@ export class ActivityMap implements OnDestroy {
 
   private startMarker: L.Marker | null = null;
   private endMarker: L.Marker | null = null;
+  private hoverMarker: L.Marker | null = null;
 
   constructor() {
     afterNextRender(() => {
@@ -86,9 +98,20 @@ export class ActivityMap implements OnDestroy {
           this.polyline = null;
         }
         this.clearMarkers(map);
+        this.removeHoverMarker(map);
         return;
       }
       this.drawRoute(pts, map);
+    });
+
+    effect(() => {
+      this.mapReady();
+      this.highlightSeq();
+      const map = this.map;
+      if (!map) {
+        return;
+      }
+      this.updateHoverMarker(map, this.highlightedPointId());
     });
   }
 
@@ -150,10 +173,53 @@ export class ActivityMap implements OnDestroy {
       weight: 4,
     }).addTo(map);
     map.fitBounds(this.polyline.getBounds(), { padding: [24, 24] });
+    this.updateHoverMarker(map, this.highlightedPointId());
     queueMicrotask(() => map.invalidateSize());
   }
 
+  private updateHoverMarker(map: L.Map, pointId: string | null): void {
+    if (!pointId) {
+      this.removeHoverMarker(map);
+      return;
+    }
+
+    const point = this.routeById().get(pointId);
+    if (!point) {
+      this.removeHoverMarker(map);
+      return;
+    }
+
+    const latLng: L.LatLngExpression = [point.latitude, point.longitude];
+    if (!this.hoverMarker) {
+      this.hoverMarker = L.marker(latLng, {
+        icon: L.divIcon({
+          className: 'activity-map-hover-marker',
+          iconSize: [20, 20],
+          iconAnchor: [10, 10],
+          html: '<span class="activity-map-hover-marker__dot"></span>',
+        }),
+        interactive: false,
+        zIndexOffset: 1000,
+      });
+      this.hoverMarker.addTo(map);
+      return;
+    }
+
+    this.hoverMarker.setLatLng(latLng);
+    if (!map.hasLayer(this.hoverMarker)) {
+      this.hoverMarker.addTo(map);
+    }
+  }
+
+  private removeHoverMarker(map: L.Map): void {
+    if (this.hoverMarker) {
+      map.removeLayer(this.hoverMarker);
+      this.hoverMarker = null;
+    }
+  }
+
   ngOnDestroy(): void {
+    this.hoverMarker = null;
     this.map?.remove();
     this.map = null;
     this.streetTiles = null;

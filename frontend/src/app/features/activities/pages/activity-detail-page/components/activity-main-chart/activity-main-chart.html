@@ -1,1 +1,7 @@
-<div echarts [options]="chartOption()" class="activity-main-chart"></div>
+<div
+  echarts
+  [options]="chartOption()"
+  class="activity-main-chart"
+  (chartInit)="onChartInit($event)"
+  (chartGlobalOut)="onChartGlobalOut()"
+></div>

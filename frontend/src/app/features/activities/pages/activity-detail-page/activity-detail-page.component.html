@@ -26,10 +26,17 @@
       <app-activity-summary [activity]="act" />
     </div>
     <div class="mt-6">
-      <app-activity-map [route]="activityRoute() ?? []" />
+      <app-activity-map
+        [route]="activityRoute() ?? []"
+        [highlightedPointId]="highlightedTrackPointId()"
+        [highlightSeq]="highlightedTrackPointSeq()"
+      />
     </div>
     <div class="mt-6">
-      <app-activity-main-chart [chartData]="activityMainChart()" />
+      <app-activity-main-chart
+        [chartData]="activityMainChart()"
+        (trackPointHover)="onTrackPointHover($event)"
+      />
     </div>
     <div class="mt-6 w-full min-w-0">
       <app-activity-heart-rate-chart [zones]="heartRateZones()" />

@@ -22,7 +22,10 @@ import type {
 import { ActivitiesApiService } from '../../data/activities-api.service';
 import { ActivitySummary } from './components/activity-summary/activity-summary';
 import { ActivityMap } from './components/activity-map/activity-map';
-import { ActivityMainChart } from './components/activity-main-chart/activity-main-chart';
+import {
+  ActivityMainChart,
+  type TrackPointHoverPayload,
+} from './components/activity-main-chart/activity-main-chart';
 import { ActivityHeartRateChart } from './components/activity-heart-rate-chart/activity-heart-rate-chart';
 import { UserProfile } from '../../../../shared/models/user-profile.model';
 import { UsersApiService } from '../../../profile/data/users-api.service';
@@ -57,6 +60,13 @@ export class ActivityDetailPageComponent {
 
   readonly activityRoute = signal<TrackPointRoute[] | null>(null);
   readonly activityMainChart = signal<TrackPointChartPublicDto | null>(null);
+  readonly highlightedTrackPointId = signal<string | null>(null);
+  readonly highlightedTrackPointSeq = signal(0);
+
+  onTrackPointHover(payload: TrackPointHoverPayload): void {
+    this.highlightedTrackPointId.set(payload.trackPointId);
+    this.highlightedTrackPointSeq.set(payload.seq);
+  }
 
   readonly heartRateZones = computed(() =>
     buildHeartRateZonesViewModel(
@@ -75,6 +85,8 @@ export class ActivityDetailPageComponent {
           this.activity.set(null);
           this.activityRoute.set(null);
           this.activityMainChart.set(null);
+          this.highlightedTrackPointId.set(null);
+          this.highlightedTrackPointSeq.set(0);
           this.userProfile.set(null);
           this.loadError.set(false);
           if (!activityId) {
@@ -124,6 +136,8 @@ export class ActivityDetailPageComponent {
           this.activity.set(null);
           this.activityRoute.set(null);
           this.activityMainChart.set(null);
+          this.highlightedTrackPointId.set(null);
+          this.highlightedTrackPointSeq.set(0);
           this.userProfile.set(null);
         }
       });
