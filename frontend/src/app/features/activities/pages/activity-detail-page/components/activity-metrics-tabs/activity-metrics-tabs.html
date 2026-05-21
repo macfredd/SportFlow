@@ -1,0 +1,61 @@
+<div class="activity-metrics-tabs w-full min-w-0">
+  <mat-tab-group
+    class="activity-metrics-tabs__group"
+    [attr.aria-label]="'activity.metricsTabs.ariaLabel' | transloco"
+    animationDuration="0ms"
+  >
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="activity-metrics-tabs__tab-icon" aria-hidden="true">monitor_heart</mat-icon>
+        <span>{{ 'activity.metricsTabs.heartRate' | transloco }}</span>
+      </ng-template>
+      <ng-template matTabContent>
+        <div class="activity-metrics-tabs__panel">
+          <app-activity-heart-rate-chart [zones]="heartRateZones()" />
+        </div>
+      </ng-template>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="activity-metrics-tabs__tab-icon" aria-hidden="true">directions_run</mat-icon>
+        <span>{{ 'activity.metricsTabs.cadence' | transloco }}</span>
+      </ng-template>
+      <ng-template matTabContent>
+        <div class="activity-metrics-tabs__panel activity-metrics-tabs__panel--placeholder">
+          <p class="activity-metrics-tabs__placeholder">
+            {{ 'activity.metricsTabs.comingSoon' | transloco }}
+          </p>
+        </div>
+      </ng-template>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="activity-metrics-tabs__tab-icon" aria-hidden="true">speed</mat-icon>
+        <span>{{ 'activity.metricsTabs.speed' | transloco }}</span>
+      </ng-template>
+      <ng-template matTabContent>
+        <div class="activity-metrics-tabs__panel activity-metrics-tabs__panel--placeholder">
+          <p class="activity-metrics-tabs__placeholder">
+            {{ 'activity.metricsTabs.comingSoon' | transloco }}
+          </p>
+        </div>
+      </ng-template>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="activity-metrics-tabs__tab-icon" aria-hidden="true">insights</mat-icon>
+        <span>{{ 'activity.metricsTabs.other' | transloco }}</span>
+      </ng-template>
+      <ng-template matTabContent>
+        <div class="activity-metrics-tabs__panel activity-metrics-tabs__panel--placeholder">
+          <p class="activity-metrics-tabs__placeholder">
+            {{ 'activity.metricsTabs.comingSoon' | transloco }}
+          </p>
+        </div>
+      </ng-template>
+    </mat-tab>
+  </mat-tab-group>
+</div>

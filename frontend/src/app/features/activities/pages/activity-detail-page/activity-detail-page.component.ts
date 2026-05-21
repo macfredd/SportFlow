@@ -26,7 +26,7 @@ import {
   ActivityMainChart,
   type TrackPointHoverPayload,
 } from './components/activity-main-chart/activity-main-chart';
-import { ActivityHeartRateChart } from './components/activity-heart-rate-chart/activity-heart-rate-chart';
+import { ActivityMetricsTabs } from './components/activity-metrics-tabs/activity-metrics-tabs';
 import { UserProfile } from '../../../../shared/models/user-profile.model';
 import { UsersApiService } from '../../../profile/data/users-api.service';
 import {
@@ -42,7 +42,7 @@ import {
     ActivitySummary,
     ActivityMap,
     ActivityMainChart,
-    ActivityHeartRateChart,
+    ActivityMetricsTabs,
   ],
   templateUrl: './activity-detail-page.component.html',
 })

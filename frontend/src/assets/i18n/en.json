@@ -73,6 +73,14 @@
     "mapTilesSatelliteAria": "Satellite imagery",
     "mapTilesStreetTooltip": "Street map",
     "mapTilesSatelliteTooltip": "Satellite",
+    "metricsTabs": {
+      "ariaLabel": "Activity metrics sections",
+      "heartRate": "Heart rate",
+      "cadence": "Cadence",
+      "speed": "Speed",
+      "other": "Other",
+      "comingSoon": "Metrics for this section will be available soon."
+    },
     "heartRateZones": {
       "title": "Heart rate zones",
       "precisionNote": "For better accuracy, estimated max heart rate uses your age on this activity’s date (220 − age). If your profile has no birth date, we use a default of {{defaultBpm}} bpm.",

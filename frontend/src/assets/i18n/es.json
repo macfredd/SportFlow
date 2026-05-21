@@ -73,6 +73,14 @@
     "mapTilesSatelliteAria": "Imagen satélite",
     "mapTilesStreetTooltip": "Mapa de calles",
     "mapTilesSatelliteTooltip": "Satélite",
+    "metricsTabs": {
+      "ariaLabel": "Secciones de métricas de la actividad",
+      "heartRate": "Frecuencia cardíaca",
+      "cadence": "Cadencia",
+      "speed": "Velocidad",
+      "other": "Otros",
+      "comingSoon": "Las métricas de esta sección estarán disponibles próximamente."
+    },
     "heartRateZones": {
       "title": "Zonas de frecuencia cardíaca",
       "precisionNote": "Para mayor precisión, la FC máxima estimada usa tu edad en la fecha de esta actividad (220 − edad). Si no hay fecha de nacimiento en el perfil, se usa un valor por defecto de {{defaultBpm}} lpm.",
