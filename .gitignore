@@ -33,3 +33,6 @@ FilesToUpload/
 
 # REST Client - local file with personal paths (do not commit)
 **/api.local.http
+
+## SDD framework
+.specify/
