@@ -5,4 +5,9 @@
   <div class="activity-heart-rate-metrics-grid__cell">
     <app-activity-heart-rate-by-time-chart [zones]="heartRateZones()" />
   </div>
+  @if (showHeartRateBySplit()) {
+    <div class="activity-heart-rate-metrics-grid__cell activity-heart-rate-metrics-grid__cell--full">
+      <app-activity-heart-rate-by-split-chart [splits]="splits()" />
+    </div>
+  }
 </div>

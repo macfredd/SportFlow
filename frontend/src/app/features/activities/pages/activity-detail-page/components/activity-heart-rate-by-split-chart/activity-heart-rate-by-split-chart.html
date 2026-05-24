@@ -1,0 +1,26 @@
+<div class="activity-heart-rate-by-split-chart-card">
+  <h2
+    class="activity-heart-rate-by-split-chart__title text-base font-semibold text-[var(--text-primary)]"
+  >
+    {{ 'activity.heartRateBySplit.title' | transloco }}
+  </h2>
+
+  @if (hasHeartRateData()) {
+    @if (chartOptions(); as opts) {
+      <div
+        class="activity-heart-rate-by-split-chart__chart-wrap"
+        role="img"
+        [attr.aria-label]="'activity.heartRateBySplit.title' | transloco"
+      >
+        <div echarts [options]="opts" class="activity-heart-rate-by-split-chart"></div>
+      </div>
+    }
+  } @else {
+    <p
+      class="activity-heart-rate-by-split-chart__empty mt-3 text-sm text-[var(--text-secondary)]"
+      role="status"
+    >
+      {{ 'activity.heartRateBySplit.noData' | transloco }}
+    </p>
+  }
+</div>

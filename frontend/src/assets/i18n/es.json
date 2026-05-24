@@ -107,6 +107,13 @@
       "title": "Tiempo en zonas de frecuencia cardíaca",
       "noData": "No hay datos suficientes de frecuencia cardiaca con marca de tiempo para mostrar el tiempo por zona."
     },
+    "heartRateBySplit": {
+      "title": "Frecuencia cardíaca por parcial",
+      "noData": "No hay datos suficientes de frecuencia cardíaca por parcial para mostrar este gráfico.",
+      "axisSplit": "Parcial",
+      "axisBpm": "lpm",
+      "tooltipSplit": "Parcial"
+    },
     "summary": {
       "start": "Inicio",
       "end": "Fin",

@@ -43,7 +43,10 @@
       />
     </div>
     <div class="mt-6 w-full min-w-0">
-      <app-activity-metrics-tabs [heartRateZones]="heartRateZones()" />
+      <app-activity-metrics-tabs
+        [heartRateZones]="heartRateZones()"
+        [splits]="activitySplits()"
+      />
     </div>
   }
 </section>

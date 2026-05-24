@@ -107,6 +107,13 @@
       "title": "Time in heart rate zones",
       "noData": "Not enough heart-rate samples with timestamps to show time by zone."
     },
+    "heartRateBySplit": {
+      "title": "Heart rate by split",
+      "noData": "Not enough heart-rate data per split to show this chart.",
+      "axisSplit": "Split",
+      "axisBpm": "bpm",
+      "tooltipSplit": "Split"
+    },
     "summary": {
       "sport": "Sport",
       "start": "Start",

@@ -16,3 +16,9 @@
 .activity-heart-rate-metrics-grid__cell {
   min-width: 0;
 }
+
+.activity-heart-rate-metrics-grid__cell--full {
+  @media (min-width: 960px) {
+    grid-column: 1 / -1;
+  }
+}

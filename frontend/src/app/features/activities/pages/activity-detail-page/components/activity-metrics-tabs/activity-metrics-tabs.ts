@@ -3,6 +3,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { TranslocoPipe } from '@ngneat/transloco';
 
+import type { ActivitySplitsViewModel } from '../../../../utils/activity-splits.util';
 import type { HeartRateZonesViewModel } from '../../../../utils/heart-rate-zones.util';
 import { ActivityHeartRateMetricsGrid } from '../activity-heart-rate-metrics-grid/activity-heart-rate-metrics-grid';
 
@@ -14,4 +15,5 @@ import { ActivityHeartRateMetricsGrid } from '../activity-heart-rate-metrics-gri
 })
 export class ActivityMetricsTabs {
   readonly heartRateZones = input<HeartRateZonesViewModel | null>(null);
+  readonly splits = input<ActivitySplitsViewModel | null>(null);
 }
