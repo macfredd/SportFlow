@@ -13,7 +13,7 @@
 .activity-map-shell .map-host {
   width: 100%;
   min-height: 20rem;
-  height: 32rem;
+  height: var(--activity-map-height, 32rem);
   border-radius: 0.5rem;
   overflow: hidden;
   border: 1px solid var(--border-subtle, #e0e0e0);

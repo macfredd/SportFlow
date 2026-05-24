@@ -1,0 +1,13 @@
+.activity-detail-map-row {
+  --activity-map-height: 32rem;
+  display: flex;
+  align-items: stretch;
+  gap: 1rem;
+  width: 100%;
+  min-width: 0;
+}
+
+.activity-detail-map-row__map {
+  flex: 1 1 auto;
+  min-width: 0;
+}

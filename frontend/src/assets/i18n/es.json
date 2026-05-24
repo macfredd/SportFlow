@@ -73,6 +73,17 @@
     "mapTilesSatelliteAria": "Imagen satélite",
     "mapTilesStreetTooltip": "Mapa de calles",
     "mapTilesSatelliteTooltip": "Satélite",
+    "splits": {
+      "title": "Parciales",
+      "ariaLabel": "Parciales de la actividad por unidad de distancia",
+      "columnSplit": "Parcial",
+      "columnPace": "Ritmo",
+      "columnElevation": "Desn. (m)",
+      "columnHeartRate": "FC prom.",
+      "noData": "No hay datos suficientes del recorrido para mostrar parciales.",
+      "paceSuffixKm": "/km",
+      "paceSuffixMi": "/mi"
+    },
     "metricsTabs": {
       "ariaLabel": "Secciones de métricas de la actividad",
       "heartRate": "Frecuencia cardíaca",

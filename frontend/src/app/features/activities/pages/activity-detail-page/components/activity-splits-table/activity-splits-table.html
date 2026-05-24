@@ -1,0 +1,62 @@
+<div
+  class="activity-splits-table"
+  role="region"
+  [attr.aria-label]="'activity.splits.ariaLabel' | transloco"
+>
+  <h2 class="activity-splits-table__title">
+    {{ 'activity.splits.title' | transloco }}
+  </h2>
+
+  @if (rows().length > 0) {
+    <div class="activity-splits-table__scroll">
+      <table class="activity-splits-table__grid">
+        <thead>
+          <tr>
+            <th scope="col">{{ 'activity.splits.columnSplit' | transloco }}</th>
+            <th scope="col">{{ 'activity.splits.columnPace' | transloco }}</th>
+            <th scope="col">{{ 'activity.splits.columnElevation' | transloco }}</th>
+            @if (showHeartRateColumn()) {
+              <th scope="col">{{ 'activity.splits.columnHeartRate' | transloco }}</th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of rows(); track row.index) {
+            <tr>
+              <td class="activity-splits-table__cell activity-splits-table__cell--index tabular-nums">
+                {{ row.index }}
+              </td>
+              <td class="activity-splits-table__cell tabular-nums">
+                @if (row.paceFormatted; as pace) {
+                  {{ pace }}<span class="activity-splits-table__unit">{{ paceSuffixKey() | transloco }}</span>
+                } @else {
+                  <span class="activity-splits-table__empty">{{ 'common.empty' | transloco }}</span>
+                }
+              </td>
+              <td class="activity-splits-table__cell tabular-nums">
+                @if (row.elevationNetMeters !== null) {
+                  {{ row.elevationNetMeters }}
+                } @else {
+                  <span class="activity-splits-table__empty">{{ 'common.empty' | transloco }}</span>
+                }
+              </td>
+              @if (showHeartRateColumn()) {
+                <td class="activity-splits-table__cell tabular-nums">
+                  @if (row.avgHeartRate !== null) {
+                    {{ row.avgHeartRate }}
+                  } @else {
+                    <span class="activity-splits-table__empty">{{ 'common.empty' | transloco }}</span>
+                  }
+                </td>
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  } @else {
+    <p class="activity-splits-table__empty-state" role="status">
+      {{ 'activity.splits.noData' | transloco }}
+    </p>
+  }
+</div>

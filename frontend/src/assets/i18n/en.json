@@ -73,6 +73,17 @@
     "mapTilesSatelliteAria": "Satellite imagery",
     "mapTilesStreetTooltip": "Street map",
     "mapTilesSatelliteTooltip": "Satellite",
+    "splits": {
+      "title": "Splits",
+      "ariaLabel": "Activity splits by distance unit",
+      "columnSplit": "Split",
+      "columnPace": "Pace",
+      "columnElevation": "Elev (m)",
+      "columnHeartRate": "Avg HR",
+      "noData": "Not enough track data to show splits.",
+      "paceSuffixKm": "/km",
+      "paceSuffixMi": "/mi"
+    },
     "metricsTabs": {
       "ariaLabel": "Activity metrics sections",
       "heartRate": "Heart rate",

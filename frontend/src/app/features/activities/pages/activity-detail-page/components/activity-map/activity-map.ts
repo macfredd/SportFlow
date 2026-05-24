@@ -55,6 +55,7 @@ export class ActivityMap implements OnDestroy {
   private startMarker: L.Marker | null = null;
   private endMarker: L.Marker | null = null;
   private hoverMarker: L.Marker | null = null;
+  private resizeObserver: ResizeObserver | null = null;
 
   constructor() {
     afterNextRender(() => {
@@ -80,6 +81,10 @@ export class ActivityMap implements OnDestroy {
       this.activeBase.set('street');
 
       this.mapReady.set(true);
+      this.resizeObserver = new ResizeObserver(() => {
+        this.map?.invalidateSize();
+      });
+      this.resizeObserver.observe(el);
       queueMicrotask(() => {
         this.map?.invalidateSize();
       });
@@ -219,6 +224,8 @@ export class ActivityMap implements OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.resizeObserver?.disconnect();
+    this.resizeObserver = null;
     this.hoverMarker = null;
     this.map?.remove();
     this.map = null;

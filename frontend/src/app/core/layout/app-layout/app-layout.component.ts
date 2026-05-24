@@ -26,6 +26,7 @@ import { UserSidebarPanel } from '../../../features/profile/user-sidebar-panel/u
 import { LastActivitySidebarPanel } from '../../../features/activities/widgets/last-activity-sidebar-panel/last-activity-sidebar-panel';
 import { TotalActivitySidebarPanel } from '../../../features/activities/widgets/total-activity-sidebar-panel/total-activity-sidebar-panel';
 import { LanguageSwitcherComponent } from '../language-switcher/language-switcher.component';
+import { LayoutShellService } from '../layout-shell.service';
 
 export interface AppNavLink {
   readonly labelKey: string;
@@ -59,6 +60,7 @@ export interface AppNavLink {
 })
 export class AppLayoutComponent {
   private readonly breakpoint = inject(BreakpointObserver);
+  private readonly layoutShell = inject(LayoutShellService);
 
   readonly navLinks: readonly AppNavLink[] = [
     { labelKey: 'nav.home', path: '/', exact: true },
@@ -85,6 +87,10 @@ export class AppLayoutComponent {
     effect(() => {
       const compact = this.isCompact();
       untracked(() => this.sidebarOpen.set(!compact));
+    });
+
+    effect(() => {
+      this.layoutShell.sidebarOpen.set(this.sidebarOpen());
     });
   }
 

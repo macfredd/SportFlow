@@ -1,11 +1,11 @@
+import { BreakpointObserver } from '@angular/cdk/layout';
 import { Component, computed, DestroyRef, inject, signal } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
 import { TranslocoPipe } from '@ngneat/transloco';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import {
   catchError,
-  concatMap,
   distinctUntilChanged,
   finalize,
   forkJoin,
@@ -19,6 +19,7 @@ import type {
   TrackPointChartPublicDto,
   TrackPointRoute,
 } from '../../../../shared/models/activity.model';
+import { LayoutShellService } from '../../../../core/layout/layout-shell.service';
 import { ActivitiesApiService } from '../../data/activities-api.service';
 import { ActivitySummary } from './components/activity-summary/activity-summary';
 import { ActivityMap } from './components/activity-map/activity-map';
@@ -27,8 +28,10 @@ import {
   type TrackPointHoverPayload,
 } from './components/activity-main-chart/activity-main-chart';
 import { ActivityMetricsTabs } from './components/activity-metrics-tabs/activity-metrics-tabs';
+import { ActivitySplitsTable } from './components/activity-splits-table/activity-splits-table';
 import { UserProfile } from '../../../../shared/models/user-profile.model';
 import { UsersApiService } from '../../../profile/data/users-api.service';
+import { buildActivitySplitsViewModel } from '../../utils/activity-splits.util';
 import {
   buildHeartRateZonesViewModel,
 } from '../../utils/heart-rate-zones.util';
@@ -43,13 +46,17 @@ import {
     ActivityMap,
     ActivityMainChart,
     ActivityMetricsTabs,
+    ActivitySplitsTable,
   ],
   templateUrl: './activity-detail-page.component.html',
+  styleUrl: './activity-detail-page.component.scss',
 })
 export class ActivityDetailPageComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly activitiesApi = inject(ActivitiesApiService);
   private readonly usersApi = inject(UsersApiService);
+  private readonly breakpoint = inject(BreakpointObserver);
+  private readonly layoutShell = inject(LayoutShellService);
 
   private readonly destroyRef = inject(DestroyRef);
 
@@ -75,6 +82,34 @@ export class ActivityDetailPageComponent {
       this.activityMainChart()?.track_points ?? [],
     ),
   );
+
+  readonly activitySplits = computed(() =>
+    buildActivitySplitsViewModel(this.activityMainChart()),
+  );
+
+  private readonly viewportLayout = toSignal(
+    this.breakpoint
+      .observe(['(max-width: 767.98px)', '(max-width: 1199.98px)'])
+      .pipe(
+        map((state) => ({
+          isMobile: state.breakpoints['(max-width: 767.98px)'],
+          isMedium: state.breakpoints['(max-width: 1199.98px)'],
+        })),
+      ),
+    { initialValue: { isMobile: false, isMedium: false } },
+  );
+
+  /** Hide on small viewports; on medium widths require sidebar closed for enough map+splits room. */
+  readonly showSplits = computed(() => {
+    const { isMobile, isMedium } = this.viewportLayout();
+    if (isMobile) {
+      return false;
+    }
+    if (!isMedium) {
+      return true;
+    }
+    return !this.layoutShell.sidebarOpen();
+  });
 
   constructor() {
     this.route.paramMap
