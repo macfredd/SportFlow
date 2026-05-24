@@ -4,11 +4,11 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { TranslocoPipe } from '@ngneat/transloco';
 
 import type { HeartRateZonesViewModel } from '../../../../utils/heart-rate-zones.util';
-import { ActivityHeartRateChart } from '../activity-heart-rate-chart/activity-heart-rate-chart';
+import { ActivityHeartRateMetricsGrid } from '../activity-heart-rate-metrics-grid/activity-heart-rate-metrics-grid';
 
 @Component({
   selector: 'app-activity-metrics-tabs',
-  imports: [MatTabsModule, MatIconModule, TranslocoPipe, ActivityHeartRateChart],
+  imports: [MatTabsModule, MatIconModule, TranslocoPipe, ActivityHeartRateMetricsGrid],
   templateUrl: './activity-metrics-tabs.html',
   styleUrl: './activity-metrics-tabs.scss',
 })

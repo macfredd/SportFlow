@@ -9,6 +9,33 @@ export interface HeartRateZonesViewModel {
   readonly usedDefaultMax: boolean;
   /** Time share in each zone (0–4), integers summing to 100. */
   readonly zonePercents: readonly [number, number, number, number, number];
+  /** Time spent in each zone (0–4), in whole seconds. */
+  readonly zoneSeconds: readonly [number, number, number, number, number];
+}
+
+/** Compact duration for zone readouts (e.g. `1h 4m`, `12m`, `45s`). */
+export function formatHeartRateZoneDuration(totalSeconds: number): string {
+  const total = Math.max(0, Math.round(totalSeconds));
+  if (total === 0) {
+    return '0s';
+  }
+
+  const h = Math.floor(total / 3600);
+  const m = Math.floor((total % 3600) / 60);
+  const s = total % 60;
+  const parts: string[] = [];
+
+  if (h > 0) {
+    parts.push(`${h}h`);
+  }
+  if (m > 0) {
+    parts.push(`${m}m`);
+  }
+  if (parts.length === 0) {
+    parts.push(`${s}s`);
+  }
+
+  return parts.join(' ');
 }
 
 export function ageAtReferenceDate(
@@ -132,5 +159,6 @@ export function buildHeartRateZonesViewModel(
     estimatedMaxBpm: maxHr,
     usedDefaultMax,
     zonePercents,
+    zoneSeconds,
   };
 }

@@ -1,0 +1,26 @@
+<div class="activity-heart-rate-by-time-chart-card">
+  <h2
+    class="activity-heart-rate-by-time-chart__title text-base font-semibold text-[var(--text-primary)]"
+  >
+    {{ 'activity.heartRateByTime.title' | transloco }}
+  </h2>
+
+  @if (zones()) {
+    @if (chartOptions(); as opts) {
+      <div
+        class="activity-heart-rate-by-time-chart__chart-wrap"
+        role="img"
+        [attr.aria-label]="'activity.heartRateByTime.title' | transloco"
+      >
+        <div echarts [options]="opts" class="activity-heart-rate-by-time-chart"></div>
+      </div>
+    }
+  } @else {
+    <p
+      class="activity-heart-rate-by-time-chart__empty mt-3 text-sm text-[var(--text-secondary)]"
+      role="status"
+    >
+      {{ 'activity.heartRateByTime.noData' | transloco }}
+    </p>
+  }
+</div>

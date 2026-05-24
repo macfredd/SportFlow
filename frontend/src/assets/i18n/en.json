@@ -103,6 +103,10 @@
       "zoneZ4": "Z4 80–90 % Hard",
       "zoneZ5": "Z5 90–100 % Maximum"
     },
+    "heartRateByTime": {
+      "title": "Time in heart rate zones",
+      "noData": "Not enough heart-rate samples with timestamps to show time by zone."
+    },
     "summary": {
       "sport": "Sport",
       "start": "Start",
