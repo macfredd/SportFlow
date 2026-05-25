@@ -2,6 +2,7 @@ import { Component, computed, inject, input } from '@angular/core';
 import { TranslocoPipe, TranslocoService } from '@ngneat/transloco';
 import type { EChartsOption } from 'echarts';
 import { NgxEchartsDirective } from 'ngx-echarts';
+import { ECHARTS_ANIMATION_DURATION_MS } from '../../../../../../core/echarts/echarts.constants';
 import { createTranslocoLangTick } from '../../../../../../core/i18n/create-transloco-lang-tick';
 import {
   HEART_RATE_ZONE_COLORS,
@@ -37,7 +38,7 @@ export class ActivityHeartRateByTimeChart {
     const zoneSeconds = m.zoneSeconds;
 
     return {
-      animationDuration: 200,
+      animationDuration: ECHARTS_ANIMATION_DURATION_MS,
       grid: {
         left: 8,
         right: 48,

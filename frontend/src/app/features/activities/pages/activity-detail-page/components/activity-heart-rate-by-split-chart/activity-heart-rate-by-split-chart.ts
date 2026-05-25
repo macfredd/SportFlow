@@ -2,6 +2,7 @@ import { Component, computed, inject, input } from '@angular/core';
 import { TranslocoPipe, TranslocoService } from '@ngneat/transloco';
 import type { EChartsOption } from 'echarts';
 import { NgxEchartsDirective } from 'ngx-echarts';
+import { ECHARTS_ANIMATION_DURATION_MS } from '../../../../../../core/echarts/echarts.constants';
 import { createTranslocoLangTick } from '../../../../../../core/i18n/create-transloco-lang-tick';
 
 import type { ActivitySplitsViewModel } from '../../../../utils/activity-splits.util';
@@ -46,7 +47,7 @@ export class ActivityHeartRateBySplitChart {
     const yPadding = 5;
 
     return {
-      animationDuration: 200,
+      animationDuration: ECHARTS_ANIMATION_DURATION_MS,
       grid: {
         left: 12,
         right: 16,
