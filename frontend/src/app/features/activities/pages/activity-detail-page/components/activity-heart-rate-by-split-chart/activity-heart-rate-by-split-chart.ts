@@ -1,14 +1,8 @@
 import { Component, computed, inject, input } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
-import {
-  TranslocoPipe,
-  TranslocoService,
-  type TranslocoEvents,
-} from '@ngneat/transloco';
+import { TranslocoPipe, TranslocoService } from '@ngneat/transloco';
 import type { EChartsOption } from 'echarts';
 import { NgxEchartsDirective } from 'ngx-echarts';
-import { merge } from 'rxjs';
-import { filter, map, startWith } from 'rxjs/operators';
+import { createTranslocoLangTick } from '../../../../../../core/i18n/create-transloco-lang-tick';
 
 import type { ActivitySplitsViewModel } from '../../../../utils/activity-splits.util';
 
@@ -29,23 +23,10 @@ export class ActivityHeartRateBySplitChart {
     (this.splits()?.rows ?? []).some((row) => row.avgHeartRate !== null),
   );
 
-  private readonly i18nTick = toSignal(
-    merge(
-      this.transloco.langChanges$,
-      this.transloco.events$.pipe(
-        filter(
-          (e: TranslocoEvents) => e.type === 'translationLoadSuccess' && !e.wasFailure,
-        ),
-      ),
-    ).pipe(
-      map(() => this.transloco.getActiveLang()),
-      startWith(this.transloco.getActiveLang()),
-    ),
-    { initialValue: this.transloco.getActiveLang() },
-  );
+  private readonly langTick = createTranslocoLangTick(this.transloco);
 
   readonly chartOptions = computed<EChartsOption | null>(() => {
-    this.i18nTick();
+    this.langTick();
     const model = this.splits();
     const rows = model?.rows ?? [];
     if (rows.length === 0 || !rows.some((row) => row.avgHeartRate !== null)) {
