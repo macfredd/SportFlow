@@ -4,24 +4,17 @@ import type { EChartsOption } from 'echarts';
 import { NgxEchartsDirective } from 'ngx-echarts';
 import { createTranslocoLangTick } from '../../../../../../core/i18n/create-transloco-lang-tick';
 import {
+  HEART_RATE_ZONE_COLORS,
+  HEART_RATE_ZONE_I18N_KEYS,
+  HEART_RATE_ZONE_SHORT_LABELS,
+  type HeartRateZoneI18nKey,
+} from '../../../../utils/heart-rate-zones.constants';
+import {
   DEFAULT_ESTIMATED_MAX_HR_BPM,
   type HeartRateZonesViewModel,
 } from '../../../../utils/heart-rate-zones.util';
 
-const ZONE_COLORS = ['#4e79a7', '#59a14f', '#edc948', '#f28e2b', '#e15759'] as const;
-
-const ZONE_I18N_KEYS = [
-  'activity.heartRateZones.zoneZ1',
-  'activity.heartRateZones.zoneZ2',
-  'activity.heartRateZones.zoneZ3',
-  'activity.heartRateZones.zoneZ4',
-  'activity.heartRateZones.zoneZ5',
-] as const;
-
 const STACK_ID = 'zones';
-
-/** Etiquetas cortas dentro de la barra (no dependen del idioma). */
-const ZONE_SHORT_LABELS = ['Z1', 'Z2', 'Z3', 'Z4', 'Z5'] as const;
 
 /** Solo mostramos etiqueta en el segmento si hay más del 10 %. */
 const MIN_PERCENT_FOR_IN_BAR_LABEL = 10;
@@ -61,7 +54,7 @@ function borderRadiusForStackedSegment(
 }
 
 type HeartRateZoneRow = {
-  readonly zoneKey: (typeof ZONE_I18N_KEYS)[number];
+  readonly zoneKey: HeartRateZoneI18nKey;
   readonly percent: number;
   readonly color: string;
 };
@@ -88,10 +81,10 @@ export class ActivityHeartRateZonesChart {
     if (!m) {
       return [];
     }
-    return ZONE_I18N_KEYS.map((key, i) => ({
+    return HEART_RATE_ZONE_I18N_KEYS.map((key, i) => ({
       zoneKey: key,
       percent: m.zonePercents[i],
-      color: ZONE_COLORS[i],
+      color: HEART_RATE_ZONE_COLORS[i],
     }));
   });
 
@@ -104,7 +97,7 @@ export class ActivityHeartRateZonesChart {
     const transloco = this.transloco;
     const percents = m.zonePercents;
 
-    const series = ZONE_I18N_KEYS.map((key, i) => {
+    const series = HEART_RATE_ZONE_I18N_KEYS.map((key, i) => {
       const showInBarLabel = percents[i] > MIN_PERCENT_FOR_IN_BAR_LABEL;
       return {
         /** Clave i18n (no texto traducido): el tooltip traduce al vuelo y evita keys “pegadas” tras merge/cambio de idioma. */
@@ -114,13 +107,13 @@ export class ActivityHeartRateZonesChart {
         barCategoryGap: '0%',
         barGap: '0%',
         itemStyle: {
-          color: ZONE_COLORS[i],
+          color: HEART_RATE_ZONE_COLORS[i],
           borderRadius: borderRadiusForStackedSegment(percents, i),
         },
         label: {
           show: showInBarLabel,
           position: 'inside' as const,
-          formatter: ZONE_SHORT_LABELS[i],
+          formatter: HEART_RATE_ZONE_SHORT_LABELS[i],
           fontSize: 12,
           fontWeight: 600,
           color: inBarLabelColor(i),

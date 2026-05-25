@@ -4,21 +4,14 @@ import type { EChartsOption } from 'echarts';
 import { NgxEchartsDirective } from 'ngx-echarts';
 import { createTranslocoLangTick } from '../../../../../../core/i18n/create-transloco-lang-tick';
 import {
+  HEART_RATE_ZONE_COLORS,
+  HEART_RATE_ZONE_I18N_KEYS,
+  HEART_RATE_ZONE_SHORT_LABELS,
+} from '../../../../utils/heart-rate-zones.constants';
+import {
   formatHeartRateZoneDuration,
   type HeartRateZonesViewModel,
 } from '../../../../utils/heart-rate-zones.util';
-
-const ZONE_COLORS = ['#4e79a7', '#59a14f', '#edc948', '#f28e2b', '#e15759'] as const;
-
-const ZONE_I18N_KEYS = [
-  'activity.heartRateZones.zoneZ1',
-  'activity.heartRateZones.zoneZ2',
-  'activity.heartRateZones.zoneZ3',
-  'activity.heartRateZones.zoneZ4',
-  'activity.heartRateZones.zoneZ5',
-] as const;
-
-const ZONE_SHORT_LABELS = ['Z1', 'Z2', 'Z3', 'Z4', 'Z5'] as const;
 
 @Component({
   selector: 'app-activity-heart-rate-by-time-chart',
@@ -62,7 +55,7 @@ export class ActivityHeartRateByTimeChart {
           if (!(seconds > 0)) {
             return '';
           }
-          const title = transloco.translate(ZONE_I18N_KEYS[idx] ?? '');
+          const title = transloco.translate(HEART_RATE_ZONE_I18N_KEYS[idx] ?? '');
           return `${p.marker ?? ''}${title}: ${formatHeartRateZoneDuration(seconds)}`;
         },
       },
@@ -83,7 +76,7 @@ export class ActivityHeartRateByTimeChart {
       yAxis: {
         type: 'category',
         inverse: true,
-        data: [...ZONE_SHORT_LABELS],
+        data: [...HEART_RATE_ZONE_SHORT_LABELS],
         axisLabel: {
           color: '#0f172a',
           fontWeight: 600,
@@ -99,7 +92,7 @@ export class ActivityHeartRateByTimeChart {
           data: zoneSeconds.map((seconds, i) => ({
             value: seconds,
             itemStyle: {
-              color: ZONE_COLORS[i],
+              color: HEART_RATE_ZONE_COLORS[i],
               borderRadius: [0, 4, 4, 0],
             },
           })),
