@@ -67,12 +67,12 @@ type HeartRateZoneRow = {
 };
 
 @Component({
-  selector: 'app-activity-heart-rate-chart',
+  selector: 'app-activity-heart-rate-zones-chart',
   imports: [NgxEchartsDirective, TranslocoPipe],
-  templateUrl: './activity-heart-rate-chart.html',
-  styleUrl: './activity-heart-rate-chart.scss',
+  templateUrl: './activity-heart-rate-zones-chart.html',
+  styleUrl: './activity-heart-rate-zones-chart.scss',
 })
-export class ActivityHeartRateChart {
+export class ActivityHeartRateZonesChart {
   private readonly transloco = inject(TranslocoService);
 
   readonly zones = input<HeartRateZonesViewModel | null>(null);

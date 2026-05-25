@@ -4,12 +4,12 @@ import type { ActivitySplitsViewModel } from '../../../../utils/activity-splits.
 import type { HeartRateZonesViewModel } from '../../../../utils/heart-rate-zones.util';
 import { ActivityHeartRateBySplitChart } from '../activity-heart-rate-by-split-chart/activity-heart-rate-by-split-chart';
 import { ActivityHeartRateByTimeChart } from '../activity-heart-rate-by-time-chart/activity-heart-rate-by-time-chart';
-import { ActivityHeartRateChart } from '../activity-heart-rate-chart/activity-heart-rate-chart';
+import { ActivityHeartRateZonesChart } from '../activity-heart-rate-zones-chart/activity-heart-rate-zones-chart';
 
 @Component({
   selector: 'app-activity-heart-rate-metrics-grid',
   imports: [
-    ActivityHeartRateChart,
+    ActivityHeartRateZonesChart,
     ActivityHeartRateByTimeChart,
     ActivityHeartRateBySplitChart,
   ],
