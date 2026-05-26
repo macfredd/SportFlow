@@ -32,6 +32,7 @@ import { ActivitySplitsTable } from './components/activity-splits-table/activity
 import { UserProfile } from '../../../../shared/models/user-profile.model';
 import { UsersApiService } from '../../../profile/data/users-api.service';
 import { buildActivitySplitsViewModel } from '../../utils/activity-splits.util';
+import { buildCadenceMetricsViewModel } from '../../utils/cadence-metrics.util';
 import {
   buildHeartRateZonesViewModel,
 } from '../../utils/heart-rate-zones.util';
@@ -85,6 +86,10 @@ export class ActivityDetailPageComponent {
 
   readonly activitySplits = computed(() =>
     buildActivitySplitsViewModel(this.activityMainChart()),
+  );
+
+  readonly cadenceMetrics = computed(() =>
+    buildCadenceMetricsViewModel(this.activityMainChart(), this.activity()?.sport_type),
   );
 
   private readonly viewportLayout = toSignal(

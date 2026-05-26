@@ -1,0 +1,79 @@
+<section
+  class="cadence-kpis"
+  role="region"
+  [attr.aria-label]="'activity.cadence.kpisAria' | transloco"
+>
+  @if (metrics(); as m) {
+    <div class="cadence-kpis__grid">
+      <div class="cadence-kpis__cell">
+        <div class="cadence-kpis__value">
+          @if (m.avgCadence != null) {
+            <span class="cadence-kpis__number">{{ m.avgCadence | number: '1.0-0' }}</span>
+            <span class="cadence-kpis__unit">{{ unitKey() | transloco }}</span>
+          } @else {
+            <span class="cadence-kpis__number cadence-kpis__number--empty">{{
+              'common.empty' | transloco
+            }}</span>
+          }
+        </div>
+        <p class="cadence-kpis__label">
+          <mat-icon class="cadence-kpis__label-icon" aria-hidden="true">avg_pace</mat-icon>
+          <span>{{ 'activity.cadence.avgCadence' | transloco }}</span>
+        </p>
+      </div>
+
+      <div class="cadence-kpis__cell">
+        <div class="cadence-kpis__value">
+          @if (m.maxCadence != null) {
+            <span class="cadence-kpis__number">{{ m.maxCadence | number: '1.0-0' }}</span>
+            <span class="cadence-kpis__unit">{{ unitKey() | transloco }}</span>
+          } @else {
+            <span class="cadence-kpis__number cadence-kpis__number--empty">{{
+              'common.empty' | transloco
+            }}</span>
+          }
+        </div>
+        <p class="cadence-kpis__label">
+          <mat-icon class="cadence-kpis__label-icon" aria-hidden="true">north</mat-icon>
+          <span>{{ 'activity.cadence.maxCadence' | transloco }}</span>
+        </p>
+      </div>
+
+      <div class="cadence-kpis__cell">
+        <div class="cadence-kpis__value">
+          @if (m.minCadenceMoving != null) {
+            <span class="cadence-kpis__number">{{ m.minCadenceMoving | number: '1.0-0' }}</span>
+            <span class="cadence-kpis__unit">{{ unitKey() | transloco }}</span>
+          } @else {
+            <span class="cadence-kpis__number cadence-kpis__number--empty">{{
+              'common.empty' | transloco
+            }}</span>
+          }
+        </div>
+        <p class="cadence-kpis__label">
+          <mat-icon class="cadence-kpis__label-icon" aria-hidden="true">south</mat-icon>
+          <span>{{ 'activity.cadence.minCadenceMoving' | transloco }}</span>
+        </p>
+      </div>
+
+      <div class="cadence-kpis__cell">
+        <div class="cadence-kpis__value">
+          @if (m.movingCadence != null) {
+            <span class="cadence-kpis__number">{{ m.movingCadence | number: '1.0-0' }}</span>
+            <span class="cadence-kpis__unit">{{ unitKey() | transloco }}</span>
+          } @else {
+            <span class="cadence-kpis__number cadence-kpis__number--empty">{{
+              'common.empty' | transloco
+            }}</span>
+          }
+        </div>
+        <p class="cadence-kpis__label">
+          <mat-icon class="cadence-kpis__label-icon" aria-hidden="true">directions_run</mat-icon>
+          <span>{{ 'activity.cadence.movingCadence' | transloco }}</span>
+        </p>
+      </div>
+    </div>
+  } @else {
+    <p class="cadence-kpis__no-data">{{ 'activity.cadence.noData' | transloco }}</p>
+  }
+</section>

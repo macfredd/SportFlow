@@ -114,6 +114,16 @@
       "axisBpm": "lpm",
       "tooltipSplit": "Parcial"
     },
+    "cadence": {
+      "kpisAria": "Estadísticas resumidas de cadencia",
+      "noData": "No hay datos suficientes de cadencia con marca de tiempo para mostrar métricas de cadencia.",
+      "avgCadence": "Cadencia promedio",
+      "maxCadence": "Cadencia máxima",
+      "minCadenceMoving": "Cadencia mínima (en movimiento)",
+      "movingCadence": "Cadencia en movimiento",
+      "unitSpm": "ppm",
+      "unitRpm": "rpm"
+    },
     "summary": {
       "start": "Inicio",
       "end": "Fin",

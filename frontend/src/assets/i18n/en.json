@@ -114,6 +114,16 @@
       "axisBpm": "bpm",
       "tooltipSplit": "Split"
     },
+    "cadence": {
+      "kpisAria": "Cadence summary statistics",
+      "noData": "Not enough cadence samples with timestamps to show cadence metrics.",
+      "avgCadence": "Average cadence",
+      "maxCadence": "Max cadence",
+      "minCadenceMoving": "Min cadence (moving)",
+      "movingCadence": "Moving cadence",
+      "unitSpm": "spm",
+      "unitRpm": "rpm"
+    },
     "summary": {
       "sport": "Sport",
       "start": "Start",

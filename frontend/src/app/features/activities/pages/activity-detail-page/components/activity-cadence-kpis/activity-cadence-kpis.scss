@@ -1,0 +1,125 @@
+.cadence-kpis {
+  overflow: hidden;
+  border-radius: 0.75rem;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg);
+  box-shadow:
+    0 1px 2px color-mix(in srgb, var(--text-primary) 6%, transparent),
+    0 4px 12px color-mix(in srgb, var(--text-primary) 4%, transparent);
+  width: 100%;
+  max-width: 100%;
+}
+
+.cadence-kpis__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.35rem 0;
+  padding: 1.35rem clamp(0.5rem, 2vw, 1.75rem) 1.15rem;
+}
+
+.cadence-kpis__cell {
+  position: relative;
+  padding: 0.35rem clamp(0.35rem, 1.2vw, 0.85rem);
+  text-align: center;
+
+  &:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 15%;
+    right: 0;
+    bottom: 15%;
+    width: 1px;
+    background: var(--border-subtle);
+  }
+}
+
+.cadence-kpis__value {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.2rem 0.35rem;
+  min-height: 2.5rem;
+}
+
+.cadence-kpis__number {
+  font-size: clamp(1.35rem, 2.5vw, 2rem);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+  color: var(--primary-dark);
+  line-height: 1.1;
+}
+
+.cadence-kpis__number--empty {
+  font-size: clamp(1.15rem, 2vw, 1.75rem);
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.cadence-kpis__unit {
+  font-size: clamp(0.8125rem, 1.5vw, 1rem);
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.cadence-kpis__label {
+  margin: 0.5rem 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  line-height: 1.25;
+  padding-inline: 0.125rem;
+
+  mat-icon {
+    text-transform: none;
+    letter-spacing: normal;
+  }
+}
+
+.cadence-kpis__label-icon {
+  flex-shrink: 0;
+  width: 0.9375rem;
+  height: 0.9375rem;
+  font-size: 0.9375rem;
+  color: color-mix(in srgb, var(--primary) 55%, var(--text-secondary));
+}
+
+.cadence-kpis__no-data {
+  margin: 0;
+  padding: 2rem 1.25rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+@media (max-width: 639px) {
+  .cadence-kpis__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .cadence-kpis__cell {
+    padding: 0.65rem 0.35rem;
+
+    &::after {
+      display: none;
+    }
+
+    &:nth-child(odd):not(:nth-last-child(-n + 1)) {
+      border-right: 1px solid var(--border-subtle);
+    }
+
+    &:nth-child(-n + 2) {
+      border-bottom: 1px solid var(--border-subtle);
+    }
+  }
+}
