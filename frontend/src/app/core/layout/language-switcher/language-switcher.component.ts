@@ -6,6 +6,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { TranslocoPipe, TranslocoService } from '@ngneat/transloco';
 import { map, merge, of } from 'rxjs';
 
+import { APP_LANGUAGES, type AppLang } from '../../i18n/app-languages';
 import { APP_LANG_STORAGE_KEY } from '../../i18n/lang-storage';
 
 @Component({
@@ -18,6 +19,8 @@ import { APP_LANG_STORAGE_KEY } from '../../i18n/lang-storage';
 export class LanguageSwitcherComponent {
   private readonly transloco = inject(TranslocoService);
 
+  readonly languages = APP_LANGUAGES;
+
   readonly activeLang = toSignal(
     merge(of(this.transloco.getActiveLang()), this.transloco.langChanges$).pipe(
       map(() => this.transloco.getActiveLang()),
@@ -25,7 +28,7 @@ export class LanguageSwitcherComponent {
     { initialValue: this.transloco.getActiveLang() },
   );
 
-  setLang(lang: 'es' | 'en'): void {
+  setLang(lang: AppLang): void {
     this.transloco.setActiveLang(lang);
     try {
       localStorage.setItem(APP_LANG_STORAGE_KEY, lang);

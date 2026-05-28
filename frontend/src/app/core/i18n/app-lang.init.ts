@@ -1,12 +1,13 @@
 import { inject } from '@angular/core';
 import { getBrowserLang, TranslocoService } from '@ngneat/transloco';
 
+import { isAppLang, type AppLang } from './app-languages';
 import { APP_LANG_STORAGE_KEY } from './lang-storage';
 
-function resolveInitialLang(): 'es' | 'en' {
+function resolveInitialLang(): AppLang {
   try {
     const stored = localStorage.getItem(APP_LANG_STORAGE_KEY);
-    if (stored === 'en' || stored === 'es') {
+    if (isAppLang(stored)) {
       return stored;
     }
   } catch {
