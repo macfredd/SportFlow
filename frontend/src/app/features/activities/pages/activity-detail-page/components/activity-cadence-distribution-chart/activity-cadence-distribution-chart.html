@@ -1,0 +1,54 @@
+<div class="activity-cadence-distribution-chart-card">
+  <h2
+    id="activity-cadence-distribution-heading"
+    class="activity-cadence-distribution-chart__title text-base font-semibold text-[var(--text-primary)]"
+  >
+    {{ 'activity.cadenceDistribution.title' | transloco }}
+  </h2>
+
+  @if (distribution(); as model) {
+    <div class="activity-cadence-distribution-chart__body">
+      @if (chartOptions(); as opts) {
+        <div
+          class="activity-cadence-distribution-chart__chart-wrap"
+          role="img"
+          [attr.aria-label]="'activity.cadenceDistribution.title' | transloco"
+        >
+          <div echarts [options]="opts" class="activity-cadence-distribution-chart"></div>
+        </div>
+      }
+
+      <ul
+        class="activity-cadence-distribution-chart__legend"
+        aria-labelledby="activity-cadence-distribution-heading"
+      >
+        @for (row of zoneRows(); track row.zoneKey) {
+          <li class="activity-cadence-distribution-chart__legend-row">
+            <span
+              class="activity-cadence-distribution-chart__swatch"
+              [style.background-color]="row.color"
+              aria-hidden="true"
+            ></span>
+            <span class="activity-cadence-distribution-chart__legend-label">
+              <span class="activity-cadence-distribution-chart__legend-range">{{
+                row.rangeLabel
+              }}</span>
+              · {{ row.zoneKey | transloco }}
+            </span>
+          </li>
+        }
+      </ul>
+    </div>
+
+    <p class="activity-cadence-distribution-chart__note text-xs leading-relaxed text-[var(--text-secondary)]">
+      {{ 'activity.cadenceDistribution.defaultZonesNote' | transloco }}
+    </p>
+  } @else {
+    <p
+      class="activity-cadence-distribution-chart__empty mt-3 text-sm text-[var(--text-secondary)]"
+      role="status"
+    >
+      {{ 'activity.cadenceDistribution.noData' | transloco }}
+    </p>
+  }
+</div>

@@ -9,6 +9,7 @@ build/
 .cursor/
 .idea/
 .vscode/
+.vs/
 *.swp
 *.swo
 
@@ -39,3 +40,4 @@ FilesToUpload/
 
 ## Other files
 Improvements/
+scripts/

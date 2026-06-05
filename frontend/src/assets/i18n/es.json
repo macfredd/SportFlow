@@ -124,6 +124,20 @@
       "unitSpm": "ppm",
       "unitRpm": "rpm"
     },
+    "cadenceDistribution": {
+      "title": "Cadencia en el tiempo",
+      "noData": "No hay datos suficientes de cadencia con marca de tiempo para mostrar este gráfico.",
+      "axisTime": "Tiempo",
+      "avgLine": "Promedio",
+      "defaultZonesNote": "Zonas de cadencia por defecto para adultos (según tipo de deporte). Más adelante podrás personalizarlas según tu perfil."
+    },
+    "cadenceZones": {
+      "zoneZ1": "Muy baja",
+      "zoneZ2": "Baja",
+      "zoneZ3": "Moderada",
+      "zoneZ4": "Alta",
+      "zoneZ5": "Muy alta"
+    },
     "summary": {
       "start": "Inicio",
       "end": "Fin",

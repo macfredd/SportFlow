@@ -18,6 +18,15 @@ export function formatDurationHms(totalSeconds: number | null | undefined): stri
   return [h, m, sec].map((n) => String(n).padStart(2, '0')).join(':');
 }
 
+/** Elapsed activity time for chart axes: `H:MM:SS` (hours not zero-padded). */
+export function formatElapsedActivityTime(totalSeconds: number | null | undefined): string {
+  const s = Math.max(0, Math.floor(toNumber(totalSeconds)));
+  const h = Math.floor(s / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  const sec = s % 60;
+  return `${h}:${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
+}
+
 /**
  * Pace as time per displayed distance unit (e.g. min/km or min/mi). `M:SS` or `H:MM:SS` if over an hour.
  */

@@ -27,6 +27,10 @@
       <ng-template matTabContent>
         <div class="activity-metrics-tabs__panel">
           <app-activity-cadence-kpis [metrics]="cadenceMetrics()" />
+          <app-activity-cadence-distribution-chart
+            [distribution]="cadenceDistribution()"
+            [avgCadence]="cadenceMetrics()?.avgCadence ?? null"
+          />
         </div>
       </ng-template>
     </mat-tab>

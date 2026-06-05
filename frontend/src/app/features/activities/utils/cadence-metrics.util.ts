@@ -4,9 +4,18 @@ import type {
   TrackPointChartPublicDto,
 } from '../../../shared/models/activity.model';
 import {
+  CADENCE_DISTRIBUTION_MAX_BINS,
+  CADENCE_DISTRIBUTION_MIN_BINS,
+  CADENCE_DISTRIBUTION_SYMBOL_SIZE,
+  CADENCE_DISTRIBUTION_TARGET_POINTS_PER_BIN,
   CADENCE_MAX_SEGMENT_DT_SEC,
   minSpeedMpsForSport,
 } from './cadence-metrics.constants';
+import {
+  defaultCadenceZonesForSport,
+  type CadenceZoneDefinition,
+  zoneIndexForCadence,
+} from './cadence-zones.constants';
 
 export type CadenceUnit = 'spm' | 'rpm';
 
@@ -16,6 +25,32 @@ export interface CadenceMetricsViewModel {
   readonly minCadenceMoving: number | null;
   readonly movingCadence: number | null;
   readonly unit: CadenceUnit;
+}
+
+export interface CadenceDistributionPoint {
+  readonly elapsedSec: number;
+  readonly cadence: number;
+  readonly zoneIndex: number;
+}
+
+/** Binned X for chart display (compressed time axis + horizontal spread). */
+export interface CadenceDistributionPlotPoint {
+  readonly displayX: number;
+  readonly elapsedSec: number;
+  readonly cadence: number;
+  readonly zoneIndex: number;
+}
+
+export interface CadenceDistributionViewModel {
+  readonly unit: CadenceUnit;
+  readonly avgCadence: number;
+  readonly points: readonly CadenceDistributionPoint[];
+  readonly plotPoints: readonly CadenceDistributionPlotPoint[];
+  readonly binCount: number;
+  readonly zones: readonly CadenceZoneDefinition[];
+  readonly yMin: number;
+  readonly yMax: number;
+  readonly totalDurationSec: number;
 }
 
 function cadenceUnitForSport(sportType: SportType): CadenceUnit {
@@ -136,5 +171,127 @@ export function buildCadenceMetricsViewModel(
     minCadenceMoving: minMoving !== null ? Math.round(minMoving) : null,
     movingCadence: movingTotalSec > 0 ? Math.round(movingWeightedSum / movingTotalSec) : null,
     unit: cadenceUnitForSport(sportType),
+  };
+}
+
+function resolveDistributionBinCount(pointCount: number): number {
+  const byDensity = Math.round(pointCount / CADENCE_DISTRIBUTION_TARGET_POINTS_PER_BIN);
+  return Math.max(
+    CADENCE_DISTRIBUTION_MIN_BINS,
+    Math.min(CADENCE_DISTRIBUTION_MAX_BINS, byDensity),
+  );
+}
+
+/**
+ * Maps raw samples into fixed time bins on X (compressed axis) with horizontal spread
+ * so points form dense color bands instead of a thin sequential line.
+ */
+export function buildCadenceDistributionPlotPoints(
+  points: readonly CadenceDistributionPoint[],
+  totalDurationSec: number,
+): { plotPoints: CadenceDistributionPlotPoint[]; binCount: number } {
+  const binCount = resolveDistributionBinCount(points.length);
+  const buckets: CadenceDistributionPoint[][] = Array.from({ length: binCount }, () => []);
+
+  const duration = totalDurationSec > 0 ? totalDurationSec : 1;
+
+  for (const point of points) {
+    const ratio = Math.min(1, Math.max(0, point.elapsedSec / duration));
+    const binIndex = Math.min(binCount - 1, Math.floor(ratio * binCount));
+    buckets[binIndex].push(point);
+  }
+
+  const plotPoints: CadenceDistributionPlotPoint[] = [];
+  const binInnerMargin = 0.06;
+  const binInnerWidth = 1 - 2 * binInnerMargin;
+
+  for (let binIndex = 0; binIndex < binCount; binIndex++) {
+    const bucket = buckets[binIndex];
+    const n = bucket.length;
+    if (n === 0) {
+      continue;
+    }
+
+    for (let i = 0; i < n; i++) {
+      const point = bucket[i];
+      const slot = n === 1 ? 0.5 : (i + 0.5) / n;
+      plotPoints.push({
+        displayX: binIndex + binInnerMargin + slot * binInnerWidth,
+        elapsedSec: point.elapsedSec,
+        cadence: point.cadence,
+        zoneIndex: point.zoneIndex,
+      });
+    }
+  }
+
+  return {
+    plotPoints,
+    binCount,
+  };
+}
+
+/**
+ * One scatter point per valid cadence sample (raw track-point readings, not smoothed).
+ * Chart uses binned `plotPoints` for display; raw `points` kept for reference.
+ */
+export function buildCadenceDistributionViewModel(
+  chart: TrackPointChartPublicDto | null,
+  sportType: SportType | undefined,
+): CadenceDistributionViewModel | null {
+  const points = chart?.track_points ?? [];
+  if (points.length === 0 || !sportType) {
+    return null;
+  }
+
+  const zones = defaultCadenceZonesForSport(sportType);
+  const startMs = parseTimeMs(points[0].date_time);
+  if (startMs === null) {
+    return null;
+  }
+
+  const scatterPoints: CadenceDistributionPoint[] = [];
+  let lastElapsedSec = 0;
+
+  for (const point of points) {
+    if (!isValidCadence(point.cadence)) {
+      continue;
+    }
+    const atMs = parseTimeMs(point.date_time);
+    if (atMs === null) {
+      continue;
+    }
+    const elapsedSec = Math.max(0, (atMs - startMs) / 1000);
+    lastElapsedSec = Math.max(lastElapsedSec, elapsedSec);
+    scatterPoints.push({
+      elapsedSec,
+      cadence: point.cadence,
+      zoneIndex: zoneIndexForCadence(point.cadence, zones),
+    });
+  }
+
+  if (scatterPoints.length === 0) {
+    return null;
+  }
+
+  const cadenceValues = scatterPoints.map((p) => p.cadence);
+  const minCadence = Math.min(...cadenceValues);
+  const maxCadence = Math.max(...cadenceValues);
+  const yPadding = 5;
+  const weightedSum = scatterPoints.reduce((sum, p) => sum + p.cadence, 0);
+  const { plotPoints, binCount } = buildCadenceDistributionPlotPoints(
+    scatterPoints,
+    lastElapsedSec,
+  );
+
+  return {
+    unit: cadenceUnitForSport(sportType),
+    avgCadence: Math.round(weightedSum / scatterPoints.length),
+    points: scatterPoints,
+    plotPoints,
+    binCount,
+    zones,
+    yMin: Math.max(0, Math.floor(minCadence - yPadding)),
+    yMax: Math.ceil(maxCadence + yPadding),
+    totalDurationSec: lastElapsedSec,
   };
 }

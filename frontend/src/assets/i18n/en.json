@@ -124,6 +124,20 @@
       "unitSpm": "spm",
       "unitRpm": "rpm"
     },
+    "cadenceDistribution": {
+      "title": "Cadence over time",
+      "noData": "Not enough cadence samples with timestamps to show this chart.",
+      "axisTime": "Time",
+      "avgLine": "Average",
+      "defaultZonesNote": "Default cadence zones for adults (by sport type). Custom zones based on your profile will be available later."
+    },
+    "cadenceZones": {
+      "zoneZ1": "Very low",
+      "zoneZ2": "Low",
+      "zoneZ3": "Moderate",
+      "zoneZ4": "High",
+      "zoneZ5": "Very high"
+    },
     "summary": {
       "sport": "Sport",
       "start": "Start",
