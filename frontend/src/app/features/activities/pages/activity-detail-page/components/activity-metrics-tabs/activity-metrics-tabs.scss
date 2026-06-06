@@ -1,5 +1,19 @@
+:host {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: clip;
+}
+
 .activity-metrics-tabs__group {
   width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+
+:host ::ng-deep .activity-metrics-tabs__group .mat-mdc-tab-body-content {
+  overflow-x: clip;
 }
 
 :host ::ng-deep .activity-metrics-tabs__group .mat-mdc-tab-body-wrapper {
@@ -16,6 +30,9 @@
 .activity-metrics-tabs__panel {
   padding-top: 1rem;
   min-height: 27rem;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: clip;
 }
 
 .activity-metrics-tabs__panel--placeholder {

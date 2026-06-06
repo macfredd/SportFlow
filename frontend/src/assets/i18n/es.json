@@ -131,6 +131,21 @@
       "avgLine": "Promedio",
       "defaultZonesNote": "Zonas de cadencia por defecto para adultos (según tipo de deporte). Más adelante podrás personalizarlas según tu perfil."
     },
+    "cadenceVsSpeed": {
+      "title": "Cadencia vs velocidad",
+      "noData": "No hay datos suficientes de cadencia y velocidad para mostrar este mapa de calor.",
+      "axisSpeed": "Velocidad (m/s)",
+      "axisCadence": "Cadencia",
+      "tooltipCadence": "Cadencia",
+      "tooltipSpeed": "Velocidad",
+      "tooltipSamples": "Muestras",
+      "tooltipTime": "Tiempo estimado",
+      "tooltipPercentSamples": "Porcentaje de muestras",
+      "tooltipPercentTime": "Porcentaje de tiempo",
+      "frequencyLow": "Menos muestras",
+      "frequencyHigh": "Más muestras",
+      "bucketNote": "Bins: {{speedStep}} m/s × {{cadenceStep}} {{unit}}. El color indica con qué frecuencia estuviste en cada combinación."
+    },
     "cadenceZones": {
       "zoneZ1": "Muy baja",
       "zoneZ2": "Baja",

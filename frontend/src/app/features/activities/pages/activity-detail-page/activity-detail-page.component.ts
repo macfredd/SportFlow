@@ -33,6 +33,7 @@ import { UserProfile } from '../../../../shared/models/user-profile.model';
 import { UsersApiService } from '../../../profile/data/users-api.service';
 import { buildActivitySplitsViewModel } from '../../utils/activity-splits.util';
 import { buildCadenceMetricsViewModel, buildCadenceDistributionViewModel } from '../../utils/cadence-metrics.util';
+import { buildCadenceSpeedHeatmapViewModel } from '../../utils/cadence-speed-heatmap.util';
 import {
   buildHeartRateZonesViewModel,
 } from '../../utils/heart-rate-zones.util';
@@ -94,6 +95,10 @@ export class ActivityDetailPageComponent {
 
   readonly cadenceDistribution = computed(() =>
     buildCadenceDistributionViewModel(this.activityMainChart(), this.activity()?.sport_type),
+  );
+
+  readonly cadenceSpeedHeatmap = computed(() =>
+    buildCadenceSpeedHeatmapViewModel(this.activityMainChart(), this.activity()?.sport_type),
   );
 
   private readonly viewportLayout = toSignal(

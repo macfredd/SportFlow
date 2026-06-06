@@ -1,0 +1,53 @@
+<div class="activity-cadence-vs-speed-chart-card">
+  <h2
+    id="activity-cadence-vs-speed-heading"
+    class="activity-cadence-vs-speed-chart__title text-base font-semibold text-[var(--text-primary)]"
+  >
+    {{ 'activity.cadenceVsSpeed.title' | transloco }}
+  </h2>
+
+  @if (heatmap(); as model) {
+    <div class="activity-cadence-vs-speed-chart__body">
+      @if (chartOptions(); as opts) {
+        <div
+          class="activity-cadence-vs-speed-chart__chart-wrap"
+          role="img"
+          [attr.aria-label]="'activity.cadenceVsSpeed.title' | transloco"
+        >
+          @for (langKey of [chartLangKey()]; track langKey) {
+            <div echarts [options]="opts" class="activity-cadence-vs-speed-chart"></div>
+          }
+        </div>
+      }
+
+      <div
+        class="activity-cadence-vs-speed-chart__frequency-legend"
+        aria-hidden="true"
+      >
+        <span class="activity-cadence-vs-speed-chart__frequency-label">{{
+          'activity.cadenceVsSpeed.frequencyLow' | transloco
+        }}</span>
+        <span
+          class="activity-cadence-vs-speed-chart__frequency-bar"
+          [style.background]="
+            'linear-gradient(to right, ' + frequencyLegendColors.join(', ') + ')'
+          "
+        ></span>
+        <span class="activity-cadence-vs-speed-chart__frequency-label">{{
+          'activity.cadenceVsSpeed.frequencyHigh' | transloco
+        }}</span>
+      </div>
+    </div>
+
+    <p class="activity-cadence-vs-speed-chart__note text-xs leading-relaxed text-[var(--text-secondary)]">
+      {{ 'activity.cadenceVsSpeed.bucketNote' | transloco: { speedStep: model.speedBucketMps, cadenceStep: model.cadenceBucket, unit: model.unit } }}
+    </p>
+  } @else {
+    <p
+      class="activity-cadence-vs-speed-chart__empty mt-3 text-sm text-[var(--text-secondary)]"
+      role="status"
+    >
+      {{ 'activity.cadenceVsSpeed.noData' | transloco }}
+    </p>
+  }
+</div>

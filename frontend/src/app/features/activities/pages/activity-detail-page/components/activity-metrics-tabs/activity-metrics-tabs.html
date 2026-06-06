@@ -31,6 +31,7 @@
             [distribution]="cadenceDistribution()"
             [avgCadence]="cadenceMetrics()?.avgCadence ?? null"
           />
+          <app-activity-cadence-vs-speed-chart [heatmap]="cadenceSpeedHeatmap()" />
         </div>
       </ng-template>
     </mat-tab>

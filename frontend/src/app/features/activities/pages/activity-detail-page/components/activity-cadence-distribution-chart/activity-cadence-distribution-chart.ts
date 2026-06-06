@@ -51,11 +51,11 @@ export class ActivityCadenceDistributionChart {
     }
 
     const transloco = this.transloco;
+    const timeLabel = transloco.translate('activity.cadenceDistribution.axisTime');
     const unitLabel =
       model.unit === 'rpm'
         ? transloco.translate('activity.cadence.unitRpm')
         : transloco.translate('activity.cadence.unitSpm');
-    const timeLabel = transloco.translate('activity.cadenceDistribution.axisTime');
     const avgLabel = transloco.translate('activity.cadenceDistribution.avgLine');
     const avg = this.avgCadence() ?? model.avgCadence;
     const plotPoints = model.plotPoints;
@@ -93,9 +93,10 @@ export class ActivityCadenceDistributionChart {
           const zoneKey = model.zones[point.zoneIndex]?.i18nKey;
           const zoneName = zoneKey ? transloco.translate(zoneKey) : '';
           const timeStr = formatElapsedActivityTime(point.elapsedSec);
+          const t = transloco;
           const lines = [
-            `${timeLabel}: ${timeStr}`,
-            `${unitLabel}: ${Math.round(point.cadence)}`,
+            `${t.translate('activity.cadenceDistribution.axisTime')}: ${timeStr}`,
+            `${model.unit === 'rpm' ? t.translate('activity.cadence.unitRpm') : t.translate('activity.cadence.unitSpm')}: ${Math.round(point.cadence)}`,
           ];
           if (zoneName) {
             lines.push(zoneName);

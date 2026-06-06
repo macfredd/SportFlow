@@ -131,6 +131,21 @@
       "avgLine": "Average",
       "defaultZonesNote": "Default cadence zones for adults (by sport type). Custom zones based on your profile will be available later."
     },
+    "cadenceVsSpeed": {
+      "title": "Cadence vs speed",
+      "noData": "Not enough cadence and speed samples to show this heatmap.",
+      "axisSpeed": "Speed (m/s)",
+      "axisCadence": "Cadence",
+      "tooltipCadence": "Cadence",
+      "tooltipSpeed": "Speed",
+      "tooltipSamples": "Samples",
+      "tooltipTime": "Estimated time",
+      "tooltipPercentSamples": "Share of samples",
+      "tooltipPercentTime": "Share of time",
+      "frequencyLow": "Fewer samples",
+      "frequencyHigh": "More samples",
+      "bucketNote": "Bins: {{speedStep}} m/s × {{cadenceStep}} {{unit}}. Cell color shows how often you were in each combination."
+    },
     "cadenceZones": {
       "zoneZ1": "Very low",
       "zoneZ2": "Low",
