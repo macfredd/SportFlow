@@ -22,20 +22,20 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslocoPipe, TranslocoService } from '@ngneat/transloco';
 import { forkJoin } from 'rxjs';
 
-import type { Activity } from '../../../../shared/models/activity.model';
-import type { UserConfig } from '../../../../shared/models/user-config.model';
+import type { Activity } from '@shared/models/activity.model';
+import type { UserConfig } from '@shared/models/user-config.model';
 import {
   formatDistanceDisplay,
   type DistanceUnitCode,
-} from '../../../../shared/utils/measurement-display.util';
-import { ActivitiesApiService } from '../../data/activities-api.service';
-import { UserConfigApiService } from '../../data/user-config-api.service';
+} from '@shared/utils/measurement-display.util';
+import { ActivitiesApiService } from '@features/activities/data/activities-api.service';
+import { UserConfigApiService } from '@features/activities/data/user-config-api.service';
 import {
   formatDurationHms,
   sportTypeIconName,
   sportTypeLabelKey,
   toNumber,
-} from '../../utils/activity-display.util';
+} from '@features/activities/utils/activity-display.util';
 
 @Component({
   selector: 'app-activities-list-page',

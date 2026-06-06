@@ -4,9 +4,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { TranslocoPipe } from '@ngneat/transloco';
 import { finalize } from 'rxjs';
 
-import type { ActivitiesBySportType } from '../../../../shared/models/activity.model';
-import { ActivitiesApiService } from '../../data/activities-api.service';
-import { sportTypeIconName, sportTypeLabelKey } from '../../utils/activity-display.util';
+import type { ActivitiesBySportType } from '@shared/models/activity.model';
+import { ActivitiesApiService } from '@features/activities/data/activities-api.service';
+import { sportTypeIconName, sportTypeLabelKey } from '@features/activities/utils/activity-display.util';
 
 export type TotalActivityPeriodId = 'w' | 'm' | '3m' | '6m' | '1y' | 'all';
 

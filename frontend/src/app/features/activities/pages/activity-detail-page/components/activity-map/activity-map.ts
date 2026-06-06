@@ -14,7 +14,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslocoPipe } from '@ngneat/transloco';
 import * as L from 'leaflet';
 
-import type { TrackPointRoute } from '../../../../../../shared/models/activity.model';
+import type { TrackPointRoute } from '@shared/models/activity.model';
 
 export type ActivityMapBase = 'street' | 'satellite';
 

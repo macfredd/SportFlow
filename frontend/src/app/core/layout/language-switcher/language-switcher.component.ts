@@ -6,8 +6,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { TranslocoPipe, TranslocoService } from '@ngneat/transloco';
 import { map, merge, of } from 'rxjs';
 
-import { APP_LANGUAGES, type AppLang } from '../../i18n/app-languages';
-import { APP_LANG_STORAGE_KEY } from '../../i18n/lang-storage';
+import { APP_LANGUAGES, type AppLang } from '@core/i18n/app-languages';
+import { APP_LANG_STORAGE_KEY } from '@core/i18n/lang-storage';
 
 @Component({
   selector: 'app-language-switcher',

@@ -8,7 +8,7 @@ export type TrackPointHoverPayload = {
   readonly seq: number;
 };
 
-import type { TrackPointChartPublicDto } from '../../../../../../shared/models/activity.model';
+import type { TrackPointChartPublicDto } from '@shared/models/activity.model';
 
 const METERS_TO_KM = 0.001;
 const METERS_TO_MI = 0.000621371192314;

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
 
-import type { WidgetContainerPadding } from '../../models/widget-container.model';
+import type { WidgetContainerPadding } from '@shared/models/widget-container.model';
 
 @Component({
   selector: 'app-widget-container',

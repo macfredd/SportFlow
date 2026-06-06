@@ -1,4 +1,4 @@
-import type { UserHeightPublic } from '../utils/measurement-display.util';
+import type { UserHeightPublic } from '@shared/utils/measurement-display.util';
 
 export interface UserProfile {
   readonly id: string;

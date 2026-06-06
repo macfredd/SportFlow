@@ -1,4 +1,4 @@
-import type { SportType, TrackPointChartPublicDto } from '../../../shared/models/activity.model';
+import type { SportType, TrackPointChartPublicDto } from '@shared/models/activity.model';
 import {
   CADENCE_MAX_SEGMENT_DT_SEC,
   CADENCE_SPEED_HEATMAP_CADENCE_BUCKET,

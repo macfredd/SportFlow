@@ -1,7 +1,7 @@
 import type {
   TrackPointChartDetailPublicDto,
   TrackPointChartPublicDto,
-} from '../../../shared/models/activity.model';
+} from '@shared/models/activity.model';
 import { formatPacePerDistanceUnit } from './activity-display.util';
 
 const METERS_PER_KM = 1000;

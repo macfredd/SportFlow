@@ -3,7 +3,7 @@ import { Component, computed, input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslocoPipe } from '@ngneat/transloco';
 
-import type { CadenceMetricsViewModel } from '../../../../utils/cadence-metrics.util';
+import type { CadenceMetricsViewModel } from '@features/activities/utils/cadence-metrics.util';
 
 @Component({
   selector: 'app-activity-cadence-kpis',

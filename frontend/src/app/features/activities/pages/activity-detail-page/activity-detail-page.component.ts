@@ -18,9 +18,9 @@ import type {
   ActivityDetailSummary,
   TrackPointChartPublicDto,
   TrackPointRoute,
-} from '../../../../shared/models/activity.model';
-import { LayoutShellService } from '../../../../core/layout/layout-shell.service';
-import { ActivitiesApiService } from '../../data/activities-api.service';
+} from '@shared/models/activity.model';
+import { LayoutShellService } from '@core/layout/layout-shell.service';
+import { ActivitiesApiService } from '@features/activities/data/activities-api.service';
 import { ActivitySummary } from './components/activity-summary/activity-summary';
 import { ActivityMap } from './components/activity-map/activity-map';
 import {
@@ -29,14 +29,14 @@ import {
 } from './components/activity-main-chart/activity-main-chart';
 import { ActivityMetricsTabs } from './components/activity-metrics-tabs/activity-metrics-tabs';
 import { ActivitySplitsTable } from './components/activity-splits-table/activity-splits-table';
-import { UserProfile } from '../../../../shared/models/user-profile.model';
-import { UsersApiService } from '../../../profile/data/users-api.service';
-import { buildActivitySplitsViewModel } from '../../utils/activity-splits.util';
-import { buildCadenceMetricsViewModel, buildCadenceDistributionViewModel } from '../../utils/cadence-metrics.util';
-import { buildCadenceSpeedHeatmapViewModel } from '../../utils/cadence-speed-heatmap.util';
+import { UserProfile } from '@shared/models/user-profile.model';
+import { UsersApiService } from '@features/profile/data/users-api.service';
+import { buildActivitySplitsViewModel } from '@features/activities/utils/activity-splits.util';
+import { buildCadenceMetricsViewModel, buildCadenceDistributionViewModel } from '@features/activities/utils/cadence-metrics.util';
+import { buildCadenceSpeedHeatmapViewModel } from '@features/activities/utils/cadence-speed-heatmap.util';
 import {
   buildHeartRateZonesViewModel,
-} from '../../utils/heart-rate-zones.util';
+} from '@features/activities/utils/heart-rate-zones.util';
 
 @Component({
   standalone: true,

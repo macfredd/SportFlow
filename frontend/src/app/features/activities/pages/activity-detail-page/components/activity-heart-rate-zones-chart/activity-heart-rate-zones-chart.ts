@@ -2,18 +2,18 @@ import { Component, computed, inject, input } from '@angular/core';
 import { TranslocoPipe, TranslocoService } from '@ngneat/transloco';
 import type { EChartsOption } from 'echarts';
 import { NgxEchartsDirective } from 'ngx-echarts';
-import { ECHARTS_ANIMATION_DURATION_MS } from '../../../../../../core/echarts/echarts.constants';
-import { createTranslocoLangTick } from '../../../../../../core/i18n/create-transloco-lang-tick';
+import { ECHARTS_ANIMATION_DURATION_MS } from '@core/echarts/echarts.constants';
+import { createTranslocoLangTick } from '@core/i18n/create-transloco-lang-tick';
 import {
   HEART_RATE_ZONE_COLORS,
   HEART_RATE_ZONE_I18N_KEYS,
   HEART_RATE_ZONE_SHORT_LABELS,
   type HeartRateZoneI18nKey,
-} from '../../../../utils/heart-rate-zones.constants';
+} from '@features/activities/utils/heart-rate-zones.constants';
 import {
   DEFAULT_ESTIMATED_MAX_HR_BPM,
   type HeartRateZonesViewModel,
-} from '../../../../utils/heart-rate-zones.util';
+} from '@features/activities/utils/heart-rate-zones.util';
 
 const STACK_ID = 'zones';
 

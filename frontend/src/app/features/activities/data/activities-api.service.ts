@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import type { Observable } from 'rxjs';
 
-import { API_BASE_URL, DEV_USER_ID } from '../../../core/config/api.tokens';
+import { API_BASE_URL, DEV_USER_ID } from '@core/config/api.tokens';
 import type {
   ActivitiesBySportType,
   Activity,
@@ -10,7 +10,7 @@ import type {
   LastActivitySummary,
   TrackPointChartPublicDto,
   TrackPointRoute,
-} from '../../../shared/models/activity.model';
+} from '@shared/models/activity.model';
 
 @Injectable({ providedIn: 'root' })
 export class ActivitiesApiService {

@@ -3,11 +3,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { TranslocoPipe } from '@ngneat/transloco';
 
-import type { ActivitySplitsViewModel } from '../../../../utils/activity-splits.util';
-import type { CadenceDistributionViewModel, CadenceMetricsViewModel } from '../../../../utils/cadence-metrics.util';
-import type { CadenceSpeedHeatmapViewModel } from '../../../../utils/cadence-speed-heatmap.util';
+import type { ActivitySplitsViewModel } from '@features/activities/utils/activity-splits.util';
+import type { CadenceDistributionViewModel, CadenceMetricsViewModel } from '@features/activities/utils/cadence-metrics.util';
+import type { CadenceSpeedHeatmapViewModel } from '@features/activities/utils/cadence-speed-heatmap.util';
 import { ActivityCadenceVsSpeedChart } from '../activity-cadence-vs-speed-chart/activity-cadence-vs-speed-chart';
-import type { HeartRateZonesViewModel } from '../../../../utils/heart-rate-zones.util';
+import type { HeartRateZonesViewModel } from '@features/activities/utils/heart-rate-zones.util';
 import { ActivityCadenceDistributionChart } from '../activity-cadence-distribution-chart/activity-cadence-distribution-chart';
 import { ActivityCadenceKpis } from '../activity-cadence-kpis/activity-cadence-kpis';
 import { ActivityHeartRateMetricsGrid } from '../activity-heart-rate-metrics-grid/activity-heart-rate-metrics-grid';

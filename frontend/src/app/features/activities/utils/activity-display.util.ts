@@ -1,4 +1,4 @@
-import type { ActivityDetailSpeedUnit } from '../../../shared/models/activity.model';
+import type { ActivityDetailSpeedUnit } from '@shared/models/activity.model';
 
 export function isMissingHeartRate(value: number | null | undefined): boolean {
   return value == null || !Number.isFinite(value) || value <= 0;

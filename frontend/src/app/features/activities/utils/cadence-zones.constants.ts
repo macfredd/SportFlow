@@ -1,4 +1,4 @@
-import type { SportType } from '../../../shared/models/activity.model';
+import type { SportType } from '@shared/models/activity.model';
 
 export interface CadenceZoneDefinition {
   readonly minInclusive: number;

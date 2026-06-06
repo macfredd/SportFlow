@@ -2,11 +2,11 @@ import { Component, computed, inject, input } from '@angular/core';
 import { TranslocoPipe, TranslocoService } from '@ngneat/transloco';
 import type { EChartsOption } from 'echarts';
 import { NgxEchartsDirective } from 'ngx-echarts';
-import { ECHARTS_ANIMATION_DURATION_MS } from '../../../../../../core/echarts/echarts.constants';
-import { createTranslocoLangTick } from '../../../../../../core/i18n/create-transloco-lang-tick';
-import { formatElapsedActivityTime } from '../../../../utils/activity-display.util';
-import type { CadenceDistributionViewModel } from '../../../../utils/cadence-metrics.util';
-import { cadenceZoneVisualMapPieces, formatCadenceZoneRangeLabel } from '../../../../utils/cadence-zones.constants';
+import { ECHARTS_ANIMATION_DURATION_MS } from '@core/echarts/echarts.constants';
+import { createTranslocoLangTick } from '@core/i18n/create-transloco-lang-tick';
+import { formatElapsedActivityTime } from '@features/activities/utils/activity-display.util';
+import type { CadenceDistributionViewModel } from '@features/activities/utils/cadence-metrics.util';
+import { cadenceZoneVisualMapPieces, formatCadenceZoneRangeLabel } from '@features/activities/utils/cadence-zones.constants';
 import {
   CADENCE_CHART_AXIS_COLOR,
   CADENCE_CHART_AVG_LINE_COLOR,
@@ -14,7 +14,7 @@ import {
   CADENCE_DISTRIBUTION_HOVER_SYMBOL_SIZE,
   CADENCE_DISTRIBUTION_POINT_OPACITY,
   CADENCE_DISTRIBUTION_SYMBOL_SIZE,
-} from '../../../../utils/cadence-metrics.constants';
+} from '@features/activities/utils/cadence-metrics.constants';
 
 @Component({
   selector: 'app-activity-cadence-distribution-chart',

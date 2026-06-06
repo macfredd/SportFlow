@@ -6,14 +6,14 @@ import { TranslocoPipe, TranslocoService } from '@ngneat/transloco';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { combineLatest, finalize, map, merge, of, switchMap } from 'rxjs';
 
-import type { LastActivitySummary } from '../../../../shared/models/activity.model';
+import type { LastActivitySummary } from '@shared/models/activity.model';
 import {
   formatDistanceDisplay,
   formatDurationCompactDisplay,
-} from '../../../../shared/utils/measurement-display.util';
-import { buildRelativeActivityStart } from '../../../../shared/utils/relative-activity-start.util';
-import { ActivitiesApiService } from '../../data/activities-api.service';
-import { sportTypeIconName, sportTypeLabelKey } from '../../utils/activity-display.util';
+} from '@shared/utils/measurement-display.util';
+import { buildRelativeActivityStart } from '@shared/utils/relative-activity-start.util';
+import { ActivitiesApiService } from '@features/activities/data/activities-api.service';
+import { sportTypeIconName, sportTypeLabelKey } from '@features/activities/utils/activity-display.util';
 
 @Component({
   selector: 'app-last-activity-sidebar-panel',

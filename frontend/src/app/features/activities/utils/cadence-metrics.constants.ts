@@ -1,4 +1,4 @@
-import type { SportType } from '../../../shared/models/activity.model';
+import type { SportType } from '@shared/models/activity.model';
 
 /** Minimum implied speed (m/s) to treat a segment as moving (aligned with backend moving-time heuristics). */
 export function minSpeedMpsForSport(sportType: SportType): number {

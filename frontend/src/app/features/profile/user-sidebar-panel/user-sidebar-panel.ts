@@ -5,10 +5,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { TranslocoPipe, TranslocoService } from '@ngneat/transloco';
 import { combineLatest, map, merge, of, switchMap } from 'rxjs';
 
-import type { UserProfile } from '../../../shared/models/user-profile.model';
-import { formatHeightDisplay } from '../../../shared/utils/measurement-display.util';
-import { ageInYearsFromIsoDate } from '../../../shared/utils/age-from-birth-date';
-import { UsersApiService } from '../data/users-api.service';
+import type { UserProfile } from '@shared/models/user-profile.model';
+import { formatHeightDisplay } from '@shared/utils/measurement-display.util';
+import { ageInYearsFromIsoDate } from '@shared/utils/age-from-birth-date';
+import { UsersApiService } from '@features/profile/data/users-api.service';
 
 @Component({
   selector: 'app-user-sidebar-panel',

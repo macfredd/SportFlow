@@ -22,9 +22,9 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { TranslocoPipe } from '@ngneat/transloco';
 import { map } from 'rxjs';
 
-import { UserSidebarPanel } from '../../../features/profile/user-sidebar-panel/user-sidebar-panel';
-import { LastActivitySidebarPanel } from '../../../features/activities/widgets/last-activity-sidebar-panel/last-activity-sidebar-panel';
-import { TotalActivitySidebarPanel } from '../../../features/activities/widgets/total-activity-sidebar-panel/total-activity-sidebar-panel';
+import { UserSidebarPanel } from '@features/profile/user-sidebar-panel/user-sidebar-panel';
+import { LastActivitySidebarPanel } from '@features/activities/widgets/last-activity-sidebar-panel/last-activity-sidebar-panel';
+import { TotalActivitySidebarPanel } from '@features/activities/widgets/total-activity-sidebar-panel/total-activity-sidebar-panel';
 import { LanguageSwitcherComponent } from '../language-switcher/language-switcher.component';
 import { LayoutShellService } from '../layout-shell.service';
 

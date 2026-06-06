@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import type { Observable } from 'rxjs';
 
-import { API_BASE_URL, DEV_USER_ID } from '../../../core/config/api.tokens';
-import type { UserConfig } from '../../../shared/models/user-config.model';
+import { API_BASE_URL, DEV_USER_ID } from '@core/config/api.tokens';
+import type { UserConfig } from '@shared/models/user-config.model';
 
 @Injectable({ providedIn: 'root' })
 export class UserConfigApiService {

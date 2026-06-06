@@ -2,22 +2,22 @@ import { Component, computed, inject, input } from '@angular/core';
 import { TranslocoPipe, TranslocoService } from '@ngneat/transloco';
 import type { EChartsOption } from 'echarts';
 import { NgxEchartsDirective } from 'ngx-echarts';
-import { ECHARTS_ANIMATION_DURATION_MS } from '../../../../../../core/echarts/echarts.constants';
+import { ECHARTS_ANIMATION_DURATION_MS } from '@core/echarts/echarts.constants';
 import {
   CADENCE_HEATMAP_TOOLTIP_STYLE,
   containedTooltipPosition,
   formatEchartsTooltipTable,
-} from '../../../../../../core/echarts/echarts-tooltip.util';
-import { createTranslocoLangTick } from '../../../../../../core/i18n/create-transloco-lang-tick';
-import { formatElapsedActivityTime } from '../../../../utils/activity-display.util';
+} from '@core/echarts/echarts-tooltip.util';
+import { createTranslocoLangTick } from '@core/i18n/create-transloco-lang-tick';
+import { formatElapsedActivityTime } from '@features/activities/utils/activity-display.util';
 import {
   CADENCE_CHART_AXIS_COLOR,
   CADENCE_CHART_GRID_COLOR,
   CADENCE_HEATMAP_AXIS_BOUNDARY_GAP,
   CADENCE_HEATMAP_FREQUENCY_COLORS,
-} from '../../../../utils/cadence-metrics.constants';
-import type { CadenceSpeedHeatmapViewModel } from '../../../../utils/cadence-speed-heatmap.util';
-import { formatCadenceBinRangeLabel } from '../../../../utils/cadence-speed-heatmap.util';
+} from '@features/activities/utils/cadence-metrics.constants';
+import type { CadenceSpeedHeatmapViewModel } from '@features/activities/utils/cadence-speed-heatmap.util';
+import { formatCadenceBinRangeLabel } from '@features/activities/utils/cadence-speed-heatmap.util';
 
 /** Claves i18n: el tooltip traduce al vuelo (evita keys pegadas tras merge/cambio de idioma). */
 const CADENCE_VS_SPEED_TOOLTIP_I18N = {

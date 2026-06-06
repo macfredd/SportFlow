@@ -1,7 +1,7 @@
 import { Component, computed, input } from '@angular/core';
 import { TranslocoPipe } from '@ngneat/transloco';
 
-import type { ActivitySplitsViewModel } from '../../../../utils/activity-splits.util';
+import type { ActivitySplitsViewModel } from '@features/activities/utils/activity-splits.util';
 
 @Component({
   selector: 'app-activity-splits-table',

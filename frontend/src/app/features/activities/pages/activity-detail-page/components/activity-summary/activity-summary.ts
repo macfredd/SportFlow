@@ -5,8 +5,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { TranslocoPipe, TranslocoService } from '@ngneat/transloco';
 import { map, merge, of } from 'rxjs';
 
-import { translocoLangToDateLocale } from '../../../../../../core/i18n/transloco-date-locale';
-import type { ActivityDetailSummary } from '../../../../../../shared/models/activity.model';
+import { translocoLangToDateLocale } from '@core/i18n/transloco-date-locale';
+import type { ActivityDetailSummary } from '@shared/models/activity.model';
 import {
   activityDetailSpeedUnitKey,
   formatDurationHms,
@@ -14,7 +14,7 @@ import {
   isMissingHeartRate,
   sportTypeIconName,
   sportTypeLabelKey,
-} from '../../../../utils/activity-display.util';
+} from '@features/activities/utils/activity-display.util';
 
 @Component({
   standalone: true,

@@ -1,4 +1,4 @@
-import type { TrackPointChartDetailPublicDto } from '../../../shared/models/activity.model';
+import type { TrackPointChartDetailPublicDto } from '@shared/models/activity.model';
 
 /** When date of birth is unknown: assumed max HR (≈ age 30 under 220 − age). */
 export const DEFAULT_ESTIMATED_MAX_HR_BPM = 190;

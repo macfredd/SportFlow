@@ -2,10 +2,10 @@ import { Component, computed, inject, input } from '@angular/core';
 import { TranslocoPipe, TranslocoService } from '@ngneat/transloco';
 import type { EChartsOption } from 'echarts';
 import { NgxEchartsDirective } from 'ngx-echarts';
-import { ECHARTS_ANIMATION_DURATION_MS } from '../../../../../../core/echarts/echarts.constants';
-import { createTranslocoLangTick } from '../../../../../../core/i18n/create-transloco-lang-tick';
+import { ECHARTS_ANIMATION_DURATION_MS } from '@core/echarts/echarts.constants';
+import { createTranslocoLangTick } from '@core/i18n/create-transloco-lang-tick';
 
-import type { ActivitySplitsViewModel } from '../../../../utils/activity-splits.util';
+import type { ActivitySplitsViewModel } from '@features/activities/utils/activity-splits.util';
 
 const HR_LINE_COLOR = '#dc2626';
 

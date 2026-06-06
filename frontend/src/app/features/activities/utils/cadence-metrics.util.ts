@@ -2,7 +2,7 @@ import type {
   SportType,
   TrackPointChartDetailPublicDto,
   TrackPointChartPublicDto,
-} from '../../../shared/models/activity.model';
+} from '@shared/models/activity.model';
 import {
   CADENCE_DISTRIBUTION_MAX_BINS,
   CADENCE_DISTRIBUTION_MIN_BINS,
