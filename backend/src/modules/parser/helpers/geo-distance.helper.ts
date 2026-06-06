@@ -1,4 +1,4 @@
-import { ParsedTrackPoint } from '../dto/parsed-track-point.dto';
+import { ParsedTrackPoint } from '@/modules/parser/dto/parsed-track-point.dto';
 
 /** Mean Earth radius (meters), sufficient for path lengths on activity tracks. */
 const EARTH_RADIUS_M = 6_371_000;

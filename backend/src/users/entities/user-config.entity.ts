@@ -11,9 +11,9 @@ import {
   GlucoseUnit,
   HeightUnit,
   WeightUnit,
-} from '../enums';
+} from '@/users/enums';
 import { UserEntity } from './user.entity';
-import { SpeedUnit } from '../enums/speed-unit.enum';
+import { SpeedUnit } from '@/users/enums/speed-unit.enum';
 
 export type DashboardWidgetsConfig = Record<string, { enabled: boolean }>;
 

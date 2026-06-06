@@ -1,4 +1,4 @@
-import { DistanceUnit } from '../../../users/enums';
+import { DistanceUnit } from '@/users/enums';
 import { roundToDecimals, toNumber } from './coerce-number';
 
 const DISTANCE_DISPLAY_DECIMALS = 2;

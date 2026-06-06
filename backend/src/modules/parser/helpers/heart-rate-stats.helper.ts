@@ -1,4 +1,4 @@
-import { ParsedTrackPoint } from '../dto/parsed-track-point.dto';
+import { ParsedTrackPoint } from '@/modules/parser/dto/parsed-track-point.dto';
 
 export interface HeartRateAggregate {
   avgHeartRate: number | null;

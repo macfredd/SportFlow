@@ -5,7 +5,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Activity } from '../../activities/entities/activity.entity';
+import { Activity } from '@/activities/entities/activity.entity';
 
 @Entity('track_points')
 export class TrackPoint {

@@ -1,5 +1,5 @@
-import { ParsedTrackPoint } from '../dto/parsed-track-point.dto';
-import { xmlTextContent } from '../helpers/xml.helper';
+import { ParsedTrackPoint } from '@/modules/parser/dto/parsed-track-point.dto';
+import { xmlTextContent } from '@/modules/parser/helpers/xml.helper';
 
 /** Node shape from fast-xml-parser (attributes with `attributeNamePrefix`). */
 type GpxTrkptNode = Record<string, unknown>;

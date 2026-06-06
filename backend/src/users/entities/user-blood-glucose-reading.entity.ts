@@ -7,7 +7,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { GlucoseReadingContext, GlucoseUnit } from '../enums';
+import { GlucoseReadingContext, GlucoseUnit } from '@/users/enums';
 import { UserEntity } from './user.entity';
 
 @Index('idx_user_blood_glucose_readings_user_recorded', ['user', 'recorded_at'])

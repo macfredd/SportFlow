@@ -1,4 +1,4 @@
-import { ParsedTrackPoint } from '../dto/parsed-track-point.dto';
+import { ParsedTrackPoint } from '@/modules/parser/dto/parsed-track-point.dto';
 import { haversineDistanceMeters } from './geo-distance.helper';
 
 const DEFAULT_MIN_DELTA_SECONDS = 0.35;

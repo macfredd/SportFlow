@@ -1,8 +1,8 @@
-import { Activity } from '../entities/activity.entity';
-import { FileSourceType, SportType } from '../../common/enums';
-import { ParsedActivity } from '../../modules/parser/dto/parsed-activity.dto';
-import { ParsedTrackPoint } from '../../modules/parser/dto/parsed-track-point.dto';
-import { TrackPoint } from '../../trackPoints/entities/track-point.entity';
+import { Activity } from '@/activities/entities/activity.entity';
+import { FileSourceType, SportType } from '@/common/enums';
+import { ParsedActivity } from '@/modules/parser/dto/parsed-activity.dto';
+import { ParsedTrackPoint } from '@/modules/parser/dto/parsed-track-point.dto';
+import { TrackPoint } from '@/trackPoints/entities/track-point.entity';
 
 const SPORT_MAP: Record<string, SportType> = {
   walking: SportType.WALKING,

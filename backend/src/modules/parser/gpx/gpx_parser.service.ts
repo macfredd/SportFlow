@@ -1,20 +1,20 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { XMLParser } from 'fast-xml-parser';
-import { ParsedActivity } from '../dto/parsed-activity.dto';
-import { ParsedTrackPoint } from '../dto/parsed-track-point.dto';
-import { IActivityParser } from '../interfaces/activity-parser.interface';
-import { elapsedWholeSecondsBetween } from '../helpers/date.helper';
-import { aggregateElevationFromTrackPoints } from '../helpers/elevation-stats.helper';
-import { aggregatePathDistanceMeters } from '../helpers/geo-distance.helper';
-import { aggregateHeartRateFromTrackPoints } from '../helpers/heart-rate-stats.helper';
+import { ParsedActivity } from '@/modules/parser/dto/parsed-activity.dto';
+import { ParsedTrackPoint } from '@/modules/parser/dto/parsed-track-point.dto';
+import { IActivityParser } from '@/modules/parser/interfaces/activity-parser.interface';
+import { elapsedWholeSecondsBetween } from '@/modules/parser/helpers/date.helper';
+import { aggregateElevationFromTrackPoints } from '@/modules/parser/helpers/elevation-stats.helper';
+import { aggregatePathDistanceMeters } from '@/modules/parser/helpers/geo-distance.helper';
+import { aggregateHeartRateFromTrackPoints } from '@/modules/parser/helpers/heart-rate-stats.helper';
 import {
   averageSpeedFromDistanceAndMovingTime,
   averageSpeedMetersPerSecond,
   estimateMovingTimeSecondsFromTrackPoints,
   getSpeedStatsCapsForSport,
   maxSpeedFromTrackPoints,
-} from '../helpers/speed-stats.helper';
-import { asArray, xmlTextContent } from '../helpers/xml.helper';
+} from '@/modules/parser/helpers/speed-stats.helper';
+import { asArray, xmlTextContent } from '@/modules/parser/helpers/xml.helper';
 import { mapGpxTrkptToParsedTrackPoint } from './gpx-trkpt.mapper.helper';
 
 @Injectable()

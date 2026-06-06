@@ -1,5 +1,5 @@
-import type { UserHeightPublicDto } from '../dto/user-public-response.dto';
-import { HeightUnit } from '../enums';
+import type { UserHeightPublicDto } from '@/users/dto/user-public-response.dto';
+import { HeightUnit } from '@/users/enums';
 
 function toCmNumber(raw: unknown): number | null {
   if (raw === null || raw === undefined) return null;

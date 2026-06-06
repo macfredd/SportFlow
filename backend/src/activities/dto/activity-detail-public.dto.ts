@@ -1,6 +1,6 @@
-import { SportType } from '../../common/enums';
-import { DistancePublicValue } from '../shared/display';
-import { SpeedPublicValue } from '../shared/display/speed-display';
+import { SportType } from '@/common/enums';
+import { DistancePublicValue } from '@/activities/shared/display';
+import { SpeedPublicValue } from '@/activities/shared/display/speed-display';
 
 export interface ActivityDetailPublicDto {
   id: string;

@@ -7,8 +7,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Activity } from '../../activities/entities/activity.entity';
-import { UserSex } from '../enums';
+import { Activity } from '@/activities/entities/activity.entity';
+import { UserSex } from '@/users/enums';
 import { UserConfig } from './user-config.entity';
 import { UserWeightReading } from './user-weight-reading.entity';
 import { UserBloodGlucoseReading } from './user-blood-glucose-reading.entity';

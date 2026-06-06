@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { IActivityParser } from '../interfaces/activity-parser.interface';
+import { IActivityParser } from '@/modules/parser/interfaces/activity-parser.interface';
 import FitParser from 'fit-file-parser';
-import { ParsedActivity } from '../dto/parsed-activity.dto';
-import { toDate } from '../helpers/date.helper';
+import { ParsedActivity } from '@/modules/parser/dto/parsed-activity.dto';
+import { toDate } from '@/modules/parser/helpers/date.helper';
 import {
   getSpeedStatsCapsForSport,
   maxSpeedFromTrackPoints,
   resolveActivityMaxSpeedMps,
   resolveFitAverageSpeedMps,
-} from '../helpers/speed-stats.helper';
+} from '@/modules/parser/helpers/speed-stats.helper';
 import { mapRecordToTrackPoint } from './fit-record-mapper.helper';
 import { FitRecord } from './fit-record.interface';
 

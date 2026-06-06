@@ -2,15 +2,15 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Activity } from './entities/activity.entity';
-import { TrackPoint } from '../trackPoints/entities/track-point.entity';
-import { ParserRegistryService } from '../modules/parser/parser-registry.service';
-import { ParsedActivity } from '../modules/parser/dto/parsed-activity.dto';
+import { TrackPoint } from '@/trackPoints/entities/track-point.entity';
+import { ParserRegistryService } from '@/modules/parser/parser-registry.service';
+import { ParsedActivity } from '@/modules/parser/dto/parsed-activity.dto';
 import {
   mapParsedActivityToActivity,
   mapParsedTrackPointToTrackPoint,
 } from './mappers/parsed-activity.mapper';
-import { UserEntity } from '../users/entities/user.entity';
-import { DistanceUnit } from '../users/enums';
+import { UserEntity } from '@/users/entities/user.entity';
+import { DistanceUnit } from '@/users/enums';
 import { LatestActivityPublicDto } from './dto/latest-activity-public.dto';
 import { buildDistanceForPublic } from './shared/display';
 import { SportType } from 'src/common/enums/sport-type.enum';
@@ -24,7 +24,7 @@ import {
 import { roundToDecimals, toNumber } from './shared/display/coerce-number';
 import { TrackPointRoutePublicDto } from './dto/track-point-route-public.dto';
 import { TrackPointChartDetailPublicDto, TrackPointChartPublicDto } from './dto/track-point-chart-public.dto';
-import { haversineDistanceMeters } from '../modules/parser/helpers/geo-distance.helper';
+import { haversineDistanceMeters } from '@/modules/parser/helpers/geo-distance.helper';
 
 /** Max window when filtering by `days` (avoids huge scans / abuse). */
 export const MAX_ACTIVITY_WINDOW_DAYS = 3650;

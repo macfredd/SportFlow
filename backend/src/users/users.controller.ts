@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { createReadStream } from 'fs';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ImageFileValidatorPipe } from '../common/pipes/image-file-validator.pipe';
+import { ImageFileValidatorPipe } from '@/common/pipes/image-file-validator.pipe';
 import { mimeTypeForAvatarFile } from './utils/avatar-mime.util';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';

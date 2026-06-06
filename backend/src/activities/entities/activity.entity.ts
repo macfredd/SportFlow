@@ -8,9 +8,9 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { FileSourceType, SportType } from '../../common/enums';
-import { TrackPoint } from '../../trackPoints/entities/track-point.entity';
-import { UserEntity } from '../../users/entities/user.entity';
+import { FileSourceType, SportType } from '@/common/enums';
+import { TrackPoint } from '@/trackPoints/entities/track-point.entity';
+import { UserEntity } from '@/users/entities/user.entity';
 
 @Index('idx_activities_user_start_time', ['user', 'start_time'])
 @Entity('activities')

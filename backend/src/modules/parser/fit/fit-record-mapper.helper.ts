@@ -1,6 +1,6 @@
-import { ParsedTrackPoint } from '../dto/parsed-track-point.dto';
+import { ParsedTrackPoint } from '@/modules/parser/dto/parsed-track-point.dto';
 import { FitRecord } from './fit-record.interface';
-import { toDate } from '../helpers/date.helper';
+import { toDate } from '@/modules/parser/helpers/date.helper';
 
 export function mapRecordToTrackPoint(record: FitRecord): ParsedTrackPoint {
   const hasGps =

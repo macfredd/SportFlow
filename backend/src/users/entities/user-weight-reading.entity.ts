@@ -7,7 +7,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { WeightUnit } from '../enums';
+import { WeightUnit } from '@/users/enums';
 import { UserEntity } from './user.entity';
 
 @Index('idx_user_weight_readings_user_recorded', ['user', 'recorded_at'])

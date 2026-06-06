@@ -11,7 +11,7 @@ import {
   MaxLength,
   Min,
 } from 'class-validator';
-import { UserSex } from '../enums';
+import { UserSex } from '@/users/enums';
 
 export class CreateUserDto {
   @IsNotEmpty()

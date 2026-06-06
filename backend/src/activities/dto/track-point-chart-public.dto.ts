@@ -1,5 +1,5 @@
-import { DistanceUnit } from '../../users/enums';
-import { SpeedUnit } from '../../users/enums/speed-unit.enum';
+import { DistanceUnit } from '@/users/enums';
+import { SpeedUnit } from '@/users/enums/speed-unit.enum';
 
 export interface TrackPointChartPublicDto {
   activity_id: string;

@@ -1,4 +1,4 @@
-import { HeightUnit, UserSex } from '../enums';
+import { HeightUnit, UserSex } from '@/users/enums';
 
 /** Canonical height for API clients; unit labels are localized in the app. */
 export type UserHeightPublicDto =

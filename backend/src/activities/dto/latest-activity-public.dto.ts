@@ -1,5 +1,5 @@
-import { SportType } from '../../common/enums';
-import { DistancePublicValue } from '../shared/display';
+import { SportType } from '@/common/enums';
+import { DistancePublicValue } from '@/activities/shared/display';
 
 export class LatestActivityPublicDto {
   id!: string;
