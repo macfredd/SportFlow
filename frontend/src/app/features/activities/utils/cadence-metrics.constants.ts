@@ -48,3 +48,22 @@ export const CADENCE_HEATMAP_FREQUENCY_COLORS = [
   '#F28C7B',
   '#B45348',
 ] as const;
+
+/** Cadence vs heart rate heatmap — HR axis bucket (bpm). */
+export const CADENCE_HEART_RATE_HEATMAP_HR_BUCKET = 5;
+
+/** Cadence vs heart rate drift — time bins (X) × cadence (Y), color = avg HR. */
+export const CADENCE_HR_DRIFT_MIN_BINS = 24;
+export const CADENCE_HR_DRIFT_MAX_BINS = 40;
+export const CADENCE_HR_DRIFT_TARGET_POINTS_PER_BIN = 20;
+
+/** Low → high heart rate (drift heatmap). */
+export const CADENCE_HR_DRIFT_COLORS = [
+  '#EFF6FF',
+  '#93C5FD',
+  '#FDE68A',
+  '#FB923C',
+  '#DC2626',
+] as const;
+
+export const CADENCE_HR_LINE_COLOR = '#DC2626';

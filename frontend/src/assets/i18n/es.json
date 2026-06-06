@@ -146,6 +146,35 @@
       "frequencyHigh": "Más muestras",
       "bucketNote": "Bins: {{speedStep}} m/s × {{cadenceStep}} {{unit}}. El color indica con qué frecuencia estuviste en cada combinación."
     },
+    "cadenceVsHeartRate": {
+      "title": "Cadencia vs frecuencia cardiaca",
+      "noData": "No hay datos suficientes de cadencia y frecuencia cardiaca para mostrar este gráfico.",
+      "axisCadence": "Cadencia",
+      "axisHeartRate": "Frecuencia cardiaca",
+      "avgHrLine": "FC media por cadencia",
+      "tooltipCadence": "Cadencia",
+      "tooltipHeartRate": "Frecuencia cardiaca",
+      "tooltipSamples": "Muestras",
+      "tooltipTime": "Tiempo estimado",
+      "tooltipPercentSamples": "Porcentaje de muestras",
+      "tooltipPercentTime": "Porcentaje de tiempo",
+      "frequencyLow": "Menos muestras",
+      "frequencyHigh": "Más muestras",
+      "bucketNote": "Bins: {{cadenceStep}} {{unit}} × {{hrStep}} lpm. La densidad muestra el costo cardiovascular; la línea roja marca el punto de inflexión de FC por cadencia."
+    },
+    "cadenceHrDrift": {
+      "title": "Deriva cardiaca",
+      "noData": "No hay datos suficientes de cadencia y frecuencia cardiaca en el tiempo para mostrar este gráfico.",
+      "axisTime": "Tiempo",
+      "axisCadence": "Cadencia",
+      "tooltipTime": "Tiempo",
+      "tooltipCadence": "Cadencia",
+      "tooltipHeartRate": "FC media",
+      "tooltipSamples": "Muestras",
+      "hrLow": "FC más baja",
+      "hrHigh": "FC más alta",
+      "bucketNote": "Bins: tiempo × {{cadenceStep}} {{unit}}. El color es la FC media — la deriva se ve cuando la misma cadencia se calienta con el tiempo."
+    },
     "cadenceZones": {
       "zoneZ1": "Muy baja",
       "zoneZ2": "Baja",

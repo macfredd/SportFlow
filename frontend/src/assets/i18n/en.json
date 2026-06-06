@@ -146,6 +146,35 @@
       "frequencyHigh": "More samples",
       "bucketNote": "Bins: {{speedStep}} m/s × {{cadenceStep}} {{unit}}. Cell color shows how often you were in each combination."
     },
+    "cadenceVsHeartRate": {
+      "title": "Cadence vs heart rate",
+      "noData": "Not enough cadence and heart-rate samples to show this chart.",
+      "axisCadence": "Cadence",
+      "axisHeartRate": "Heart rate",
+      "avgHrLine": "Avg HR by cadence",
+      "tooltipCadence": "Cadence",
+      "tooltipHeartRate": "Heart rate",
+      "tooltipSamples": "Samples",
+      "tooltipTime": "Estimated time",
+      "tooltipPercentSamples": "Share of samples",
+      "tooltipPercentTime": "Share of time",
+      "frequencyLow": "Fewer samples",
+      "frequencyHigh": "More samples",
+      "bucketNote": "Bins: {{cadenceStep}} {{unit}} × {{hrStep}} bpm. Density shows cardiovascular cost; the red line highlights HR inflection by cadence."
+    },
+    "cadenceHrDrift": {
+      "title": "Cardiac drift",
+      "noData": "Not enough cadence and heart-rate samples over time to show this chart.",
+      "axisTime": "Time",
+      "axisCadence": "Cadence",
+      "tooltipTime": "Time",
+      "tooltipCadence": "Cadence",
+      "tooltipHeartRate": "Avg heart rate",
+      "tooltipSamples": "Samples",
+      "hrLow": "Lower HR",
+      "hrHigh": "Higher HR",
+      "bucketNote": "Bins: time × {{cadenceStep}} {{unit}}. Color is average heart rate — drift appears when the same cadence warms up over time."
+    },
     "cadenceZones": {
       "zoneZ1": "Very low",
       "zoneZ2": "Low",

@@ -1,0 +1,24 @@
+.activity-cadence-metrics-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.5rem;
+  width: 100%;
+  min-width: 0;
+}
+
+@media (min-width: 960px) {
+  .activity-cadence-metrics-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+}
+
+.activity-cadence-metrics-grid__cell {
+  min-width: 0;
+}
+
+.activity-cadence-metrics-grid__cell--full {
+  @media (min-width: 960px) {
+    grid-column: 1 / -1;
+  }
+}

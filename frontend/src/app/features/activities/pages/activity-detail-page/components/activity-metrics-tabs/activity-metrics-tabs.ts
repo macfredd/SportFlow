@@ -5,11 +5,11 @@ import { TranslocoPipe } from '@ngneat/transloco';
 
 import type { ActivitySplitsViewModel } from '@features/activities/utils/activity-splits.util';
 import type { CadenceDistributionViewModel, CadenceMetricsViewModel } from '@features/activities/utils/cadence-metrics.util';
+import type { CadenceHeartRateHeatmapViewModel } from '@features/activities/utils/cadence-heart-rate-heatmap.util';
+import type { CadenceHrDriftHeatmapViewModel } from '@features/activities/utils/cadence-hr-drift-heatmap.util';
 import type { CadenceSpeedHeatmapViewModel } from '@features/activities/utils/cadence-speed-heatmap.util';
-import { ActivityCadenceVsSpeedChart } from '../activity-cadence-vs-speed-chart/activity-cadence-vs-speed-chart';
 import type { HeartRateZonesViewModel } from '@features/activities/utils/heart-rate-zones.util';
-import { ActivityCadenceDistributionChart } from '../activity-cadence-distribution-chart/activity-cadence-distribution-chart';
-import { ActivityCadenceKpis } from '../activity-cadence-kpis/activity-cadence-kpis';
+import { ActivityCadenceMetricsGrid } from '../activity-cadence-metrics-grid/activity-cadence-metrics-grid';
 import { ActivityHeartRateMetricsGrid } from '../activity-heart-rate-metrics-grid/activity-heart-rate-metrics-grid';
 
 @Component({
@@ -19,9 +19,7 @@ import { ActivityHeartRateMetricsGrid } from '../activity-heart-rate-metrics-gri
     MatIconModule,
     TranslocoPipe,
     ActivityHeartRateMetricsGrid,
-    ActivityCadenceKpis,
-    ActivityCadenceDistributionChart,
-    ActivityCadenceVsSpeedChart,
+    ActivityCadenceMetricsGrid,
   ],
   templateUrl: './activity-metrics-tabs.html',
   styleUrl: './activity-metrics-tabs.scss',
@@ -32,4 +30,6 @@ export class ActivityMetricsTabs {
   readonly cadenceMetrics = input<CadenceMetricsViewModel | null>(null);
   readonly cadenceDistribution = input<CadenceDistributionViewModel | null>(null);
   readonly cadenceSpeedHeatmap = input<CadenceSpeedHeatmapViewModel | null>(null);
+  readonly cadenceHeartRateHeatmap = input<CadenceHeartRateHeatmapViewModel | null>(null);
+  readonly cadenceHrDriftHeatmap = input<CadenceHrDriftHeatmapViewModel | null>(null);
 }

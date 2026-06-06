@@ -1,0 +1,48 @@
+<div class="activity-cadence-hr-drift-chart-card">
+  <h2
+    id="activity-cadence-hr-drift-heading"
+    class="activity-cadence-hr-drift-chart__title text-base font-semibold text-[var(--text-primary)]"
+  >
+    {{ 'activity.cadenceHrDrift.title' | transloco }}
+  </h2>
+
+  @if (heatmap(); as model) {
+    <div class="activity-cadence-hr-drift-chart__body">
+      @if (chartOptions(); as opts) {
+        <div
+          class="activity-cadence-hr-drift-chart__chart-wrap"
+          role="img"
+          [attr.aria-label]="'activity.cadenceHrDrift.title' | transloco"
+        >
+          @for (langKey of [chartLangKey()]; track langKey) {
+            <div echarts [options]="opts" class="activity-cadence-hr-drift-chart"></div>
+          }
+        </div>
+      }
+
+      <div class="activity-cadence-hr-drift-chart__legend" aria-hidden="true">
+        <span class="activity-cadence-hr-drift-chart__legend-label">{{
+          'activity.cadenceHrDrift.hrLow' | transloco
+        }}</span>
+        <span
+          class="activity-cadence-hr-drift-chart__legend-bar"
+          [style.background]="'linear-gradient(to right, ' + hrLegendColors.join(', ') + ')'"
+        ></span>
+        <span class="activity-cadence-hr-drift-chart__legend-label">{{
+          'activity.cadenceHrDrift.hrHigh' | transloco
+        }}</span>
+      </div>
+    </div>
+
+    <p class="activity-cadence-hr-drift-chart__note text-xs leading-relaxed text-[var(--text-secondary)]">
+      {{ 'activity.cadenceHrDrift.bucketNote' | transloco: { cadenceStep: model.cadenceBucket, unit: model.unit } }}
+    </p>
+  } @else {
+    <p
+      class="activity-cadence-hr-drift-chart__empty mt-3 text-sm text-[var(--text-secondary)]"
+      role="status"
+    >
+      {{ 'activity.cadenceHrDrift.noData' | transloco }}
+    </p>
+  }
+</div>

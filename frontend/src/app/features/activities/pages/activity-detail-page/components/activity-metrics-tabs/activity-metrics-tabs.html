@@ -26,12 +26,13 @@
       </ng-template>
       <ng-template matTabContent>
         <div class="activity-metrics-tabs__panel">
-          <app-activity-cadence-kpis [metrics]="cadenceMetrics()" />
-          <app-activity-cadence-distribution-chart
-            [distribution]="cadenceDistribution()"
-            [avgCadence]="cadenceMetrics()?.avgCadence ?? null"
+          <app-activity-cadence-metrics-grid
+            [cadenceMetrics]="cadenceMetrics()"
+            [cadenceDistribution]="cadenceDistribution()"
+            [cadenceSpeedHeatmap]="cadenceSpeedHeatmap()"
+            [cadenceHeartRateHeatmap]="cadenceHeartRateHeatmap()"
+            [cadenceHrDriftHeatmap]="cadenceHrDriftHeatmap()"
           />
-          <app-activity-cadence-vs-speed-chart [heatmap]="cadenceSpeedHeatmap()" />
         </div>
       </ng-template>
     </mat-tab>

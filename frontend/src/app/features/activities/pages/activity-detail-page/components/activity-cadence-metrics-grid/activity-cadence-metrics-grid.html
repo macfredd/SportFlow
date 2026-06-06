@@ -1,0 +1,22 @@
+<div class="activity-cadence-metrics-grid">
+  <div class="activity-cadence-metrics-grid__cell activity-cadence-metrics-grid__cell--full">
+    <app-activity-cadence-kpis [metrics]="cadenceMetrics()" />
+  </div>
+  <div class="activity-cadence-metrics-grid__cell activity-cadence-metrics-grid__cell--full">
+    <app-activity-cadence-distribution-chart
+      [distribution]="cadenceDistribution()"
+      [avgCadence]="cadenceMetrics()?.avgCadence ?? null"
+    />
+  </div>
+  <div class="activity-cadence-metrics-grid__cell activity-cadence-metrics-grid__cell--full">
+    <app-activity-cadence-vs-speed-chart [heatmap]="cadenceSpeedHeatmap()" />
+  </div>
+  @if (showHeartRateCharts()) {
+    <div class="activity-cadence-metrics-grid__cell">
+      <app-activity-cadence-vs-heart-rate-chart [heatmap]="cadenceHeartRateHeatmap()" />
+    </div>
+    <div class="activity-cadence-metrics-grid__cell">
+      <app-activity-cadence-hr-drift-chart [heatmap]="cadenceHrDriftHeatmap()" />
+    </div>
+  }
+</div>

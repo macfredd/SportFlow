@@ -1,0 +1,64 @@
+<div class="activity-cadence-vs-heart-rate-chart-card">
+  <h2
+    id="activity-cadence-vs-heart-rate-heading"
+    class="activity-cadence-vs-heart-rate-chart__title text-base font-semibold text-[var(--text-primary)]"
+  >
+    {{ 'activity.cadenceVsHeartRate.title' | transloco }}
+  </h2>
+
+  @if (heatmap(); as model) {
+    <div class="activity-cadence-vs-heart-rate-chart__body">
+      @if (chartOptions(); as opts) {
+        <div
+          class="activity-cadence-vs-heart-rate-chart__chart-wrap"
+          role="img"
+          [attr.aria-label]="'activity.cadenceVsHeartRate.title' | transloco"
+        >
+          @for (langKey of [chartLangKey()]; track langKey) {
+            <div echarts [options]="opts" class="activity-cadence-vs-heart-rate-chart"></div>
+          }
+        </div>
+      }
+
+      <div class="activity-cadence-vs-heart-rate-chart__legends" aria-hidden="true">
+        <div class="activity-cadence-vs-heart-rate-chart__legend-row">
+          <span class="activity-cadence-vs-heart-rate-chart__legend-label">{{
+            'activity.cadenceVsHeartRate.frequencyLow' | transloco
+          }}</span>
+          <span
+            class="activity-cadence-vs-heart-rate-chart__legend-bar"
+            [style.background]="
+              'linear-gradient(to right, ' + frequencyLegendColors.join(', ') + ')'
+            "
+          ></span>
+          <span class="activity-cadence-vs-heart-rate-chart__legend-label">{{
+            'activity.cadenceVsHeartRate.frequencyHigh' | transloco
+          }}</span>
+        </div>
+        <div class="activity-cadence-vs-heart-rate-chart__legend-row">
+          <span
+            class="activity-cadence-vs-heart-rate-chart__line-swatch"
+            aria-hidden="true"
+          ></span>
+          <span class="activity-cadence-vs-heart-rate-chart__legend-label">{{
+            'activity.cadenceVsHeartRate.avgHrLine' | transloco
+          }}</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="activity-cadence-vs-heart-rate-chart__note text-xs leading-relaxed text-[var(--text-secondary)]">
+      {{
+        'activity.cadenceVsHeartRate.bucketNote'
+          | transloco: { cadenceStep: model.cadenceBucket, hrStep: model.hrBucket, unit: model.unit }
+      }}
+    </p>
+  } @else {
+    <p
+      class="activity-cadence-vs-heart-rate-chart__empty mt-3 text-sm text-[var(--text-secondary)]"
+      role="status"
+    >
+      {{ 'activity.cadenceVsHeartRate.noData' | transloco }}
+    </p>
+  }
+</div>
